@@ -12,9 +12,10 @@ export const RESERVED_SLUGS = new Set([
   'about',
   'support',
   'assets',
-  'favicon.ico',
-  'robots.txt',
-  'sitemap.xml',
+  'favicon',
+  'robots',
+  'sitemap',
+  'next',
   '_next',
 ]);
 
