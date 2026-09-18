@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: [
+    '@asc/db',
     '@asc/types',
     '@asc/validation',
     '@asc/permissions',
