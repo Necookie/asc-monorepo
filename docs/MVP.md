@@ -55,13 +55,13 @@ This document is the single authoritative checklist for MVP completion. Features
 ---
 
 ## 4. Authentication & Identity Linking
-- [ ] **Clerk Integration**: `@clerk/nextjs` middleware and session provider configured
-- [ ] **Discord OAuth Provider**: Clerk configured for Discord OAuth authentication
-- [ ] **Identity Linkage Service**: Extract verified Discord snowflake from OAuth claims and link to `users.clerk_user_id`
-- [ ] **Zero-Trust Ownership**: Profile mutations strictly verified by `session.externalId === user.external_user_id`
-- [ ] **Rejection of Cross-Profile Mutations**: Explicit prevention of mutating another user's profile
-- [ ] **Rejection of Spoofing**: Username similarity and slug knowledge explicitly cannot grant ownership
-- [ ] **Protected Dashboard Access**: Unauthenticated visitors redirected to login
+- [x] **Clerk Integration**: `@clerk/nextjs` middleware and session provider configured
+- [x] **Discord OAuth Provider**: Clerk configured for Discord OAuth authentication
+- [x] **Identity Linkage Service**: Extract verified Discord snowflake from OAuth claims and link to `users.clerk_user_id`
+- [x] **Zero-Trust Ownership**: Profile mutations strictly verified by `session.externalId === user.external_user_id`
+- [x] **Rejection of Cross-Profile Mutations**: Explicit prevention of mutating another user's profile
+- [x] **Rejection of Spoofing**: Username similarity and slug knowledge explicitly cannot grant ownership
+- [x] **Protected Dashboard Access**: Unauthenticated visitors redirected to login
 
 ---
 

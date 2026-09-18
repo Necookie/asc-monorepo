@@ -4,3 +4,4 @@ export * from './roles';
 export * from './entitlements';
 export * from './admin';
 export * from './sync';
+export * from './auth';
