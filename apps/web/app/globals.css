@@ -6,16 +6,17 @@
   --color-green: #35ed7e;
   --color-magenta: #ec48bd;
   --color-link: #00b0f4;
-  --color-surface-indigo: #1e2353;
-  --color-surface-onyx: #23272a;
-  --color-surface-black: #000000;
-  --color-surface-hover: #292f68;
-  --color-surface-active: #343b7a;
+  --color-surface-indigo: #141843;
+  --color-surface-elevated: #1a2055;
+  --color-surface-onyx: #121530;
+  --color-surface-black: #05071e;
+  --color-surface-hover: #1f2766;
+  --color-surface-active: #293282;
 
   --color-ink: #ffffff;
   --color-ink-dark: #000000;
   --color-ink-secondary: #c7c9e5;
-  --color-muted: #9498bd;
+  --color-muted: #8c90be;
 
   --color-success: #35ed7e;
   --color-warning: #f0b232;
@@ -23,11 +24,11 @@
   --color-info: #00b0f4;
 
   --radius-xs: 6px;
-  --radius-sm: 12px;
+  --radius-sm: 10px;
   --radius-md: 14px;
   --radius-lg: 16px;
-  --radius-xl: 24px;
-  --radius-2xl: 40px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
   --radius-pill: 50px;
   --radius-jumbo: 120px;
 
@@ -46,35 +47,103 @@ body {
   font-family: var(--font-sans);
   min-height: 100vh;
   overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Atmospheric ASC Mesh Gradients */
+/* Subtle, clean architectural background (replaces muddy gradient slop) */
 .asc-mesh-bg {
   background-color: #0a0d3a;
   background-image: 
-    radial-gradient(circle at 15% 15%, rgba(88, 101, 242, 0.35) 0%, transparent 45%),
-    radial-gradient(circle at 85% 25%, rgba(236, 72, 189, 0.25) 0%, transparent 45%),
-    radial-gradient(circle at 50% 85%, rgba(88, 101, 242, 0.20) 0%, transparent 50%);
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(88, 101, 242, 0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(236, 72, 189, 0.08) 0%, transparent 50%);
   background-attachment: fixed;
 }
 
-.asc-subtle-mesh {
-  background-image: 
-    radial-gradient(circle at 20% 10%, rgba(88, 101, 242, 0.15) 0%, transparent 35%),
-    radial-gradient(circle at 80% 20%, rgba(236, 72, 189, 0.10) 0%, transparent 35%);
+/* Subtle dot grid pattern for technical, premium feel */
+.asc-grid-pattern {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
-/* Atmospheric Glows */
-.asc-glow-violet {
-  box-shadow: 0 0 50px -10px rgba(88, 101, 242, 0.3);
+/* Crisp, high-contrast card styling */
+.asc-card {
+  background-color: rgba(20, 24, 67, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+  transition: border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.asc-glow-magenta {
-  box-shadow: 0 0 50px -10px rgba(236, 72, 189, 0.3);
+.asc-card:hover {
+  border-color: rgba(88, 101, 242, 0.35);
+  box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.5), 0 0 20px -5px rgba(88, 101, 242, 0.2);
 }
 
-.asc-glow-supporter {
-  box-shadow: 0 0 35px -5px rgba(236, 72, 189, 0.35), 0 0 15px -3px rgba(88, 101, 242, 0.3);
+/* Subtle badge & pill styles */
+.asc-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+/* Keyframe animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatSubtle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-float-subtle {
+  animation: floatSubtle 4s ease-in-out infinite;
 }
 
 /* Touch targets & Focus Visible */
