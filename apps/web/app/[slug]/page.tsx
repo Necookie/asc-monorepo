@@ -6,6 +6,7 @@ import { getPublicProfileBySlug } from '@/lib/queries/profiles';
 import { IdentityCard } from '@/components/identity/identity-card';
 import { ProfileWidget } from '@/components/ui/profile-widget';
 import { TagChip } from '@/components/identity/tag-chip';
+import { isValidHttpUrl } from '@asc/validation';
 import { ExternalLink, User, Tag, Link2, Sparkles, Lock } from 'lucide-react';
 
 interface PageProps {
@@ -139,20 +140,23 @@ export default async function MemberProfilePage({ params }: PageProps) {
                 {links.length > 0 && (
                   <ProfileWidget title="Links" icon={<Link2 className="w-5 h-5" />}>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {links.map((link) => (
-                        <a
-                          key={link.id}
-                          href={link.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center justify-between p-3.5 rounded-xl bg-[#0a0d3a]/60 border border-[rgba(88,101,242,0.2)] hover:border-[#5865f2] hover:bg-[#1e2353] text-white transition-all group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5865f2]"
-                        >
-                          <span className="text-sm font-semibold truncate group-hover:text-[#5865f2] transition-colors">
-                            {link.label}
-                          </span>
-                          <ExternalLink className="w-4 h-4 text-[#9498bd] group-hover:text-white shrink-0 ml-2" />
-                        </a>
-                      ))}
+                      {links.map((link) => {
+                        const safeUrl = isValidHttpUrl(link.url) ? link.url : '#';
+                        return (
+                          <a
+                            key={link.id}
+                            href={safeUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-between p-3.5 rounded-xl bg-[#0a0d3a]/60 border border-[rgba(88,101,242,0.2)] hover:border-[#5865f2] hover:bg-[#1e2353] text-white transition-all group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5865f2]"
+                          >
+                            <span className="text-sm font-semibold truncate group-hover:text-[#5865f2] transition-colors">
+                              {link.label}
+                            </span>
+                            <ExternalLink className="w-4 h-4 text-[#9498bd] group-hover:text-white shrink-0 ml-2" />
+                          </a>
+                        );
+                      })}
                     </div>
                   </ProfileWidget>
                 )}
