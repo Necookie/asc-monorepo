@@ -5,18 +5,18 @@ This document is the single authoritative checklist for MVP completion. Features
 ---
 
 ## 1. Foundation & Infrastructure
-- [ ] **Monorepo Workspace**: pnpm workspaces configured with `apps/` and `packages/`
+- [x] **Monorepo Workspace**: pnpm workspaces configured with `apps/` and `packages/`
 - [ ] **Web Application**: Next.js App Router application in `apps/web`
 - [ ] **Synchronization Bot**: discord.js Gateway service in `apps/bot`
-- [ ] **Database Package**: Drizzle ORM + Turso/libSQL client in `packages/db`
-- [ ] **Shared Packages**:
-  - [ ] `packages/config` (shared TypeScript config)
-  - [ ] `packages/types` (shared domain models)
-  - [ ] `packages/validation` (Zod validation schemas)
-  - [ ] `packages/permissions` (role bitmasks & server guards)
-  - [ ] `packages/entitlements` (entitlement resolver)
-- [ ] **Environment Validation**: Zod schema validating required environment variables on startup
-- [ ] **Automated Testing Suite**: Vitest configured for root, packages, and apps
+- [x] **Database Package**: Drizzle ORM + Turso/libSQL client in `packages/db`
+- [x] **Shared Packages**:
+  - [x] `packages/config` (shared TypeScript config)
+  - [x] `packages/types` (shared domain models)
+  - [x] `packages/validation` (Zod validation schemas)
+  - [x] `packages/permissions` (role bitmasks & server guards)
+  - [x] `packages/entitlements` (entitlement resolver)
+- [x] **Environment Validation**: Zod schema validating required environment variables on startup
+- [x] **Automated Testing Suite**: Vitest configured for root, packages, and apps
 - [ ] **Containerization**: Multi-stage `apps/bot/Dockerfile` and root `compose.yaml`
 
 ---
