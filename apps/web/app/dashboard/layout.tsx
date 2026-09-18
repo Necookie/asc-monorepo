@@ -138,6 +138,75 @@ export default async function DashboardLayout({
         </div>
       </aside>
 
+      {/* Mobile Sub-Header & Navigation Tabs (lg:hidden) */}
+      <div className="lg:hidden border-b border-[rgba(88,101,242,0.15)] bg-[#0e1245]/90 backdrop-blur-md sticky top-16 z-30 px-4 py-2.5">
+        <div className="flex items-center justify-between gap-2 mb-2">
+          <div className="flex items-center gap-2 truncate">
+            <Avatar
+              src={member.user.avatar}
+              alt={member.user.displayName}
+              size={32}
+              fallbackText={member.user.displayName.slice(0, 2).toUpperCase()}
+            />
+            <span className="text-xs font-bold text-white truncate">
+              {member.user.displayName}
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5 shrink-0">
+            {member.primarySlug && (
+              <Link
+                href={`/${member.primarySlug}`}
+                target="_blank"
+                className="text-[11px] font-semibold text-[#8b92d6] hover:text-white px-2 py-1 rounded-md bg-[#141943] border border-[rgba(88,101,242,0.2)]"
+              >
+                Profile
+              </Link>
+            )}
+            {member.isAdmin && (
+              <Link
+                href="/admin"
+                className="text-[11px] font-semibold text-[#ec48bd] px-2 py-1 rounded-md bg-[#ec48bd]/10 border border-[#ec48bd]/25"
+              >
+                Admin
+              </Link>
+            )}
+          </div>
+        </div>
+
+        <nav className="flex items-center gap-1.5 text-xs font-semibold overflow-x-auto scrollbar-none py-1">
+          <Link
+            href="/dashboard"
+            className="px-3 py-1.5 rounded-lg text-[#c7c9e5] hover:text-white hover:bg-[#1e2353]/80 transition-colors shrink-0"
+          >
+            Bio
+          </Link>
+          <Link
+            href="/dashboard/appearance"
+            className="px-3 py-1.5 rounded-lg text-[#c7c9e5] hover:text-white hover:bg-[#1e2353]/80 transition-colors shrink-0"
+          >
+            Appearance
+          </Link>
+          <Link
+            href="/dashboard/tags"
+            className="px-3 py-1.5 rounded-lg text-[#c7c9e5] hover:text-white hover:bg-[#1e2353]/80 transition-colors shrink-0"
+          >
+            Tags
+          </Link>
+          <Link
+            href="/dashboard/links"
+            className="px-3 py-1.5 rounded-lg text-[#c7c9e5] hover:text-white hover:bg-[#1e2353]/80 transition-colors shrink-0"
+          >
+            Links
+          </Link>
+          <Link
+            href="/dashboard/privacy"
+            className="px-3 py-1.5 rounded-lg text-[#c7c9e5] hover:text-white hover:bg-[#1e2353]/80 transition-colors shrink-0"
+          >
+            Privacy
+          </Link>
+        </nav>
+      </div>
+
       {/* Main Page Area */}
       <main className="flex-1 p-4 sm:p-6 lg:p-10 max-w-7xl w-full mx-auto">
         {children}
