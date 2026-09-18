@@ -81,13 +81,13 @@ This document is the single authoritative checklist for MVP completion. Features
 ---
 
 ## 6. Profile Customization & Dashboard
-- [ ] **Dashboard Shell (`/dashboard`)**: Calm, structured application mode interface
-- [ ] **Live Interactive Preview**: Real-time side-by-side local preview of profile changes before saving
-- [ ] **Profile Editor (`/dashboard/profile`)**: Mutation of bio, title, and external links with explicit save button
-- [ ] **Appearance Editor (`/dashboard/appearance`)**: Selection of theme, accent color, and supporter background URL
-- [ ] **Tag Selection (`/dashboard/tags`)**: Selection of tags from admin-approved community tags
-- [ ] **Privacy Settings (`/dashboard/privacy`)**: Toggle public profile, show roles, show joined date, show tags, show links
-- [ ] **Server Actions**: Secure, Zod-validated mutations
+- [x] **Dashboard Shell (`/dashboard`)**: Calm, structured application mode interface
+- [x] **Live Interactive Preview**: Real-time side-by-side local preview of profile changes before saving
+- [x] **Profile Editor (`/dashboard/profile`)**: Mutation of bio, title, and external links with explicit save button
+- [x] **Appearance Editor (`/dashboard/appearance`)**: Selection of theme, accent color, and supporter background URL
+- [x] **Tag Selection (`/dashboard/tags`)**: Selection of tags from admin-approved community tags
+- [x] **Privacy Settings (`/dashboard/privacy`)**: Toggle public profile, show roles, show joined date, show tags, show links
+- [x] **Server Actions**: Secure, Zod-validated mutations
 
 ---
 
