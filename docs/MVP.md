@@ -103,15 +103,15 @@ This document is the single authoritative checklist for MVP completion. Features
 ---
 
 ## 8. Quality & Security Gates
-- [ ] **Responsive Design**: Flawless presentation across mobile (375px), tablet (768px), and desktop (1280px+)
-- [ ] **Accessibility (a11y)**: Semantic HTML, visible focus states, ≥44px touch targets, `prefers-reduced-motion` compliance
-- [ ] **Input Sanitization & Validation**: Zod validation on every input boundary; strict regex rejecting dangerous URL schemes
-- [ ] **Automated Test Coverage**:
-  - [ ] Unit tests for validation, permissions, and entitlements
-  - [ ] Database constraint and migration tests
-  - [ ] Synchronization lifecycle and idempotency tests
-  - [ ] Authentication ownership and authorization security tests
-- [ ] **Typecheck**: Zero TypeScript errors across all monorepo workspaces (`pnpm typecheck`)
-- [ ] **Lint**: Zero ESLint errors or warnings (`pnpm lint`)
-- [ ] **Production Build**: Successful Next.js production build (`pnpm build`)
-- [ ] **Documentation**: Full set of engineering specifications, ADRs, and deployment manuals
+- [x] **Responsive Design**: Flawless presentation across mobile (375px), tablet (768px), and desktop (1280px+)
+- [x] **Accessibility (a11y)**: Semantic HTML, visible focus states, ≥44px touch targets, `prefers-reduced-motion` compliance
+- [x] **Input Sanitization & Validation**: Zod validation on every input boundary; strict regex rejecting dangerous URL schemes
+- [x] **Automated Test Coverage**:
+  - [x] Unit tests for validation, permissions, and entitlements
+  - [x] Database constraint and migration tests
+  - [x] Synchronization lifecycle and idempotency tests
+  - [x] Authentication ownership and authorization security tests
+- [x] **Typecheck**: Zero TypeScript errors across all monorepo workspaces (`pnpm typecheck`)
+- [x] **Lint**: Zero ESLint errors or warnings (`pnpm lint`)
+- [x] **Production Build**: Successful Next.js production build (`pnpm build`)
+- [x] **Documentation**: Full set of engineering specifications, ADRs, and deployment manuals

@@ -11,8 +11,8 @@
 | **Phase 6: Public Website** | `VERIFIED` | `main` (merged `feature/public-community`) | `apps/web/app/*`, `[slug]/page.tsx`, `lib/queries/*` | Route, privacy & query tests (9/9 passed, 54/54 overall) | None | Completed |
 | **Phase 7: Authentication** | `VERIFIED` | `main` (merged `feature/authentication`) | `apps/web/lib/auth/*`, `middleware.ts`, `app/login/page.tsx` | Auth extraction, identity linking, zero-trust & role tests (18/18 passed, 72/72 overall) | None | Completed |
 | **Phase 8: Customization** | `VERIFIED` | `main` (merged `feature/profile-customization`) | `apps/web/app/dashboard/*`, `lib/actions/profile.ts`, `components/dashboard/*` | Actions & entitlement tests (14/14 passed, 86/86 overall) | None | Completed |
-| **Phase 9: Administration** | `VERIFIED` | `feature/administration` | `apps/web/app/admin/*`, `lib/actions/admin.ts`, `components/admin/*` | Admin authorization & moderation tests (11/11 passed, 97/97 overall) | None | Complete |
-| **Phase 10: Security & Quality** | `TODO` | `feature/security-hardening` | `packages/validation`, CSP config, a11y | End-to-end security & a11y tests | None | Comprehensive audit & fixes |
+| **Phase 9: Administration** | `VERIFIED` | `main` (merged `feature/administration`) | `apps/web/app/admin/*`, `lib/actions/admin.ts`, `components/admin/*` | Admin authorization & moderation tests (11/11 passed, 97/97 overall) | None | Completed |
+| **Phase 10: Security & Quality** | `VERIFIED` | `feature/security-hardening` | `apps/web/next.config.ts`, `packages/validation`, security test suite | End-to-end security, CSP, sanitization & a11y tests (9/9 passed, 106/106 overall) | None | Complete |
 | **Phase 11: Deployment** | `TODO` | `feature/deployment` | `apps/bot/Dockerfile`, `compose.yaml`, deployment docs | Docker build & compose check | None | Containerization & deploy guide |
 | **Phase 12: Final MVP Audit** | `TODO` | `chore/mvp-final-audit` | Full repository review | Full suite: lint, typecheck, test, build | None | Final verification & completion report |
 
