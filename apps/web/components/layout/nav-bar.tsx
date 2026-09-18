@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Link from 'next/link';
+import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { Button } from '@/components/ui/button';
 import { Compass, Users, Home, User, Sparkles } from 'lucide-react';
 
@@ -59,29 +60,58 @@ export function NavBar({ user }: NavBarProps) {
 
         {/* User CTA / Auth */}
         <div className="flex items-center gap-3">
-          {user ? (
-            <div className="flex items-center gap-2.5">
-              <Link href="/dashboard">
-                <Button variant="ghost" size="sm" className="hidden sm:inline-flex gap-2">
-                  <User className="w-4 h-4" />
-                  Dashboard
-                </Button>
-              </Link>
-              {user.slug && (
-                <Link href={`/${user.slug}`}>
-                  <Button variant="primary" size="sm">
-                    My Profile
+          {user !== undefined ? (
+            user ? (
+              <div className="flex items-center gap-2.5">
+                <Link href="/dashboard">
+                  <Button variant="ghost" size="sm" className="hidden sm:inline-flex gap-2">
+                    <User className="w-4 h-4" />
+                    Dashboard
                   </Button>
                 </Link>
-              )}
-            </div>
+                {user.slug && (
+                  <Link href={`/${user.slug}`}>
+                    <Button variant="primary" size="sm">
+                      My Profile
+                    </Button>
+                  </Link>
+                )}
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Link href="/login">
+                  <Button variant="primary" size="sm">
+                    Sign In
+                  </Button>
+                </Link>
+              </div>
+            )
           ) : (
-            <div className="flex items-center gap-2">
-              <Link href="/dashboard">
-                <Button variant="primary" size="sm">
-                  Sign In
-                </Button>
-              </Link>
+            <div className="flex items-center gap-3">
+              <SignedOut>
+                <Link href="/login">
+                  <Button variant="primary" size="sm">
+                    Sign In
+                  </Button>
+                </Link>
+              </SignedOut>
+              <SignedIn>
+                <div className="flex items-center gap-2.5">
+                  <Link href="/dashboard">
+                    <Button variant="ghost" size="sm" className="hidden sm:inline-flex gap-2">
+                      <User className="w-4 h-4" />
+                      Dashboard
+                    </Button>
+                  </Link>
+                  <UserButton
+                    appearance={{
+                      elements: {
+                        avatarBox: 'w-8 h-8 ring-2 ring-[rgba(88,101,242,0.3)]',
+                      },
+                    }}
+                  />
+                </div>
+              </SignedIn>
             </div>
           )}
         </div>
