@@ -17,7 +17,8 @@
     "@asc/types": "workspace:*",
     "@asc/validation": "workspace:*",
     "discord.js": "^14.18.0",
-    "dotenv": "^16.4.7"
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.39.0"
   },
   "devDependencies": {
     "@asc/config": "workspace:*",
