@@ -38,19 +38,19 @@ This document is the single authoritative checklist for MVP completion. Features
 ---
 
 ## 3. Profiles & Public Surface
-- [ ] **Public Route (`/[slug]`)**: Dynamic slug resolution for community member profiles
-- [ ] **Slug Redirection**: 308 Permanent Redirect when requesting historical slug aliases
-- [ ] **Reserved Slug Protection**: System routes (`admin`, `dashboard`, `api`, `members`, etc.) protected from collision
-- [ ] **Synchronized Identity Card**: Read-only display of verified Discord avatar, display name, handle, community roles, and tenure
-- [ ] **Custom Biography**: Sanitized text biography display
-- [ ] **Custom Title**: Profile title rendered when entitled
-- [ ] **Member Tags**: Visual badge display of selected community tags
-- [ ] **Verified External Links**: Sanitized, outbound links with safe HTTPS protocols and icons
-- [ ] **Custom Theme & Accent**: User-selected accent color applied to profile borders and highlights
-- [ ] **External Supporter Background**: Custom background image URL applied with safe styling and graceful fallback
-- [ ] **Server-Side Privacy Enforcement**: Hidden fields (roles, joined date, tags, links, or entire profile) stripped before rendering
-- [ ] **Former Member Handling**: Visual indicator for members who have left the community without breaking profile links
-- [ ] **404 Profile Not Found**: Custom empty/missing state adhering to `DESIGN.md`
+- [x] **Public Route (`/[slug]`)**: Dynamic slug resolution for community member profiles
+- [x] **Slug Redirection**: 308 Permanent Redirect when requesting historical slug aliases
+- [x] **Reserved Slug Protection**: System routes (`admin`, `dashboard`, `api`, `members`, etc.) protected from collision
+- [x] **Synchronized Identity Card**: Read-only display of verified Discord avatar, display name, handle, community roles, and tenure
+- [x] **Custom Biography**: Sanitized text biography display
+- [x] **Custom Title**: Profile title rendered when entitled
+- [x] **Member Tags**: Visual badge display of selected community tags
+- [x] **Verified External Links**: Sanitized, outbound links with safe HTTPS protocols and icons
+- [x] **Custom Theme & Accent**: User-selected accent color applied to profile borders and highlights
+- [x] **External Supporter Background**: Custom background image URL applied with safe styling and graceful fallback
+- [x] **Server-Side Privacy Enforcement**: Hidden fields (roles, joined date, tags, links, or entire profile) stripped before rendering
+- [x] **Former Member Handling**: Visual indicator for members who have left the community without breaking profile links
+- [x] **404 Profile Not Found**: Custom empty/missing state adhering to `DESIGN.md`
 
 ---
 
@@ -66,17 +66,17 @@ This document is the single authoritative checklist for MVP completion. Features
 ---
 
 ## 5. Community Surface
-- [ ] **Homepage (`/`)**:
-  - [ ] Atmospheric deep-indigo hero adhering to `DESIGN.md`
-  - [ ] Dynamic community statistics (total members, active profiles)
-  - [ ] Featured member showcase cards
-  - [ ] Primary conversion CTAs ("Meet ASC", "Explore Members", "Customize Profile")
-- [ ] **Member Directory (`/members`)**:
-  - [ ] Responsive grid of `MemberCard`s
-  - [ ] Live search by username, display name, and tags
-  - [ ] Role filter (Staff, Supporters, All)
-  - [ ] Supporter badge highlighting
-  - [ ] Empty search state
+- [x] **Homepage (`/`)**:
+  - [x] Atmospheric deep-indigo hero adhering to `DESIGN.md`
+  - [x] Dynamic community statistics (total members, active profiles)
+  - [x] Featured member showcase cards
+  - [x] Primary conversion CTAs ("Meet ASC", "Explore Members", "Customize Profile")
+- [x] **Member Directory (`/members`)**:
+  - [x] Responsive grid of `MemberCard`s
+  - [x] Live search by username, display name, and tags
+  - [x] Role filter (Staff, Supporters, All)
+  - [x] Supporter badge highlighting
+  - [x] Empty search state
 
 ---
 

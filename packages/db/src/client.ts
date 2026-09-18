@@ -10,8 +10,30 @@ if (typeof process !== 'undefined' && process.env) {
 
 export type ASCDatabase = LibSQLDatabase<typeof schema>;
 
+import path from 'path';
+import fs from 'fs';
+
+function getDefaultDbUrl(): string {
+  if (process.env.TURSO_DATABASE_URL) {
+    return process.env.TURSO_DATABASE_URL;
+  }
+  const candidates = [
+    path.resolve(__dirname, '../local.db'),
+    path.resolve(__dirname, '../../packages/db/local.db'),
+    path.resolve(process.cwd(), 'packages/db/local.db'),
+    path.resolve(process.cwd(), '../../packages/db/local.db'),
+    path.resolve(process.cwd(), 'local.db'),
+  ];
+  for (const candidate of candidates) {
+    if (fs.existsSync(candidate)) {
+      return `file:${candidate}`;
+    }
+  }
+  return 'file:local.db';
+}
+
 export function createDb(
-  url: string = process.env.TURSO_DATABASE_URL || 'file:local.db',
+  url: string = getDefaultDbUrl(),
   authToken: string | undefined = process.env.TURSO_AUTH_TOKEN
 ): ASCDatabase & { $client: Client } {
   const client = createClient({
