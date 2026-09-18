@@ -2,7 +2,8 @@ import * as React from 'react';
 import Link from 'next/link';
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { Button } from '@/components/ui/button';
-import { Compass, Users, Home, User, Sparkles } from 'lucide-react';
+import { Compass, Users, Home, User } from 'lucide-react';
+import { AscLogo } from '@/components/ui/asc-logo';
 
 export interface NavBarProps {
   user?: {
@@ -20,17 +21,7 @@ export function NavBar({ user }: NavBarProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand */}
         <div className="flex items-center gap-8">
-          <Link
-            href="/"
-            className="flex items-center gap-2.5 font-extrabold text-2xl tracking-wider text-white font-[var(--font-display)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5865f2] rounded-lg"
-          >
-            <span className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#5865f2] to-[#ec48bd] flex items-center justify-center text-white shadow-md">
-              <Sparkles className="w-5 h-5" />
-            </span>
-            <span className="bg-gradient-to-r from-white via-[#c7c9e5] to-white bg-clip-text text-transparent">
-              ASC
-            </span>
-          </Link>
+          <AscLogo size="md" href="/" />
 
           {/* Nav Links */}
           <nav className="hidden md:flex items-center gap-1.5 text-sm font-semibold">

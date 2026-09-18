@@ -1,21 +1,16 @@
 import * as React from 'react';
 import Link from 'next/link';
-import { Sparkles } from 'lucide-react';
+import { AscLogo } from '@/components/ui/asc-logo';
 
 export function Footer() {
   return (
-    <footer className="w-full border-t border-[rgba(88,101,242,0.15)] bg-[#0a0d3a] pt-16 pb-12 text-[#c7c9e5]">
+    <footer className="w-full border-t border-white/10 bg-[#070928] pt-16 pb-12 text-slate-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-[rgba(88,101,242,0.12)]">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-white/10">
           {/* Brand */}
           <div className="space-y-4 md:col-span-1">
-            <Link href="/" className="flex items-center gap-2.5 font-black text-2xl text-white font-[var(--font-display)]">
-              <span className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#5865f2] to-[#ec48bd] flex items-center justify-center text-white">
-                <Sparkles className="w-4 h-4" />
-              </span>
-              ASC
-            </Link>
-            <p className="text-sm text-[#9498bd] leading-relaxed">
+            <AscLogo size="md" href="/" />
+            <p className="text-sm text-slate-400 leading-relaxed">
               Community-first digital identity, member discovery, and expressive profile customization.
             </p>
           </div>

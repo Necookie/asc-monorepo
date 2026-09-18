@@ -25,7 +25,17 @@ export const metadata: Metadata = {
   description:
     'A community-first digital identity, member discovery, and profile customization platform.',
   icons: {
-    icon: '/favicon.ico',
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/asc-mark.png', type: 'image/png' },
+    ],
+    apple: '/asc-mark.png',
+  },
+  openGraph: {
+    title: 'ASC — Community Identity & Member Discovery',
+    description:
+      'A community-first digital identity, member discovery, and profile customization platform.',
+    images: [{ url: '/asc-banner.png', width: 1200, height: 630, alt: 'ASC' }],
   },
 };
 
