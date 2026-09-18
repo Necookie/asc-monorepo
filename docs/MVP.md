@@ -22,18 +22,18 @@ This document is the single authoritative checklist for MVP completion. Features
 ---
 
 ## 2. Synchronization Subsystem
-- [ ] **Gateway Connection**: Robust discord.js client with auto-reconnect and rate-limit handling
-- [ ] **Initial Member Synchronization**: Paginated guild fetch synchronizing all members on cold startup
-- [ ] **Member Join (`guildMemberAdd`)**: Automatic creation of user, default profile, canonical slug, and membership period
-- [ ] **Member Departure (`guildMemberRemove`)**: Status set to `LEFT`, close membership period; profile and customizations preserved
-- [ ] **Member Rejoin**: Restore status to `ACTIVE`, start new membership period, retain existing customized profile
-- [ ] **Username Changes (`userUpdate`)**: Update presentation username, generate new primary slug, preserve old slug as 308 alias
-- [ ] **Avatar Changes**: Real-time update of synchronized avatar URL
-- [ ] **Role Synchronization**: Synchronize Discord roles with `community_roles` and `member_roles`
-- [ ] **Supporter Synchronization**: Detect booster/supporter role and assign supporter entitlements
-- [ ] **Periodic Reconciliation**: Configurable scheduled sync loop (default 12h) healing missed events
-- [ ] **Idempotent Operations**: Repeating the same event N times results in identical database state without duplicate records
-- [ ] **Graceful Shutdown**: Clean exit on `SIGTERM` / `SIGINT` without corrupting active sync transactions
+- [x] **Gateway Connection**: Robust discord.js client with auto-reconnect and rate-limit handling
+- [x] **Initial Member Synchronization**: Paginated guild fetch synchronizing all members on cold startup
+- [x] **Member Join (`guildMemberAdd`)**: Automatic creation of user, default profile, canonical slug, and membership period
+- [x] **Member Departure (`guildMemberRemove`)**: Status set to `LEFT`, close membership period; profile and customizations preserved
+- [x] **Member Rejoin**: Restore status to `ACTIVE`, start new membership period, retain existing customized profile
+- [x] **Username Changes (`userUpdate`)**: Update presentation username, generate new primary slug, preserve old slug as 308 alias
+- [x] **Avatar Changes**: Real-time update of synchronized avatar URL
+- [x] **Role Synchronization**: Synchronize Discord roles with `community_roles` and `member_roles`
+- [x] **Supporter Synchronization**: Detect booster/supporter role and assign supporter entitlements
+- [x] **Periodic Reconciliation**: Configurable scheduled sync loop (default 12h) healing missed events
+- [x] **Idempotent Operations**: Repeating the same event N times results in identical database state without duplicate records
+- [x] **Graceful Shutdown**: Clean exit on `SIGTERM` / `SIGINT` without corrupting active sync transactions
 
 ---
 
