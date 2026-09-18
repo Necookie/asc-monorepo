@@ -77,9 +77,14 @@ body {
   box-shadow: 0 0 35px -5px rgba(236, 72, 189, 0.35), 0 0 15px -3px rgba(88, 101, 242, 0.3);
 }
 
-/* Touch targets */
-button, a, input, select {
+/* Touch targets & Focus Visible */
+button, a, input, select, textarea {
   touch-action: manipulation;
+}
+
+:focus-visible {
+  outline: 2px solid #5865f2;
+  outline-offset: 2px;
 }
 
 /* Reduced motion */
