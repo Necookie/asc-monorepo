@@ -4,6 +4,7 @@ import * as React from 'react';
 
 export interface AnimatedRevealProps {
   children: React.ReactNode;
+  key?: React.Key;
   delayMs?: number;
   direction?: 'up' | 'down' | 'left' | 'right' | 'none';
   durationMs?: number;
