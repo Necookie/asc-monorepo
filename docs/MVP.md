@@ -92,13 +92,13 @@ This document is the single authoritative checklist for MVP completion. Features
 ---
 
 ## 7. Administration & Moderation
-- [ ] **Server-Side Authorization**: Administrative routes and mutations strictly gated by verified `is_admin` role
-- [ ] **Admin Overview (`/admin`)**: Key community metrics and quick health overview
-- [ ] **Member Management (`/admin/members`)**: Member inspection, status viewer, and role history
-- [ ] **Profile Moderation (`/admin/profiles`)**: One-click profile hide/unhide and reset unsafe bio/links/background
-- [ ] **Tag Management (`/admin/tags`)**: Create, edit, and deactivate community tags
-- [ ] **Site Settings (`/admin/settings`)**: Maintenance toggle and system announcement banner
-- [ ] **Audit Logging (`/admin/audit`)**: Tamper-evident audit log recording actor, action, target, and timestamp
+- [x] **Server-Side Authorization**: Administrative routes and mutations strictly gated by verified `is_admin` role
+- [x] **Admin Overview (`/admin`)**: Key community metrics and quick health overview
+- [x] **Member Management (`/admin/members`)**: Member inspection, status viewer, and role history
+- [x] **Profile Moderation (`/admin/profiles`)**: One-click profile hide/unhide and reset unsafe bio/links/background
+- [x] **Tag Management (`/admin/tags`)**: Create, edit, and deactivate community tags
+- [x] **Site Settings (`/admin/settings`)**: Maintenance toggle and system announcement banner
+- [x] **Audit Logging (`/admin/audit`)**: Tamper-evident audit log recording actor, action, target, and timestamp
 
 ---
 
