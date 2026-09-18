@@ -99,6 +99,70 @@ export const updateMemberTagsSchema = z.object({
     .max(10, 'Cannot select more than 10 tags'),
 });
 
+export const slugSchema = z
+  .string()
+  .trim()
+  .min(1, 'Slug is required')
+  .max(32, 'Slug must not exceed 32 characters')
+  .regex(/^[a-z0-9_]+(-[a-z0-9_]+)*$/, {
+    message: 'Slug must consist of lowercase alphanumeric characters, underscores, and hyphens',
+  });
+
+/**
+ * Validates that a URL string strictly uses http: or https: protocol and rejects dangerous schemes.
+ */
+export function isValidHttpUrl(val: string): boolean {
+  if (!val || typeof val !== 'string') return false;
+  const lower = val.toLowerCase().trim();
+  if (
+    lower.startsWith('javascript:') ||
+    lower.startsWith('data:') ||
+    lower.startsWith('file:') ||
+    lower.startsWith('vbscript:') ||
+    lower.startsWith('blob:') ||
+    lower.startsWith('about:') ||
+    lower.startsWith('chrome:') ||
+    lower.startsWith('ftp:')
+  ) {
+    return false;
+  }
+  try {
+    const parsed = new URL(val);
+    return parsed.protocol === 'https:' || parsed.protocol === 'http:';
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Sanitizes an external URL, returning a normalized URL string or null if unsafe.
+ */
+export function sanitizeExternalUrl(val: string): string | null {
+  if (!isValidHttpUrl(val)) return null;
+  try {
+    const parsed = new URL(val);
+    return parsed.toString();
+  } catch {
+    return null;
+  }
+}
+
+export function validateSlug(slug: string) {
+  return slugSchema.safeParse(slug);
+}
+
+export function validateBio(bio: string) {
+  return z.string().max(500).safeParse(bio);
+}
+
+export function validateCustomTitle(title: string) {
+  return z.string().max(64).safeParse(title);
+}
+
+export function validateProfileLink(link: unknown) {
+  return profileLinkSchema.safeParse(link);
+}
+
 export type UpdateBioInput = z.infer<typeof updateBioSchema>;
 export type ProfileLinkInput = z.infer<typeof profileLinkSchema>;
 export type UpdateLinksInput = z.infer<typeof updateLinksSchema>;
