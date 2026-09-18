@@ -34,8 +34,8 @@ export function MemberCard({
     >
       <div
         className={cn(
-          'relative flex flex-col items-center text-center p-6 rounded-2xl bg-[#1e2353]/90 border border-[rgba(88,101,242,0.18)] backdrop-blur-sm transition-all duration-300',
-          'group-hover:-translate-y-1.5 group-hover:bg-[#292f68] group-hover:border-[rgba(88,101,242,0.45)] group-hover:shadow-[0_12px_35px_-5px_rgba(88,101,242,0.25)]',
+          'relative flex flex-col items-center text-center p-6 rounded-2xl bg-[#141843] border border-white/10 transition-all duration-300',
+          'group-hover:-translate-y-1.5 group-hover:bg-[#1a2055] group-hover:border-[#5865f2]/50 group-hover:shadow-[0_12px_30px_-5px_rgba(0,0,0,0.5),0_0_20px_-5px_rgba(88,101,242,0.3)]',
           className
         )}
         {...props}
