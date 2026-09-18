@@ -103,26 +103,46 @@ export async function seedDatabase(targetDb = db) {
     ])
     .onConflictDoNothing();
 
+  interface MemberFixtureOptions {
+    externalUserId: string;
+    username: string;
+    displayName: string;
+    nickname?: string | null;
+    avatar?: string | null;
+    status?: 'ACTIVE' | 'LEFT' | 'BANNED';
+    firstJoinedAt?: Date;
+    leftAt?: Date | null;
+    bio?: string | null;
+    customTitle?: string | null;
+    accentColor?: string;
+    theme?: 'canvas' | 'indigo' | 'onyx';
+    backgroundUrl?: string | null;
+    links?: Array<{ label: string; url: string; order: number }>;
+    assignedRoles?: Array<any>;
+    tagSlugs?: string[];
+    pastSlug?: string | null;
+  }
+
   // Helper to upsert a user with profile
   async function createMemberFixture({
     externalUserId,
     username,
     displayName,
-    nickname,
-    avatar,
-    status = 'ACTIVE' as const,
+    nickname = null,
+    avatar = null,
+    status = 'ACTIVE',
     firstJoinedAt = new Date('2024-01-01'),
-    leftAt = null as Date | null,
-    bio,
-    customTitle,
+    leftAt = null,
+    bio = null,
+    customTitle = null,
     accentColor = '#5865f2',
-    theme = 'canvas' as const,
-    backgroundUrl = null as string | null,
-    links = [] as Array<{ label: string; url: string; order: number }>,
-    assignedRoles = [] as Array<typeof adminRole>,
-    tagSlugs = [] as string[],
-    pastSlug = null as string | null,
-  }) {
+    theme = 'canvas',
+    backgroundUrl = null,
+    links = [],
+    assignedRoles = [],
+    tagSlugs = [],
+    pastSlug = null,
+  }: MemberFixtureOptions) {
     const existing = await targetDb
       .select()
       .from(users)
