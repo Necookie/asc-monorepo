@@ -1,0 +1,22 @@
+{
+  "name": "asc-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter @asc/web dev",
+    "dev:bot": "pnpm --filter @asc/bot dev",
+    "build": "pnpm -r --filter=!./packages/config run build",
+    "lint": "pnpm -r run lint",
+    "typecheck": "pnpm -r run typecheck",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "db:generate": "pnpm --filter @asc/db run generate",
+    "db:migrate": "pnpm --filter @asc/db run migrate",
+    "db:seed": "pnpm --filter @asc/db run seed"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.0",
+    "vitest": "^3.0.0"
+  },
+  "packageManager": "pnpm@12.4.2"
+}
