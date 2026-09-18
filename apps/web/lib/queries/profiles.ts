@@ -1,0 +1,211 @@
+import { eq, and } from 'drizzle-orm';
+import { db, users, profileSlugs, profiles, type ASCDatabase } from '@asc/db';
+import { resolveMemberEntitlements } from '@asc/entitlements';
+import type { ResolvedEntitlements } from '@asc/types';
+
+export interface PublicProfileResult {
+  profile?: PublicProfileData;
+  redirect?: string;
+  notFound?: boolean;
+}
+
+export interface PublicProfileData {
+  user: {
+    username: string;
+    displayName: string;
+    nickname: string | null;
+    avatar: string | null;
+    membershipStatus: 'ACTIVE' | 'LEFT';
+    firstJoinedAt: Date | null;
+    slug: string;
+  };
+  profile: {
+    bio: string | null;
+    customTitle: string | null;
+    accentColor: string;
+    theme: 'canvas' | 'indigo' | 'onyx';
+    backgroundUrl: string | null;
+    isPrivate: boolean;
+  };
+  roles: {
+    id: string;
+    name: string;
+    color: string;
+    isAdmin: boolean;
+    isSupporter: boolean;
+  }[];
+  tags: {
+    id: string;
+    name: string;
+  }[];
+  links: {
+    id: string;
+    label: string;
+    url: string;
+  }[];
+  isSupporter: boolean;
+  entitlements: ResolvedEntitlements;
+}
+
+export async function getPublicProfileBySlug(
+  slug: string,
+  database: ASCDatabase = db
+): Promise<PublicProfileResult> {
+  const normalizedSlug = slug.toLowerCase().trim();
+
+  // 1. Look up slug in profile_slugs
+  const slugRecord = await database.query.profileSlugs.findFirst({
+    where: eq(profileSlugs.slug, normalizedSlug),
+  });
+
+  if (!slugRecord) {
+    // Check fallback by username directly
+    const fallbackUser = await database.query.users.findFirst({
+      where: eq(users.username, normalizedSlug),
+    });
+    if (!fallbackUser || fallbackUser.membershipStatus === 'BANNED') {
+      return { notFound: true };
+    }
+
+    // Get their primary slug
+    const primarySlug = await database.query.profileSlugs.findFirst({
+      where: and(eq(profileSlugs.userId, fallbackUser.id), eq(profileSlugs.isPrimary, true)),
+    });
+    if (primarySlug && primarySlug.slug !== normalizedSlug) {
+      return { redirect: primarySlug.slug };
+    }
+  }
+
+  // 2. If slug was an old released alias, redirect to current primary slug
+  if (slugRecord && !slugRecord.isPrimary) {
+    const primarySlug = await database.query.profileSlugs.findFirst({
+      where: and(eq(profileSlugs.userId, slugRecord.userId), eq(profileSlugs.isPrimary, true)),
+    });
+    if (primarySlug && primarySlug.slug !== normalizedSlug) {
+      return { redirect: primarySlug.slug };
+    }
+  }
+
+  const targetUserId = slugRecord?.userId;
+  if (!targetUserId) {
+    return { notFound: true };
+  }
+
+  // 3. Fetch full member data with relations
+  const user = await database.query.users.findFirst({
+    where: eq(users.id, targetUserId),
+    with: {
+      profile: {
+        with: {
+          links: {
+            orderBy: (links, { asc }) => [asc(links.displayOrder)],
+          },
+        },
+      },
+      memberRoles: {
+        with: {
+          role: true,
+        },
+      },
+      memberTags: {
+        with: {
+          tag: true,
+        },
+      },
+      entitlements: true,
+    },
+  });
+
+  if (!user || user.membershipStatus === 'BANNED') {
+    return { notFound: true };
+  }
+
+  // Map roles and resolve supporter state
+  const roles = user.memberRoles
+    .map((mr) => mr.role)
+    .filter((r): r is NonNullable<typeof r> => Boolean(r))
+    .sort((a, b) => (b.position ?? 0) - (a.position ?? 0));
+
+  const isSupporter = roles.some((r) => r.isSupporter === true);
+
+  // Entitlement resolution
+  const resolvedEntitlements = resolveMemberEntitlements(
+    roles,
+    user.entitlements.map((e) => ({
+      id: e.id,
+      userId: e.userId,
+      key: e.key as import('@asc/types').EntitlementKey,
+      value: e.value,
+      source: e.source,
+      grantedAt: e.grantedAt,
+      expiresAt: e.expiresAt,
+    }))
+  );
+
+  const profile = user.profile || {
+    bio: null,
+    customTitle: null,
+    accentColor: '#5865f2',
+    theme: 'canvas' as const,
+    backgroundUrl: null,
+    isPrivate: false,
+    showRoles: true,
+    showMembershipDate: true,
+    showTags: true,
+    showLinks: true,
+    links: [],
+  };
+
+  // Server-side privacy and entitlement stripping
+  const isPrivate = profile.isPrivate === true;
+
+  const publicData: PublicProfileData = {
+    user: {
+      username: user.username,
+      displayName: user.displayName,
+      nickname: isPrivate ? null : user.nickname,
+      avatar: user.avatar,
+      membershipStatus: user.membershipStatus === 'LEFT' ? 'LEFT' : 'ACTIVE',
+      firstJoinedAt: isPrivate || !profile.showMembershipDate ? null : user.firstJoinedAt,
+      slug: slugRecord?.slug || user.username,
+    },
+    profile: {
+      bio: isPrivate ? null : profile.bio,
+      customTitle: isPrivate || !resolvedEntitlements.canCustomTitle ? null : profile.customTitle,
+      accentColor: profile.accentColor || '#5865f2',
+      theme: (profile.theme as 'canvas' | 'indigo' | 'onyx') || 'canvas',
+      backgroundUrl:
+        isPrivate || !resolvedEntitlements.canCustomBackground ? null : profile.backgroundUrl,
+      isPrivate,
+    },
+    roles:
+      isPrivate || !profile.showRoles
+        ? []
+        : roles.map((r) => ({
+            id: r.id,
+            name: r.name,
+            color: r.color || '#5865f2',
+            isAdmin: r.isAdmin,
+            isSupporter: r.isSupporter,
+          })),
+    tags:
+      isPrivate || !profile.showTags
+        ? []
+        : user.memberTags
+            .map((mt) => mt.tag)
+            .filter((t): t is NonNullable<typeof t> => Boolean(t))
+            .map((t) => ({ id: t.id, name: t.name })),
+    links:
+      isPrivate || !profile.showLinks
+        ? []
+        : (profile.links || []).map((l) => ({
+            id: l.id,
+            label: l.label,
+            url: l.url,
+          })),
+    isSupporter,
+    entitlements: resolvedEntitlements,
+  };
+
+  return { profile: publicData };
+}
