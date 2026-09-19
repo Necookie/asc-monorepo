@@ -85,7 +85,19 @@ export default function RootLayout({
             }}
           />
         </head>
-        <body className="asc-mesh-bg text-white min-h-screen flex flex-col antialiased selection:bg-[#5865f2] selection:text-white">
+        <body className="asc-mesh-bg text-white min-h-screen flex flex-col antialiased selection:bg-[#5865f2] selection:text-white relative">
+          {/* Atmospheric After School Club Classroom Background */}
+          <div className="fixed inset-0 -z-50 pointer-events-none overflow-hidden select-none" aria-hidden="true">
+            <img
+              src="/asc-clubroom-bg.webp"
+              alt=""
+              className="h-full w-full object-cover object-center opacity-45 scale-105 transition-opacity duration-700"
+            />
+            <div className="absolute inset-0 bg-[#07091e]/50" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#050716] via-[#070924]/40 to-[#0a0d3a]/65" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_30%,_#050716_92%)]" />
+          </div>
+
           <AscMotionProvider>
             <NavBar />
             <main className="flex-1">{children}</main>
