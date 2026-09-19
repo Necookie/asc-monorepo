@@ -57,57 +57,66 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Subtle, clean architectural background (replaces muddy gradient slop) */
+/* Deep-indigo foundation. Expressive pages provide their own authored layers. */
 .asc-mesh-bg {
   background-color: #0a0d3a;
-  background-image: 
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(88, 101, 242, 0.18) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(236, 72, 189, 0.08) 0%, transparent 50%);
-  background-attachment: fixed;
+  background-image: linear-gradient(rgba(88, 101, 242, 0.035) 1px, transparent 1px);
+  background-size: 100% 8px;
 }
 
-/* Ambient shapes are isolated to expressive surfaces and only animate transforms. */
-.hero-ambient-orb {
+/* React Bits DotGrid, tuned into ASC's crisp club-notebook visual language. */
+.hero-club-grid::before {
+  content: "";
   position: absolute;
-  border-radius: 9999px;
+  inset: 6% 8% auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(174, 180, 255, 0.28), transparent);
   pointer-events: none;
-  filter: blur(1px);
-  opacity: 0.6;
-  will-change: transform;
 }
 
-.hero-ambient-orb--violet {
-  width: 28rem;
-  height: 28rem;
-  top: -11rem;
-  left: -9rem;
-  background: radial-gradient(circle, rgba(88, 101, 242, 0.3), rgba(88, 101, 242, 0));
-  animation: ambientDriftA 14s var(--ease-out-quint) infinite alternate;
+.dot-grid,
+.dot-grid__wrap {
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
-.hero-ambient-orb--magenta {
-  width: 24rem;
-  height: 24rem;
-  top: 7rem;
-  right: -9rem;
-  background: radial-gradient(circle, rgba(236, 72, 189, 0.2), rgba(236, 72, 189, 0));
-  animation: ambientDriftB 17s var(--ease-out-quint) infinite alternate;
+.dot-grid__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
-@keyframes ambientDriftA {
-  from { transform: translate3d(0, 0, 0) scale(1); }
-  to { transform: translate3d(3rem, 2rem, 0) scale(1.08); }
+/* React Bits SpotlightCard, kept inside each surface instead of adding global glow. */
+.spotlight-card {
+  --spotlight-x: 50%;
+  --spotlight-y: 50%;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
 }
 
-@keyframes ambientDriftB {
-  from { transform: translate3d(0, 0, 0) scale(1); }
-  to { transform: translate3d(-2.5rem, 2rem, 0) scale(1.06); }
+.spotlight-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(280px circle at var(--spotlight-x) var(--spotlight-y), var(--spotlight-color), transparent 72%);
+  opacity: 0;
+  transition: opacity var(--motion-standard) var(--ease-out-quart);
+  pointer-events: none;
 }
 
-/* Subtle dot grid pattern for technical, premium feel */
-.asc-grid-pattern {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
-  background-size: 24px 24px;
+.spotlight-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.spotlight-card:hover::before,
+.spotlight-card:focus-within::before {
+  opacity: 1;
 }
 
 /* Crisp, high-contrast card styling */
@@ -254,16 +263,6 @@ body {
 }
 
 @media (max-width: 640px) {
-  .hero-ambient-orb--violet {
-    width: 19rem;
-    height: 19rem;
-  }
-
-  .hero-ambient-orb--magenta {
-    width: 17rem;
-    height: 17rem;
-  }
-
   .community-mascot {
     top: auto;
     bottom: 66px;
@@ -305,7 +304,7 @@ button, a, input, select, textarea {
     scroll-behavior: auto !important;
   }
 
-  .hero-ambient-orb {
-    will-change: auto;
+  .spotlight-card::before {
+    display: none;
   }
 }
