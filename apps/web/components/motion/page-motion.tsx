@@ -9,7 +9,7 @@ const EASE_OUT_EXPO = [0.16, 1, 0.3, 1] as const;
 export function PageMotion({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const reduceMotion = useReducedMotion();
-  const isApplication = pathname.startsWith('/dashboard') || pathname.startsWith('/admin');
+  const isApplication = Boolean(pathname?.startsWith('/dashboard') || pathname?.startsWith('/admin'));
 
   return (
     <m.div

@@ -67,6 +67,24 @@ export default function RootLayout({
       }}
     >
       <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} dark`}>
+        <head>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                if (typeof window !== 'undefined') {
+                  window.addEventListener('unhandledrejection', function(event) {
+                    if (event.reason && (
+                      (typeof event.reason.message === 'string' && event.reason.message.includes('Clerk')) ||
+                      (typeof event.reason.code === 'string' && event.reason.code.includes('clerk'))
+                    )) {
+                      event.preventDefault();
+                    }
+                  });
+                }
+              `,
+            }}
+          />
+        </head>
         <body className="asc-mesh-bg text-white min-h-screen flex flex-col antialiased selection:bg-[#5865f2] selection:text-white">
           <AscMotionProvider>
             <NavBar />

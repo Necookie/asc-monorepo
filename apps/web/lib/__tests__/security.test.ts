@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import nextConfig from '../../next.config';
+// @ts-ignore - next.config.mjs module resolution in ts
+import nextConfig from '../../next.config.mjs';
 import {
   isValidHttpUrl,
   sanitizeExternalUrl,
@@ -26,7 +27,7 @@ describe('ASC Security Hardening & Threat Mitigation', () => {
       const rootRoute = headersConfig[0];
       expect(rootRoute.source).toBe('/:path*');
 
-      const headersMap = new Map(rootRoute.headers.map((h) => [h.key, h.value]));
+      const headersMap = new Map(rootRoute.headers.map((h: { key: string; value: string }) => [h.key, h.value]));
 
       // 1. CSP
       const csp = headersMap.get('Content-Security-Policy');

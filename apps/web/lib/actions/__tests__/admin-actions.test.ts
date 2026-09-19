@@ -33,22 +33,17 @@ import type { AuthenticatedMember, CommunityRole } from '@asc/types';
 
 describe('Administration & Moderation Subsystem', () => {
   let testDb: ASCDatabase & { $client: any };
-  const testDbFile = path.resolve(__dirname, 'admin-test.db');
 
   beforeEach(async () => {
-    if (fs.existsSync(testDbFile)) {
-      fs.unlinkSync(testDbFile);
-    }
-    testDb = createDb(`file:${testDbFile}`);
+    testDb = createDb(':memory:');
     const migrationsFolder = path.resolve(__dirname, '../../../../../packages/db/drizzle');
     await migrate(testDb, { migrationsFolder });
   });
 
   afterEach(() => {
-    testDb.$client.close();
-    if (fs.existsSync(testDbFile)) {
-      fs.unlinkSync(testDbFile);
-    }
+    try {
+      testDb.$client.close();
+    } catch {}
   });
 
   function createAdminMember(id: string, username: string): AuthenticatedMember {
