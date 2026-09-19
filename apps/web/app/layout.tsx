@@ -87,15 +87,64 @@ export default function RootLayout({
         </head>
         <body className="asc-mesh-bg text-white min-h-screen flex flex-col antialiased selection:bg-[#5865f2] selection:text-white relative">
           {/* Atmospheric After School Club Classroom Background */}
-          <div className="fixed inset-0 -z-50 pointer-events-none overflow-hidden select-none" aria-hidden="true">
+          <div
+            className="fixed inset-0 -z-50 pointer-events-none overflow-hidden select-none"
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: -50,
+              pointerEvents: 'none',
+              overflow: 'hidden',
+            }}
+            aria-hidden="true"
+          >
             <img
               src="/asc-clubroom-bg.webp"
               alt=""
-              className="h-full w-full object-cover object-center opacity-45 scale-105 transition-opacity duration-700"
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center',
+                opacity: 0.45,
+              }}
             />
-            <div className="absolute inset-0 bg-[#07091e]/50" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#050716] via-[#070924]/40 to-[#0a0d3a]/65" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_30%,_#050716_92%)]" />
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(7, 9, 30, 0.5)',
+              }}
+            />
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: 'linear-gradient(to top, #050716, rgba(7, 9, 36, 0.4), rgba(10, 13, 58, 0.65))',
+              }}
+            />
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: 'radial-gradient(ellipse at center, transparent 30%, #050716 92%)',
+              }}
+            />
           </div>
 
           <AscMotionProvider>
