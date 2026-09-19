@@ -29,16 +29,20 @@ export default async function HomePage() {
 
   return (
     <div className="relative overflow-hidden space-y-24 sm:space-y-32 pb-24">
+      <div className="hero-ambient-orb hero-ambient-orb--violet" aria-hidden="true" />
+      <div className="hero-ambient-orb hero-ambient-orb--magenta" aria-hidden="true" />
+
       {/* 1. Official Hero Section */}
-      <section className="relative pt-12 sm:pt-20 pb-12 px-4 sm:px-6 lg:px-8 text-center z-10">
+      <section className="relative pt-12 sm:pt-20 pb-12 px-4 sm:px-6 lg:px-8 text-center z-10 isolate">
+        <div className="absolute inset-x-[12%] top-4 h-[80%] asc-grid-pattern opacity-25 [mask-image:radial-gradient(ellipse_at_center,black,transparent_72%)] -z-10" aria-hidden="true" />
         <div className="max-w-4xl mx-auto space-y-8">
           {/* Pill Badge with Official Mark */}
           <AnimatedReveal direction="down" durationMs={400}>
             <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#141843] border border-white/10 text-slate-200 text-xs font-semibold shadow-md">
               <AscMark size={18} />
-              <span className="text-white font-bold">ASC</span>
+              <span className="text-white font-bold">AFTERSCHOOL CLUB</span>
               <span className="text-slate-500">•</span>
-              <span>Community Digital Identity</span>
+              <span>Profiles & People</span>
             </div>
           </AnimatedReveal>
 
@@ -62,10 +66,10 @@ export default async function HomePage() {
             <div className="space-y-4">
               <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white font-[var(--font-display)] leading-[1.08]">
                 Your Community. <br />
-                <span className="text-[#5865f2]">Your Digital Identity.</span>
+                <span className="text-[#5865f2]">Your Place After Class.</span>
               </h1>
               <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
-                ASC automatically bridges your community presence into a permanent, expressive public profile. No manual sign-up forms. Verified Discord roles, custom themes, links, and tenure.
+                Every member already has a place here. Claim yours, make it unmistakably you, and meet the people who keep ASC alive beyond the chat.
               </p>
             </div>
           </AnimatedReveal>
@@ -76,12 +80,12 @@ export default async function HomePage() {
               <Link href="/members">
                 <Button variant="primary" size="lg" className="gap-2.5 shadow-lg shadow-[#5865f2]/25 font-bold">
                   <Users className="w-5 h-5" />
-                  Explore Directory
+                  Meet the Community
                 </Button>
               </Link>
               <Link href="/dashboard">
                 <Button variant="outline" size="lg" className="gap-2 bg-[#141843] border-white/10 hover:border-white/20 font-bold text-white">
-                  Customize Profile
+                  Make It Yours
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
@@ -131,10 +135,10 @@ export default async function HomePage() {
               <span>Interactive Member Preview</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight font-[var(--font-display)]">
-              Expressive Profiles, Zero Slop
+              Profiles With a Pulse
             </h2>
             <p className="text-sm sm:text-base text-slate-300">
-              Click through authentic community member profiles to see verified roles, custom accents, tags, and vanity links in action.
+              Meet a few clubmates and see how verified identity, interests, and personal style come together.
             </p>
           </div>
         </AnimatedReveal>
@@ -180,15 +184,15 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* 5. Core Architectural Pillars */}
+      {/* 5. Community-first product pillars */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         <AnimatedReveal direction="up">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight font-[var(--font-display)]">
-              Engineered For Trust & Speed
+              Made for the People Already Here
             </h2>
             <p className="text-sm sm:text-base text-slate-300">
-              Built on Next.js 15, Turso / libSQL, Discord Gateway synchronization, and Clerk authentication.
+              ASC keeps identity trustworthy while giving every member room to show up as themselves.
             </p>
           </div>
         </AnimatedReveal>
@@ -200,10 +204,10 @@ export default async function HomePage() {
               <ShieldCheck className="w-6 h-6" />
             </div>
             <h3 className="text-xl font-bold text-white font-[var(--font-display)]">
-              Authoritative Sync
+              Verified by the Community
             </h3>
             <p className="text-sm text-slate-300 leading-relaxed">
-              Your avatar, username, roles, and supporter tier are authoritatively synchronized in real-time. Zero fake credentials or unverifiable claims.
+              Your avatar, roles, and membership stay connected to the community, so the profile always feels recognizably yours.
             </p>
           </div>
 
@@ -213,10 +217,10 @@ export default async function HomePage() {
               <Palette className="w-6 h-6" />
             </div>
             <h3 className="text-xl font-bold text-white font-[var(--font-display)]">
-              Curated Expression
+              Make It Feel Like You
             </h3>
             <p className="text-sm text-slate-300 leading-relaxed">
-              Claim your profile via OAuth to customize your biography, community tags, portfolio links, custom title, and accent color.
+              Add your bio, favorite interests, links, title, and color without losing the visual language that makes ASC feel shared.
             </p>
           </div>
 
@@ -226,10 +230,10 @@ export default async function HomePage() {
               <Globe className="w-6 h-6" />
             </div>
             <h3 className="text-xl font-bold text-white font-[var(--font-display)]">
-              Vanity Slugs & 308 Redirects
+              Find Your People
             </h3>
             <p className="text-sm text-slate-300 leading-relaxed">
-              Permanent personal URL at asc.necookie.dev/username with automatic 308 alias redirects when handles are updated.
+              Browse the club by people and interests, then share a profile that stays easy to find even when a username changes.
             </p>
           </div>
         </AnimatedStagger>
@@ -244,16 +248,16 @@ export default async function HomePage() {
             </div>
             <div className="space-y-2 max-w-xl mx-auto">
               <h3 className="text-2xl sm:text-3xl font-black text-white font-[var(--font-display)]">
-                Community Boosters & Supporters
+                Give the Club a Little Extra
               </h3>
               <p className="text-sm text-slate-300 leading-relaxed">
-                Supporters unlock custom profile titles, custom background artwork, expanded tags, and verified badge recognition across the entire directory.
+                Supporters unlock richer profile expression, including custom titles and background artwork, with recognition across the community.
               </p>
             </div>
             <div className="pt-2">
               <Link href="/dashboard">
                 <Button variant="green" size="lg" className="shadow-lg font-bold">
-                  Claim & Customize Profile
+                  Open My Profile
                 </Button>
               </Link>
             </div>

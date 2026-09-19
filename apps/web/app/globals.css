@@ -39,6 +39,12 @@
 :root {
   --background: #0a0d3a;
   --foreground: #ffffff;
+  --motion-fast: 150ms;
+  --motion-standard: 220ms;
+  --motion-expressive: 520ms;
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 body {
@@ -58,6 +64,44 @@ body {
     radial-gradient(ellipse 80% 50% at 50% -10%, rgba(88, 101, 242, 0.18) 0%, transparent 60%),
     radial-gradient(ellipse 60% 40% at 80% 100%, rgba(236, 72, 189, 0.08) 0%, transparent 50%);
   background-attachment: fixed;
+}
+
+/* Ambient shapes are isolated to expressive surfaces and only animate transforms. */
+.hero-ambient-orb {
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+  filter: blur(1px);
+  opacity: 0.6;
+  will-change: transform;
+}
+
+.hero-ambient-orb--violet {
+  width: 28rem;
+  height: 28rem;
+  top: -11rem;
+  left: -9rem;
+  background: radial-gradient(circle, rgba(88, 101, 242, 0.3), rgba(88, 101, 242, 0));
+  animation: ambientDriftA 14s var(--ease-out-quint) infinite alternate;
+}
+
+.hero-ambient-orb--magenta {
+  width: 24rem;
+  height: 24rem;
+  top: 7rem;
+  right: -9rem;
+  background: radial-gradient(circle, rgba(236, 72, 189, 0.2), rgba(236, 72, 189, 0));
+  animation: ambientDriftB 17s var(--ease-out-quint) infinite alternate;
+}
+
+@keyframes ambientDriftA {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(3rem, 2rem, 0) scale(1.08); }
+}
+
+@keyframes ambientDriftB {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(-2.5rem, 2rem, 0) scale(1.06); }
 }
 
 /* Subtle dot grid pattern for technical, premium feel */
@@ -146,6 +190,102 @@ body {
   animation: floatSubtle 4s ease-in-out infinite;
 }
 
+/* Edge-clinging community mascot. The full-screen layer never blocks page input. */
+.community-mascot-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  pointer-events: none;
+}
+
+.community-mascot {
+  position: absolute;
+  top: min(58vh, 38rem);
+  width: 112px;
+  margin-top: -96px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: manipulation;
+  transform-origin: center center;
+}
+
+.community-mascot--left {
+  left: -23px;
+}
+
+.community-mascot--right {
+  right: -23px;
+}
+
+.community-mascot__hint {
+  position: absolute;
+  top: 24px;
+  width: max-content;
+  max-width: 148px;
+  padding: 8px 11px;
+  border: 1px solid rgba(88, 101, 242, 0.28);
+  border-radius: 12px;
+  background: #f4f1ff;
+  box-shadow: 0 12px 34px rgba(5, 7, 30, 0.24);
+  color: #14142f;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  pointer-events: none;
+}
+
+.community-mascot__hint--left {
+  left: calc(100% - 18px);
+}
+
+.community-mascot__hint--right {
+  right: calc(100% - 18px);
+}
+
+.community-mascot:focus-visible {
+  outline-color: #f4f1ff;
+  outline-offset: 4px;
+  border-radius: 32px;
+}
+
+@media (max-width: 640px) {
+  .hero-ambient-orb--violet {
+    width: 19rem;
+    height: 19rem;
+  }
+
+  .hero-ambient-orb--magenta {
+    width: 17rem;
+    height: 17rem;
+  }
+
+  .community-mascot {
+    top: auto;
+    bottom: 66px;
+    width: 82px;
+    margin-top: 0;
+  }
+
+  .community-mascot--left {
+    left: -38px;
+  }
+
+  .community-mascot--right {
+    right: -38px;
+  }
+
+  .community-mascot__hint {
+    top: -8px;
+    max-width: 126px;
+    font-size: 10px;
+  }
+}
+
 /* Touch targets & Focus Visible */
 button, a, input, select, textarea {
   touch-action: manipulation;
@@ -163,5 +303,9 @@ button, a, input, select, textarea {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .hero-ambient-orb {
+    will-change: auto;
   }
 }

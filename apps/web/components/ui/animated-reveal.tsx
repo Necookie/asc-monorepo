@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { m, useReducedMotion, type Variants } from 'motion/react';
 
 export interface AnimatedRevealProps {
   children: React.ReactNode;
@@ -12,9 +13,19 @@ export interface AnimatedRevealProps {
   triggerOnce?: boolean;
 }
 
+const EASE_OUT_EXPO = [0.16, 1, 0.3, 1] as const;
+
+const offsets = {
+  up: { x: 0, y: 20 },
+  down: { x: 0, y: -20 },
+  left: { x: 20, y: 0 },
+  right: { x: -20, y: 0 },
+  none: { x: 0, y: 0 },
+} as const;
+
 /**
- * AnimatedReveal - High-performance entrance animation for React components.
- * Uses IntersectionObserver for 60fps hardware-accelerated transitions.
+ * A single, shared reveal language for expressive ASC surfaces.
+ * Motion remains interruptible and uses transforms plus opacity only.
  */
 export function AnimatedReveal({
   children,
@@ -24,77 +35,28 @@ export function AnimatedReveal({
   className = '',
   triggerOnce = true,
 }: AnimatedRevealProps) {
-  const [isVisible, setIsVisible] = React.useState(false);
-  const ref = React.useRef<HTMLDivElement>(null);
-
-  React.useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-
-    // Support reduced-motion
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setIsVisible(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          if (triggerOnce) {
-            observer.unobserve(node);
-          }
-        } else if (!triggerOnce) {
-          setIsVisible(false);
-        }
-      },
-      {
-        threshold: 0.1,
-        rootMargin: '20px',
-      }
-    );
-
-    observer.observe(node);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [triggerOnce]);
-
-  const getTransform = () => {
-    if (isVisible) return 'none';
-    switch (direction) {
-      case 'up':
-        return 'translate3d(0, 20px, 0)';
-      case 'down':
-        return 'translate3d(0, -20px, 0)';
-      case 'left':
-        return 'translate3d(20px, 0, 0)';
-      case 'right':
-        return 'translate3d(-20px, 0, 0)';
-      default:
-        return 'none';
-    }
-  };
+  const reduceMotion = useReducedMotion();
+  const offset = offsets[direction];
 
   return (
-    <div
-      ref={ref}
+    <m.div
       className={className}
-      style={{
-        opacity: isVisible ? 1 : 0,
-        transform: getTransform(),
-        transition: `opacity ${durationMs}ms cubic-bezier(0.16, 1, 0.3, 1) ${delayMs}ms, transform ${durationMs}ms cubic-bezier(0.16, 1, 0.3, 1) ${delayMs}ms`,
-        willChange: 'opacity, transform',
+      initial={reduceMotion ? false : { opacity: 0, x: offset.x, y: offset.y }}
+      whileInView={{ opacity: 1, x: 0, y: 0 }}
+      viewport={{ once: triggerOnce, amount: 0.14, margin: '0px 0px -32px' }}
+      transition={{
+        duration: reduceMotion ? 0.01 : durationMs / 1000,
+        delay: reduceMotion ? 0 : delayMs / 1000,
+        ease: EASE_OUT_EXPO,
       }}
     >
       {children}
-    </div>
+    </m.div>
   );
 }
 
 /**
- * AnimatedStagger - Staggers children animations sequentially
+ * Reveals related items as a group so their sequence feels intentional.
  */
 export function AnimatedStagger({
   children,
@@ -105,15 +67,44 @@ export function AnimatedStagger({
   staggerMs?: number;
   className?: string;
 }) {
+  const reduceMotion = useReducedMotion();
   const items = React.Children.toArray(children);
 
+  const container: Variants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: reduceMotion ? 0 : staggerMs / 1000,
+        delayChildren: reduceMotion ? 0 : 0.04,
+      },
+    },
+  };
+
+  const item: Variants = {
+    hidden: reduceMotion ? { opacity: 1 } : { opacity: 0, y: 18 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: reduceMotion ? 0.01 : 0.42,
+        ease: EASE_OUT_EXPO,
+      },
+    },
+  };
+
   return (
-    <div className={className}>
-      {items.map((child, idx) => (
-        <AnimatedReveal key={idx} delayMs={idx * staggerMs}>
+    <m.div
+      className={className}
+      variants={container}
+      initial={reduceMotion ? false : 'hidden'}
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.08, margin: '0px 0px -32px' }}
+    >
+      {items.map((child, index) => (
+        <m.div key={index} variants={item}>
           {child}
-        </AnimatedReveal>
+        </m.div>
       ))}
-    </div>
+    </m.div>
   );
 }

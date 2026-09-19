@@ -4,6 +4,9 @@ import * as React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ShieldCheck, Heart, Sparkles, ExternalLink, Hash, CheckCircle2, ChevronRight } from 'lucide-react';
+import { AnimatePresence, m, useReducedMotion } from 'motion/react';
+
+const EASE_OUT_EXPO = [0.16, 1, 0.3, 1] as const;
 
 export interface SampleMember {
   id: string;
@@ -106,6 +109,7 @@ const SAMPLE_MEMBERS: SampleMember[] = [
 
 export function InteractiveCommunityShowcase() {
   const [selectedSlug, setSelectedSlug] = React.useState('necookie');
+  const reduceMotion = useReducedMotion();
   const activeMember = SAMPLE_MEMBERS.find((m) => m.slug === selectedSlug) || SAMPLE_MEMBERS[0];
 
   return (
@@ -118,15 +122,27 @@ export function InteractiveCommunityShowcase() {
         {SAMPLE_MEMBERS.map((member) => {
           const isActive = member.slug === activeMember.slug;
           return (
-            <button
+            <m.button
               key={member.id}
+              type="button"
               onClick={() => setSelectedSlug(member.slug)}
-              className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer ${
+              aria-pressed={isActive}
+              className={`relative isolate inline-flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold cursor-pointer overflow-hidden ${
                 isActive
-                  ? 'bg-[#5865f2] text-white shadow-md shadow-[#5865f2]/20 scale-105'
+                  ? 'text-white'
                   : 'bg-[#141843]/80 text-[#c7c9e5] hover:text-white hover:bg-[#1a2055] border border-white/5'
               }`}
+              whileHover={reduceMotion ? undefined : { y: -2 }}
+              whileTap={reduceMotion ? undefined : { scale: 0.96 }}
+              transition={{ duration: 0.18, ease: EASE_OUT_EXPO }}
             >
+              {isActive && (
+                <m.span
+                  layoutId="active-profile-selector"
+                  className="absolute inset-0 -z-10 rounded-full bg-[#5865f2] shadow-md shadow-[#5865f2]/25"
+                  transition={{ duration: reduceMotion ? 0.01 : 0.28, ease: EASE_OUT_EXPO }}
+                />
+              )}
               <div className="w-4 h-4 rounded-full overflow-hidden relative shrink-0">
                 <Image
                   src={member.avatar}
@@ -140,14 +156,22 @@ export function InteractiveCommunityShowcase() {
               {member.isSupporter && (
                 <Heart className="w-3 h-3 text-[#ec48bd] fill-[#ec48bd]" />
               )}
-            </button>
+            </m.button>
           );
         })}
       </div>
 
       {/* Profile Card Container with Smooth Transition */}
       <div className="max-w-3xl mx-auto">
-        <div className="rounded-2xl bg-[#141843] border border-white/10 p-6 sm:p-8 shadow-2xl transition-all duration-300 relative overflow-hidden">
+        <AnimatePresence mode="wait" initial={false}>
+          <m.div
+            key={activeMember.id}
+            className="rounded-2xl bg-[#141843] border border-white/10 p-6 sm:p-8 shadow-2xl relative overflow-hidden"
+            initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: 18, scale: 0.985 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, x: -12, scale: 0.99 }}
+            transition={{ duration: reduceMotion ? 0.12 : 0.32, ease: EASE_OUT_EXPO }}
+          >
           {/* Subtle Top Ambient Bar */}
           <div
             className="absolute top-0 left-0 right-0 h-1.5 transition-colors duration-300"
@@ -279,7 +303,8 @@ export function InteractiveCommunityShowcase() {
               </div>
             </div>
           </div>
-        </div>
+          </m.div>
+        </AnimatePresence>
       </div>
     </div>
   );
