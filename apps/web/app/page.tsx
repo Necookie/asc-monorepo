@@ -7,6 +7,9 @@ import { AscMark } from '@/components/ui/asc-logo';
 import { AnimatedReveal, AnimatedStagger } from '@/components/ui/animated-reveal';
 import { AnimatedCounter } from '@/components/ui/animated-counter';
 import { InteractiveCommunityShowcase } from '@/components/identity/interactive-showcase';
+import { DotGrid } from '@/components/react-bits/dot-grid';
+import { Magnetic } from '@/components/react-bits/magnetic';
+import { SpotlightCard } from '@/components/react-bits/spotlight-card';
 import {
   Users,
   ShieldCheck,
@@ -29,12 +32,20 @@ export default async function HomePage() {
 
   return (
     <div className="relative overflow-hidden space-y-24 sm:space-y-32 pb-24">
-      <div className="hero-ambient-orb hero-ambient-orb--violet" aria-hidden="true" />
-      <div className="hero-ambient-orb hero-ambient-orb--magenta" aria-hidden="true" />
 
       {/* 1. Official Hero Section */}
-      <section className="relative pt-12 sm:pt-20 pb-12 px-4 sm:px-6 lg:px-8 text-center z-10 isolate">
-        <div className="absolute inset-x-[12%] top-4 h-[80%] asc-grid-pattern opacity-25 [mask-image:radial-gradient(ellipse_at_center,black,transparent_72%)] -z-10" aria-hidden="true" />
+      <section className="hero-club-grid relative pt-12 sm:pt-20 pb-12 px-4 sm:px-6 lg:px-8 text-center z-10 isolate">
+        <DotGrid
+          className="absolute inset-0 -z-10 [mask-image:linear-gradient(to_bottom,black_8%,black_76%,transparent)]"
+          dotSize={3}
+          gap={25}
+          baseColor="#343b7a"
+          activeColor="#aeb4ff"
+          proximity={140}
+          shockRadius={220}
+          shockStrength={0.16}
+          returnDuration={0.72}
+        />
         <div className="max-w-4xl mx-auto space-y-8">
           {/* Pill Badge with Official Mark */}
           <AnimatedReveal direction="down" durationMs={400}>
@@ -77,12 +88,14 @@ export default async function HomePage() {
           {/* Action CTAs */}
           <AnimatedReveal direction="up" delayMs={300} durationMs={450}>
             <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-              <Link href="/members">
-                <Button variant="primary" size="lg" className="gap-2.5 shadow-lg shadow-[#5865f2]/25 font-bold">
-                  <Users className="w-5 h-5" />
-                  Meet the Community
-                </Button>
-              </Link>
+              <Magnetic>
+                <Link href="/members" className="block">
+                  <Button variant="primary" size="lg" className="gap-2.5 shadow-lg shadow-[#5865f2]/25 font-bold">
+                    <Users className="w-5 h-5" />
+                    Meet the Community
+                  </Button>
+                </Link>
+              </Magnetic>
               <Link href="/dashboard">
                 <Button variant="outline" size="lg" className="gap-2 bg-[#141843] border-white/10 hover:border-white/20 font-bold text-white">
                   Make It Yours
@@ -199,7 +212,7 @@ export default async function HomePage() {
 
         <AnimatedStagger staggerMs={100} className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Feature 1 */}
-          <div className="p-8 rounded-2xl bg-[#141843] border border-white/10 space-y-4 hover:border-[#5865f2]/40 transition-colors shadow-lg">
+          <SpotlightCard className="p-8 rounded-2xl bg-[#141843] border border-white/10 space-y-4 hover:border-[#5865f2]/40 transition-colors shadow-lg" spotlightColor="rgba(88, 101, 242, 0.2)">
             <div className="w-12 h-12 rounded-xl bg-[#5865f2]/15 flex items-center justify-center text-[#5865f2]">
               <ShieldCheck className="w-6 h-6" />
             </div>
@@ -209,10 +222,10 @@ export default async function HomePage() {
             <p className="text-sm text-slate-300 leading-relaxed">
               Your avatar, roles, and membership stay connected to the community, so the profile always feels recognizably yours.
             </p>
-          </div>
+          </SpotlightCard>
 
           {/* Feature 2 */}
-          <div className="p-8 rounded-2xl bg-[#141843] border border-white/10 space-y-4 hover:border-[#ec48bd]/40 transition-colors shadow-lg">
+          <SpotlightCard className="p-8 rounded-2xl bg-[#141843] border border-white/10 space-y-4 hover:border-[#ec48bd]/40 transition-colors shadow-lg" spotlightColor="rgba(236, 72, 189, 0.18)">
             <div className="w-12 h-12 rounded-xl bg-[#ec48bd]/15 flex items-center justify-center text-[#ec48bd]">
               <Palette className="w-6 h-6" />
             </div>
@@ -222,10 +235,10 @@ export default async function HomePage() {
             <p className="text-sm text-slate-300 leading-relaxed">
               Add your bio, favorite interests, links, title, and color without losing the visual language that makes ASC feel shared.
             </p>
-          </div>
+          </SpotlightCard>
 
           {/* Feature 3 */}
-          <div className="p-8 rounded-2xl bg-[#141843] border border-white/10 space-y-4 hover:border-[#35ed7e]/40 transition-colors shadow-lg">
+          <SpotlightCard className="p-8 rounded-2xl bg-[#141843] border border-white/10 space-y-4 hover:border-[#35ed7e]/40 transition-colors shadow-lg" spotlightColor="rgba(53, 237, 126, 0.14)">
             <div className="w-12 h-12 rounded-xl bg-[#35ed7e]/15 flex items-center justify-center text-[#35ed7e]">
               <Globe className="w-6 h-6" />
             </div>
@@ -235,7 +248,7 @@ export default async function HomePage() {
             <p className="text-sm text-slate-300 leading-relaxed">
               Browse the club by people and interests, then share a profile that stays easy to find even when a username changes.
             </p>
-          </div>
+          </SpotlightCard>
         </AnimatedStagger>
       </section>
 

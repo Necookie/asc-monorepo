@@ -81,6 +81,9 @@ importers:
       drizzle-orm:
         specifier: ^0.39.0
         version: 0.39.3(@libsql/client@0.14.0)
+      gsap:
+        specifier: ^3.15.0
+        version: 3.15.0
       lucide-react:
         specifier: ^0.475.0
         version: 0.475.0(react@19.3.0)
@@ -1570,6 +1573,9 @@ packages:
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
+  gsap@3.15.0:
+    resolution: {integrity: sha512-dMW4CWBTUK1AEEDeZc1g4xpPGIrSf9fJF960qbTZmN/QwZIWY5wgliS6JWl9/25fpTGJrMRtSjGtOmPnfjZB+A==}
+
   isexe@3.1.5:
     resolution: {integrity: sha512-6B3tLtFqtQS4ekarvLVMZ+X+VlvQekbe4taUkf/rhVO3d/h0M2rfARm/pXLcPEsjjMsFgrFgSrhQIxcSVrBz8w==}
     engines: {node: '>=18'}
@@ -3019,6 +3025,8 @@ snapshots:
   glob-to-regexp@0.4.1: {}
 
   graceful-fs@4.2.11: {}
+
+  gsap@3.15.0: {}
 
   isexe@3.1.5: {}
 
