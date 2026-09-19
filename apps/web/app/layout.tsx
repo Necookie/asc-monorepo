@@ -4,6 +4,8 @@ import { ClerkProvider } from '@clerk/nextjs';
 import './globals.css';
 import { NavBar } from '@/components/layout/nav-bar';
 import { Footer } from '@/components/layout/footer';
+import { AscMotionProvider } from '@/components/motion/motion-provider';
+import { CommunityMascot } from '@/components/motion/community-mascot';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -66,9 +68,12 @@ export default function RootLayout({
     >
       <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} dark`}>
         <body className="asc-mesh-bg text-white min-h-screen flex flex-col antialiased selection:bg-[#5865f2] selection:text-white">
-          <NavBar />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          <AscMotionProvider>
+            <NavBar />
+            <main className="flex-1">{children}</main>
+            <Footer />
+            <CommunityMascot />
+          </AscMotionProvider>
         </body>
       </html>
     </ClerkProvider>
