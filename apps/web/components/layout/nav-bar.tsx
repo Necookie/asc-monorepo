@@ -45,7 +45,7 @@ export function NavBar({ user }: NavBarProps) {
   }, []);
 
   const isActive = (href: string) =>
-    href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
+    href === '/' ? pathname === '/' : pathname === href || Boolean(pathname?.startsWith(`${href}/`));
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[rgba(88,101,242,0.15)] bg-[#0a0d3a]/88 backdrop-blur-xl transition-colors">

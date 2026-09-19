@@ -154,11 +154,12 @@ export function CommunityMascot() {
   const [side, setSide] = React.useState<Side>('left');
   const [showHint, setShowHint] = React.useState(false);
 
-  const hiddenRoute =
-    pathname.startsWith('/dashboard') ||
-    pathname.startsWith('/admin') ||
-    pathname.startsWith('/login') ||
-    pathname.startsWith('/not-a-member');
+  const hiddenRoute = Boolean(
+    pathname?.startsWith('/dashboard') ||
+    pathname?.startsWith('/admin') ||
+    pathname?.startsWith('/login') ||
+    pathname?.startsWith('/not-a-member')
+  );
 
   React.useEffect(() => {
     try {

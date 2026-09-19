@@ -43,7 +43,7 @@ export function AnimatedReveal({
       className={className}
       initial={reduceMotion ? false : { opacity: 0, x: offset.x, y: offset.y }}
       whileInView={{ opacity: 1, x: 0, y: 0 }}
-      viewport={{ once: triggerOnce, amount: 0.14, margin: '0px 0px -32px' }}
+      viewport={{ once: triggerOnce, amount: 'some', margin: '0px 0px 80px 0px' }}
       transition={{
         duration: reduceMotion ? 0.01 : durationMs / 1000,
         delay: reduceMotion ? 0 : delayMs / 1000,
@@ -98,7 +98,7 @@ export function AnimatedStagger({
       variants={container}
       initial={reduceMotion ? false : 'hidden'}
       whileInView="visible"
-      viewport={{ once: true, amount: 0.08, margin: '0px 0px -32px' }}
+      viewport={{ once: true, amount: 'some', margin: '0px 0px 80px 0px' }}
     >
       {items.map((child, index) => (
         <m.div key={index} variants={item}>
