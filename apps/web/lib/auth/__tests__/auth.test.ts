@@ -12,22 +12,17 @@ import type { AuthenticatedMember } from '@asc/types';
 
 describe('ASC Authentication, Identity Linkage & Zero-Trust Ownership', () => {
   let testDb: ASCDatabase & { $client: any };
-  const testDbFile = path.resolve(__dirname, 'auth-test.db');
 
   beforeEach(async () => {
-    if (fs.existsSync(testDbFile)) {
-      fs.unlinkSync(testDbFile);
-    }
-    testDb = createDb(`file:${testDbFile}`);
+    testDb = createDb(':memory:');
     const migrationsFolder = path.resolve(__dirname, '../../../../../packages/db/drizzle');
     await migrate(testDb, { migrationsFolder });
   });
 
   afterEach(() => {
-    testDb.$client.close();
-    if (fs.existsSync(testDbFile)) {
-      fs.unlinkSync(testDbFile);
-    }
+    try {
+      testDb.$client.close();
+    } catch {}
   });
 
   describe('1. Discord OAuth Claims Extraction', () => {

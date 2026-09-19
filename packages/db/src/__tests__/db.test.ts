@@ -15,22 +15,17 @@ import fs from 'fs';
 
 describe('Database Schema & Invariants', () => {
   let testDb: ASCDatabase & { $client: any };
-  const testDbFile = path.resolve(__dirname, 'test.db');
 
   beforeEach(async () => {
-    if (fs.existsSync(testDbFile)) {
-      fs.unlinkSync(testDbFile);
-    }
-    testDb = createDb(`file:${testDbFile}`);
+    testDb = createDb(':memory:');
     const migrationsFolder = path.resolve(__dirname, '../../drizzle');
     await migrate(testDb, { migrationsFolder });
   });
 
   afterEach(() => {
-    testDb.$client.close();
-    if (fs.existsSync(testDbFile)) {
-      fs.unlinkSync(testDbFile);
-    }
+    try {
+      testDb.$client.close();
+    } catch {}
   });
 
   it('enforces unique constraint on users.external_user_id', async () => {

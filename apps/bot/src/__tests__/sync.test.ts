@@ -22,16 +22,12 @@ import { generateSlug, RESERVED_SLUGS } from '../lib/slug';
 
 describe('ASC Member Synchronization Subsystem', () => {
   let testDb: ASCDatabase & { $client: any };
-  const testDbFile = path.resolve(__dirname, 'sync-test.db');
   let roleSyncService: RoleSyncService;
   let memberSyncService: MemberSyncService;
   let reconciliationService: ReconciliationService;
 
   beforeEach(async () => {
-    if (fs.existsSync(testDbFile)) {
-      fs.unlinkSync(testDbFile);
-    }
-    testDb = createDb(`file:${testDbFile}`);
+    testDb = createDb(':memory:');
     const migrationsFolder = path.resolve(__dirname, '../../../../packages/db/drizzle');
     await migrate(testDb, { migrationsFolder });
 
@@ -45,10 +41,9 @@ describe('ASC Member Synchronization Subsystem', () => {
   });
 
   afterEach(() => {
-    testDb.$client.close();
-    if (fs.existsSync(testDbFile)) {
-      fs.unlinkSync(testDbFile);
-    }
+    try {
+      testDb.$client.close();
+    } catch {}
   });
 
   describe('1. Slug Generation & Reserved Slugs', () => {
