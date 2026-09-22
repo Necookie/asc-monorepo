@@ -4,20 +4,20 @@ import { AscLogo } from '@/components/ui/asc-logo';
 
 export function Footer() {
   return (
-    <footer className="w-full border-t border-white/10 bg-[#070928] pt-16 pb-12 text-slate-300">
+    <footer className="w-full border-t border-white/[0.08] bg-surface-black pt-16 pb-12 text-ink-secondary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-white/10">
           {/* Brand */}
           <div className="space-y-4 md:col-span-1">
             <AscLogo size="md" href="/" />
-            <p className="text-sm text-slate-400 leading-relaxed">
+            <p className="text-sm text-muted leading-relaxed">
               Community-first digital identity, member discovery, and expressive profile customization.
             </p>
           </div>
 
           {/* Column: Community */}
           <div className="space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white font-[var(--font-display)]">
+            <h4 className="text-sm font-semibold text-ink">
               Community
             </h4>
             <ul className="space-y-2 text-sm">
@@ -36,7 +36,7 @@ export function Footer() {
 
           {/* Column: Account */}
           <div className="space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white font-[var(--font-display)]">
+            <h4 className="text-sm font-semibold text-ink">
               Account
             </h4>
             <ul className="space-y-2 text-sm">
@@ -60,7 +60,7 @@ export function Footer() {
 
           {/* Column: Information */}
           <div className="space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white font-[var(--font-display)]">
+            <h4 className="text-sm font-semibold text-ink">
               Information
             </h4>
             <ul className="space-y-2 text-sm">
@@ -79,9 +79,9 @@ export function Footer() {
         </div>
 
         {/* Bottom copyright & decorative watermark */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-[#9498bd] gap-4">
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-sm text-muted gap-4">
           <p>© {new Date().getFullYear()} ASC. All rights reserved.</p>
-          <div className="font-extrabold tracking-widest text-[#1e2353] text-xl font-[var(--font-display)] select-none">
+          <div className="font-semibold tracking-widest text-muted/40 text-xl font-[var(--font-display)] select-none">
             ASC
           </div>
         </div>

@@ -14,11 +14,8 @@ export const metadata: Metadata = {
 
 export default function NotAMemberPage() {
   return (
-    <div className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center py-16 px-4 sm:px-6 lg:px-8">
-      {/* Radial atmosphere */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#f59e0b]/10 rounded-full blur-[130px] pointer-events-none" />
-
-      <Card className="relative max-w-lg w-full bg-[#0e1245]/90 border-[rgba(245,158,11,0.3)] shadow-2xl p-8 text-center">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-16 px-4 sm:px-6 lg:px-8">
+      <Card className="max-w-lg w-full bg-surface-indigo border-[rgba(245,158,11,0.3)] p-8 text-center">
         <CardContent className="p-0 space-y-6">
           <div className="w-16 h-16 rounded-2xl bg-[#f59e0b]/15 border border-[#f59e0b]/30 flex items-center justify-center mx-auto text-[#f59e0b]">
             <ShieldAlert className="w-8 h-8" />

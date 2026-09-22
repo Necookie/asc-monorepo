@@ -267,7 +267,7 @@ export function TagManager({ initialTags }: TagManagerProps) {
                         <button
                           type="button"
                           onClick={() => handleStartEdit(tag)}
-                          className="inline-flex items-center gap-1 text-xs text-[#5865f2] hover:text-[#7983f5] font-semibold"
+                          className="inline-flex items-center gap-1 text-xs text-primary-soft hover:text-ink font-semibold"
                         >
                           <Edit2 className="w-3.5 h-3.5" />
                           Edit

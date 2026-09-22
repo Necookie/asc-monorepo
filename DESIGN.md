@@ -6,7 +6,7 @@ ASC is a community-first digital identity platform built around expressive membe
 
 The visual system should feel energetic, social, playful, and unmistakably ASC.
 
-Pages live on a deep-indigo canvas (`{colors.canvas}` — `#0a0d3a`) that should rarely feel completely static or flat. Large public-facing surfaces may be washed with violet, indigo, and vibrant magenta gradient meshes, atmospheric glows, oversized rounded shapes, profile artwork, avatars, and layered community elements.
+Pages live on a deep-indigo canvas (`{colors.canvas}` — `#0a0d3a`). The canvas is intentionally calm so member avatars, names, roles, and profile expression remain the visual focus. Public-facing surfaces may introduce one authored atmospheric device at a time, such as a restrained pattern, a profile artwork treatment, or a single color field.
 
 The overall experience should feel like a digital home for a community rather than a corporate SaaS dashboard.
 
@@ -15,13 +15,13 @@ ASC combines two visual modes:
 1. **Expressive Community Mode** — used for the homepage, public member profiles, community discovery, achievements, special events, and promotional surfaces.
 2. **Functional Application Mode** — used for profile editing, settings, administration, moderation, forms, tables, and other information-dense interfaces.
 
-The expressive layer may be loud and playful.
+The expressive layer may be playful, but it must still feel authored and people-first.
 
 The application layer must remain clear and usable while still visibly belonging to ASC.
 
 ### Core Characteristics
 
-* Deep-indigo canvas (`{colors.canvas}`) illuminated by violet-to-magenta atmospheric gradients.
+* Deep-indigo canvas (`{colors.canvas}`) with solid, legible surfaces.
 * ASC Violet (`{colors.primary}`) acts as the main brand and interaction color.
 * Electric green (`{colors.green}`) is reserved for exceptional high-intent or positive actions.
 * Vibrant magenta (`{colors.magenta}`) provides the playful counterweight to violet.
@@ -31,11 +31,25 @@ The application layer must remain clear and usable while still visibly belonging
 * 24–40px+ rounding for cards, media, and expressive sections.
 * Pill shapes for roles, tags, status indicators, and badges.
 * Profile imagery and member identity should be visually dominant.
-* Depth should primarily come from color, gradient, transparency, scale, and overlap rather than heavy shadows.
+* Depth should primarily come from surface contrast, spacing, scale, and deliberate overlap.
 * Public profiles should feel personal and expressive.
 * Dashboard surfaces should feel calmer and more structured.
 * Mobile behavior is a first-class requirement.
 * Accessibility and readability take priority over decorative effects.
+
+### Visual Restraint Rules
+
+ASC avoids the visual patterns that make community products feel generic or machine-generated.
+
+* Member identity is the primary imagery. Use real, consented community avatars and profiles whenever possible.
+* Do not place a photographic or illustrated background behind the entire application shell.
+* Standard cards, forms, dashboard panels, and admin panels use opaque surfaces. They do not use backdrop blur.
+* A page or section may use one decorative device: artwork, pattern, gradient, or glow. Never stack all four.
+* Gradients are reserved for the ASC mark and rare campaign artwork. Do not use gradient text, gradient badges, or gradient card fills.
+* Shadows communicate actual elevation. Static content and standard cards remain flat.
+* Avoid repeated equal-sized feature-card grids. Prefer narrative layouts, member walls, timelines, or grouped content.
+* Public pages may use expressive composition, but application pages must remain quiet and task-focused.
+* Decorative motion never competes with reading and never moves persistently across the viewport.
 
 ---
 
@@ -195,7 +209,7 @@ Used for active or selected interactive surfaces.
 
 ### Primary Ink
 
-`{colors.ink}` — `#ffffff`
+`{colors.ink}` — `#f7f7ff`
 
 Primary text on dark surfaces.
 
@@ -203,7 +217,7 @@ Primary text on dark surfaces.
 
 ### Dark Ink
 
-`{colors.ink-dark}` — `#000000`
+`{colors.ink-dark}` — `#111329`
 
 Text used on:
 
@@ -265,20 +279,18 @@ Semantic colors should communicate state first and decoration second.
 
 # Brand Gradient
 
-ASC's primary atmospheric gradient moves between:
+ASC's legacy atmospheric gradient moves between:
 
 `{colors.primary}` → deep violet → `{colors.magenta}` → `{colors.canvas}`
 
-The gradient should appear organic rather than like a simple linear rainbow.
+The gradient is not a default page treatment. It is reserved for the ASC mark, special event artwork, and rare campaign imagery. Standard UI surfaces remain solid.
 
-Recommended techniques:
+When a gradient is specifically warranted:
 
 * Radial gradients
-* Layered blurred gradients
-* Mesh gradients
-* Large blurred color blobs
-* Slow background movement
-* Subtle animated position changes
+* Use one gradient layer only.
+* Keep it away from body copy and form controls.
+* Do not combine it with glass cards, mesh patterns, or atmospheric glows.
 
 Example conceptual implementation:
 
@@ -547,13 +559,10 @@ Never require desktop width for core functionality.
 ASC relies primarily on:
 
 * Surface color
-* Transparency
-* Gradient
 * Border contrast
 * Scale
 * Overlapping elements
-* Background blur
-* Atmospheric glow
+* Whitespace
 
 rather than aggressive shadows.
 
@@ -610,7 +619,7 @@ Decorative only:
 box-shadow: 0 3px 68px rgba(88,101,242,.14);
 ```
 
-Use sparingly.
+Use only for temporary or promotional artwork. Never apply it to ordinary cards, buttons, profile rows, dashboard panels, or admin UI.
 
 ---
 

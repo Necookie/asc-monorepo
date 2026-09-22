@@ -191,7 +191,7 @@ export default async function AdminOverviewPage() {
                     Target: <span className="font-mono text-[#8b92d6]">{log.targetType}:{log.targetId.slice(0, 8)}...</span>
                   </span>
                 </div>
-                <div className="text-[11px] text-[#525996]">
+                <div className="text-xs text-muted">
                   {new Date(log.createdAt).toLocaleString()}
                 </div>
               </div>

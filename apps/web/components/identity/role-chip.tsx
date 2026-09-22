@@ -13,7 +13,7 @@ export function RoleChip({ name, color, isAdmin, className, ...props }: RoleChip
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-full bg-[#23272a] text-[#ffffff] border border-[rgba(255,255,255,0.08)] shadow-sm select-none',
+        'inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-full bg-surface-onyx text-ink-secondary border border-white/[0.1] select-none',
         isAdmin && 'border-[rgba(236,72,189,0.4)]',
         className
       )}

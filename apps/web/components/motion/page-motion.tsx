@@ -13,10 +13,10 @@ export function PageMotion({ children }: { children: React.ReactNode }) {
 
   return (
     <m.div
-      initial={reduceMotion ? false : { opacity: 0, y: isApplication ? 0 : 10 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={reduceMotion || isApplication ? false : { opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{
-        duration: isApplication ? 0.18 : 0.38,
+        duration: isApplication ? 0.01 : 0.2,
         ease: EASE_OUT_EXPO,
       }}
       className="min-h-full"

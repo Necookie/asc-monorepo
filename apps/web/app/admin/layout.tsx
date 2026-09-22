@@ -24,16 +24,16 @@ export default async function AdminLayout({
   const admin = await requireAdminMember();
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-[#070926] text-white">
+    <div className="min-h-[calc(100vh-4rem)] bg-surface-black text-ink">
       {/* Top Admin Header Bar */}
-      <div className="border-b border-[rgba(236,72,189,0.2)] bg-[#0b0e36]/90 backdrop-blur-md sticky top-16 z-40">
+      <div className="border-b border-white/[0.08] bg-surface-onyx sticky top-16 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-center justify-between gap-2 py-2.5 md:h-14 md:py-0">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <span className="p-1 rounded-lg bg-[#ec48bd]/15 text-[#ec48bd] border border-[#ec48bd]/30">
                 <ShieldAlert className="w-4 h-4" />
               </span>
-              <span className="font-extrabold text-sm tracking-wider uppercase text-white font-[var(--font-display)]">
+              <span className="font-semibold text-sm text-ink">
                 ASC Administration
               </span>
             </div>

@@ -64,7 +64,7 @@ export default async function AdminAuditPage() {
                     {log.metadata ? (
                       <span className="font-mono text-[#8b92d6]">{log.metadata}</span>
                     ) : (
-                      <span className="text-[#525996] italic">None</span>
+                      <span className="text-muted italic">None</span>
                     )}
                   </td>
                 </tr>

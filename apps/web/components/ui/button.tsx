@@ -10,16 +10,16 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', ...props }, ref) => {
     const baseStyles =
-      'inline-flex items-center justify-center font-medium transition-[transform,background-color,border-color,color,box-shadow,opacity] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5865f2] disabled:opacity-50 disabled:pointer-events-none motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-0 motion-safe:active:scale-[0.97] select-none';
+      'inline-flex items-center justify-center font-medium transition-[transform,background-color,border-color,color,opacity] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5865f2] disabled:opacity-50 disabled:pointer-events-none motion-safe:active:scale-[0.98] select-none';
 
     const variants = {
-      primary: 'bg-[#5865f2] text-white hover:bg-[#4752c4] shadow-sm',
-      green: 'bg-[#35ed7e] text-black font-semibold hover:bg-[#2ecc71] shadow-sm',
-      white: 'bg-white text-black font-semibold hover:bg-[#e0e1e5] shadow-sm',
-      ghost: 'bg-[#1e2353] text-[#ffffff] hover:bg-[#292f68] hover:text-white',
-      danger: 'bg-[#ed4245] text-white hover:bg-[#c03537] shadow-sm',
+      primary: 'bg-[#5865f2] text-[#f7f7ff] hover:bg-[#6874f4]',
+      green: 'bg-[#35ed7e] text-[#111329] font-semibold hover:bg-[#55f195]',
+      white: 'bg-[#f7f7ff] text-[#111329] font-semibold hover:bg-[#e7e8f4]',
+      ghost: 'bg-surface-indigo text-ink hover:bg-surface-hover',
+      danger: 'bg-[#ed4245] text-[#f7f7ff] hover:bg-[#f05d60]',
       outline:
-        'border border-[rgba(88,101,242,0.4)] text-[#c7c9e5] hover:bg-[rgba(88,101,242,0.15)] hover:text-white hover:border-[#5865f2]',
+        'border border-white/[0.14] text-ink-secondary hover:bg-surface-indigo hover:text-ink hover:border-white/[0.24]',
     };
 
     const sizes = {

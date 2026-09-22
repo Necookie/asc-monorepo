@@ -180,7 +180,7 @@ export function ProfileModerationPanel({ members }: ProfileModerationPanelProps)
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
                   placeholder="e.g. Violation of community guidelines: offensive bio text"
-                  className="w-full px-3.5 py-2 rounded-xl bg-[#141943] border border-[rgba(88,101,242,0.25)] text-xs text-white placeholder:text-[#525996] focus:outline-none focus:ring-2 focus:ring-[#ec48bd]"
+                  className="w-full px-3.5 py-2 rounded-xl bg-[#141943] border border-[rgba(88,101,242,0.25)] text-sm text-white placeholder:text-[#a3a6c2] focus:outline-none focus:ring-2 focus:ring-[#ec48bd]"
                 />
               </div>
 

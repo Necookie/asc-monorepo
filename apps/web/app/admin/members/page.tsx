@@ -45,7 +45,7 @@ export default async function AdminMembersPage({
             name="q"
             defaultValue={q || ''}
             placeholder="Search by name, handle, or snowflake..."
-            className="w-full pl-10 pr-4 py-2 rounded-xl bg-[#0e1245] border border-[rgba(88,101,242,0.25)] text-xs text-white placeholder:text-[#525996] focus:outline-none focus:ring-2 focus:ring-[#5865f2]"
+            className="w-full pl-10 pr-4 py-2 rounded-xl bg-[#0e1245] border border-[rgba(88,101,242,0.25)] text-sm text-white placeholder:text-[#a3a6c2] focus:outline-none focus:ring-2 focus:ring-[#5865f2]"
           />
         </form>
       </div>
@@ -112,7 +112,7 @@ export default async function AdminMembersPage({
                         />
                       ))}
                       {member.roles.length === 0 && (
-                        <span className="text-[#525996] italic">No roles</span>
+                        <span className="text-muted italic">No roles</span>
                       )}
                     </div>
                   </td>
@@ -125,7 +125,7 @@ export default async function AdminMembersPage({
                     <Link
                       href={`/${member.primarySlug}`}
                       target="_blank"
-                      className="inline-flex items-center gap-1 text-xs text-[#5865f2] hover:text-[#7983f5] font-semibold"
+                      className="inline-flex items-center gap-1 text-xs text-primary-soft hover:text-ink font-semibold"
                     >
                       View
                       <ExternalLink className="w-3 h-3" />

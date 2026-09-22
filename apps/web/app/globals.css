@@ -1,22 +1,23 @@
 @import "tailwindcss";
 
 @theme {
-  --color-canvas: #0a0d3a;
+  --color-canvas: oklch(0.17 0.035 278);
   --color-primary: #5865f2;
+  --color-primary-soft: #aeb4ff;
   --color-green: #35ed7e;
   --color-magenta: #ec48bd;
   --color-link: #00b0f4;
-  --color-surface-indigo: #141843;
-  --color-surface-elevated: #1a2055;
-  --color-surface-onyx: #121530;
-  --color-surface-black: #05071e;
-  --color-surface-hover: #1f2766;
-  --color-surface-active: #293282;
+  --color-surface-indigo: oklch(0.225 0.045 278);
+  --color-surface-elevated: oklch(0.255 0.05 278);
+  --color-surface-onyx: oklch(0.195 0.03 278);
+  --color-surface-black: oklch(0.13 0.025 278);
+  --color-surface-hover: oklch(0.29 0.055 278);
+  --color-surface-active: oklch(0.34 0.07 278);
 
-  --color-ink: #ffffff;
-  --color-ink-dark: #000000;
-  --color-ink-secondary: #c7c9e5;
-  --color-muted: #8c90be;
+  --color-ink: #f7f7ff;
+  --color-ink-dark: #111329;
+  --color-ink-secondary: #c9cbe3;
+  --color-muted: #a3a6c2;
 
   --color-success: #35ed7e;
   --color-warning: #f0b232;
@@ -32,13 +33,13 @@
   --radius-pill: 50px;
   --radius-jumbo: 120px;
 
-  --font-display: "Space Grotesk", system-ui, -apple-system, sans-serif;
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-bricolage), system-ui, sans-serif;
+  --font-sans: var(--font-atkinson), system-ui, sans-serif;
 }
 
 :root {
   --background: #0a0d3a;
-  --foreground: #ffffff;
+  --foreground: #f7f7ff;
   --motion-fast: 150ms;
   --motion-standard: 220ms;
   --motion-expressive: 520ms;
@@ -57,11 +58,9 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Deep-indigo foundation. Expressive pages provide their own authored layers. */
+/* Calm deep-indigo foundation. Expression comes from member identity, not wallpaper. */
 .asc-mesh-bg {
-  background-color: #0a0d3a;
-  background-image: linear-gradient(rgba(88, 101, 242, 0.035) 1px, transparent 1px);
-  background-size: 100% 8px;
+  background-color: var(--color-canvas);
 }
 
 /* React Bits DotGrid, tuned into ASC's crisp club-notebook visual language. */
@@ -89,24 +88,15 @@ body {
   pointer-events: none;
 }
 
-/* React Bits SpotlightCard, kept inside each surface instead of adding global glow. */
+/* SpotlightCard remains a semantic wrapper, without decorative pointer glows. */
 .spotlight-card {
-  --spotlight-x: 50%;
-  --spotlight-y: 50%;
   position: relative;
   isolation: isolate;
   overflow: hidden;
 }
 
 .spotlight-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background: radial-gradient(280px circle at var(--spotlight-x) var(--spotlight-y), var(--spotlight-color), transparent 72%);
-  opacity: 0;
-  transition: opacity var(--motion-standard) var(--ease-out-quart);
-  pointer-events: none;
+  display: none;
 }
 
 .spotlight-card > * {
@@ -114,24 +104,17 @@ body {
   z-index: 1;
 }
 
-.spotlight-card:hover::before,
-.spotlight-card:focus-within::before {
-  opacity: 1;
-}
-
-/* Crisp, high-contrast card styling */
+/* Crisp, opaque card styling */
 .asc-card {
-  background-color: rgba(20, 24, 67, 0.85);
+  background-color: var(--color-surface-indigo);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
   transition: border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+              background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .asc-card:hover {
-  border-color: rgba(88, 101, 242, 0.35);
-  box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.5), 0 0 20px -5px rgba(88, 101, 242, 0.2);
+  border-color: rgba(174, 180, 255, 0.28);
+  background-color: var(--color-surface-elevated);
 }
 
 /* Subtle badge & pill styles */

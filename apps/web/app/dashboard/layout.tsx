@@ -27,9 +27,9 @@ export default async function DashboardLayout({
   const member = await requireAuthenticatedMember();
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex flex-col lg:flex-row bg-[#0a0d3a]">
+    <div className="min-h-[calc(100vh-4rem)] flex flex-col lg:flex-row bg-canvas">
       {/* Desktop Sidebar (lg+) */}
-      <aside className="hidden lg:flex flex-col w-72 border-r border-[rgba(88,101,242,0.15)] bg-[#0e1245]/80 backdrop-blur-md p-6 justify-between shrink-0">
+      <aside className="hidden lg:flex flex-col w-72 border-r border-white/[0.08] bg-surface-onyx p-6 justify-between shrink-0">
         <div className="space-y-6">
           {/* Member Card in Sidebar */}
           <div className="p-4 rounded-2xl bg-[#141943] border border-[rgba(88,101,242,0.2)] space-y-3">
@@ -139,7 +139,7 @@ export default async function DashboardLayout({
       </aside>
 
       {/* Mobile Sub-Header & Navigation Tabs (lg:hidden) */}
-      <div className="lg:hidden border-b border-[rgba(88,101,242,0.15)] bg-[#0e1245]/90 backdrop-blur-md sticky top-16 z-30 px-4 py-2.5">
+      <div className="lg:hidden border-b border-white/[0.08] bg-surface-onyx sticky top-16 z-30 px-4 py-2.5">
         <div className="flex items-center justify-between gap-2 mb-2">
           <div className="flex items-center gap-2 truncate">
             <Avatar
