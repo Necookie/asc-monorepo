@@ -48,7 +48,7 @@ export function NavBar({ user }: NavBarProps) {
     href === '/' ? pathname === '/' : pathname === href || Boolean(pathname?.startsWith(`${href}/`));
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-[rgba(88,101,242,0.15)] bg-[#0a0d3a]/88 backdrop-blur-xl transition-colors">
+    <header className="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-canvas">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div className="flex items-center gap-8">
           <AscLogo size="md" href="/" />
@@ -62,17 +62,17 @@ export function NavBar({ user }: NavBarProps) {
                   href={href}
                   aria-current={active ? 'page' : undefined}
                   className={`relative isolate inline-flex items-center gap-2 px-3.5 py-2 rounded-xl transition-colors ${
-                    active ? 'text-white' : 'text-[#c7c9e5] hover:text-white hover:bg-[#1e2353]/60'
+                    active ? 'text-ink' : 'text-ink-secondary hover:text-ink hover:bg-surface-indigo'
                   }`}
                 >
                   {active && (
                     <m.span
                       layoutId="primary-navigation-active"
-                      className="absolute inset-0 -z-10 rounded-xl bg-[#1e2353] ring-1 ring-inset ring-[#5865f2]/25"
+                      className="absolute inset-0 -z-10 rounded-xl bg-surface-indigo ring-1 ring-inset ring-white/[0.08]"
                       transition={{ duration: reduceMotion ? 0.01 : 0.28, ease: EASE_OUT_EXPO }}
                     />
                   )}
-                  <Icon className={`w-4 h-4 ${active ? 'text-[#5865f2]' : ''}`} />
+                  <Icon className={`w-4 h-4 ${active ? 'text-primary-soft' : ''}`} />
                   {label}
                 </Link>
               );
@@ -84,7 +84,7 @@ export function NavBar({ user }: NavBarProps) {
           <button
             type="button"
             onClick={() => setMobileOpen((open) => !open)}
-            className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#141843] text-[#c7c9e5] border border-white/10 hover:text-white hover:border-[#5865f2]/40 transition-colors"
+            className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-xl bg-surface-indigo text-ink-secondary border border-white/[0.1] hover:text-ink hover:border-white/[0.18] transition-colors"
             aria-label={mobileOpen ? 'Close navigation' : 'Open navigation'}
             aria-expanded={mobileOpen}
             aria-controls="mobile-primary-navigation"
@@ -148,7 +148,7 @@ export function NavBar({ user }: NavBarProps) {
           <m.nav
             id="mobile-primary-navigation"
             aria-label="Mobile navigation"
-            className="absolute inset-x-0 top-full md:hidden border-b border-[#5865f2]/20 bg-[#0a0d3a]/96 px-4 py-3 shadow-[0_18px_50px_rgba(5,7,30,0.38)] backdrop-blur-xl"
+            className="absolute inset-x-0 top-full md:hidden border-b border-white/[0.08] bg-canvas px-4 py-3 shadow-[0_18px_40px_rgba(6,8,28,0.32)]"
             initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -7 }}
@@ -165,7 +165,7 @@ export function NavBar({ user }: NavBarProps) {
                     className={`flex min-h-12 flex-col items-center justify-center gap-1 rounded-xl px-3 py-2 text-xs font-bold transition-colors ${
                       active
                         ? 'bg-[#5865f2] text-white'
-                        : 'bg-[#141843] text-[#c7c9e5] hover:bg-[#1e2353] hover:text-white'
+                        : 'bg-surface-indigo text-ink-secondary hover:bg-surface-elevated hover:text-ink'
                     }`}
                   >
                     <Icon className="w-4 h-4" />

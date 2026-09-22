@@ -30,12 +30,12 @@ export function MemberCard({
   return (
     <Link
       href={`/${slug}`}
-      className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5865f2] rounded-2xl"
+      className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xl"
     >
       <div
         className={cn(
-          'relative flex flex-col items-center text-center p-6 rounded-2xl bg-[#141843] border border-white/10 transition-all duration-300',
-          'motion-safe:group-hover:-translate-y-0.5 motion-safe:group-hover:scale-[1.01] group-hover:bg-[#1a2055] group-hover:border-[#5865f2]/50 group-hover:shadow-[0_12px_30px_-5px_rgba(0,0,0,0.5),0_0_20px_-5px_rgba(88,101,242,0.3)]',
+          'relative flex h-full flex-col items-center rounded-xl border border-white/[0.08] bg-surface-indigo p-6 text-center transition-colors duration-200',
+          'group-hover:bg-surface-elevated group-hover:border-white/[0.16]',
           className
         )}
         {...props}
@@ -48,21 +48,21 @@ export function MemberCard({
         )}
 
         {/* Avatar */}
-        <div className="mb-4 transition-transform duration-300 group-hover:scale-105">
+        <div className="mb-4">
           <Avatar
             src={avatar}
             alt={displayName}
             size={64}
-            className="border-2 border-[rgba(88,101,242,0.4)] shadow-md"
+            className="border-2 border-white/[0.14]"
           />
         </div>
 
         {/* Names */}
         <div className="space-y-0.5 w-full">
-          <h3 className="font-bold text-lg text-white truncate px-2 font-[var(--font-display)]">
+          <h3 className="font-semibold text-lg text-ink truncate px-2 font-[var(--font-display)]">
             {displayName}
           </h3>
-          <p className="text-xs font-semibold text-[#5865f2] truncate px-2">
+          <p className="text-sm font-medium text-primary-soft truncate px-2">
             @{username}
           </p>
         </div>

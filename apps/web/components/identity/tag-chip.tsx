@@ -9,7 +9,7 @@ export function TagChip({ name, className, ...props }: TagChipProps) {
   return (
     <span
       className={cn(
-        'inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-[rgba(88,101,242,0.18)] text-white border border-[rgba(88,101,242,0.35)] shadow-xs select-none transition-colors hover:bg-[rgba(88,101,242,0.28)]',
+        'inline-flex items-center px-3 py-1 text-xs font-medium rounded-full bg-surface-onyx text-ink-secondary border border-white/[0.1] select-none transition-colors hover:border-white/[0.18] hover:text-ink',
         className
       )}
       {...props}

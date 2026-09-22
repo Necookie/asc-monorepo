@@ -61,7 +61,7 @@ export default async function ExplorePage() {
           </div>
           <Link
             href="/members"
-            className="text-xs font-semibold text-[#5865f2] hover:text-[#c7c9e5] transition-colors"
+            className="text-sm font-semibold text-primary-soft hover:text-ink transition-colors"
           >
             View All →
           </Link>

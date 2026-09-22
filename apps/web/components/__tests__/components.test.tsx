@@ -33,7 +33,7 @@ describe('ASC Design System UI Components', () => {
         <CardContent>Content details</CardContent>
       </Card>
     );
-    expect(html).toContain('bg-[#1e2353]/90');
+    expect(html).toContain('bg-surface-indigo');
     expect(html).toContain('Member Profile');
     expect(html).toContain('Content details');
   });
@@ -56,11 +56,11 @@ describe('ASC Design System UI Components', () => {
     expect(html).toContain('rounded-full');
   });
 
-  it('renders SupporterBadge with premium violet-magenta gradient', () => {
+  it('renders SupporterBadge with a restrained supporter treatment', () => {
     const html = renderToString(<SupporterBadge />);
     expect(html).toContain('Supporter');
-    expect(html).toContain('from-[#5865f2]');
-    expect(html).toContain('to-[#ec48bd]');
+    expect(html).toContain('bg-[#ec48bd]/12');
+    expect(html).toContain('text-[#ff9bda]');
   });
 
   it('renders IdentityCard with authoritative synchronized badge and fields', () => {

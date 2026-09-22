@@ -379,7 +379,7 @@ export function ProfileCustomizer({
                         ? 'e.g. Lead Core Contributor'
                         : 'Unlock custom titles with community supporter status'
                     }
-                    className="w-full px-4 py-2.5 rounded-xl bg-[#0e1245] border border-[rgba(88,101,242,0.25)] text-white placeholder:text-[#525996] focus:outline-none focus:ring-2 focus:ring-[#5865f2] disabled:opacity-50 text-sm"
+                    className="w-full px-4 py-2.5 rounded-xl bg-[#0e1245] border border-[rgba(88,101,242,0.25)] text-white placeholder:text-[#a3a6c2] focus:outline-none focus:ring-2 focus:ring-[#5865f2] disabled:opacity-50 text-sm"
                   />
                 </div>
 
@@ -394,7 +394,7 @@ export function ProfileCustomizer({
                     onChange={(e) => setBio(e.target.value.slice(0, 500))}
                     rows={5}
                     placeholder="Tell the community about yourself, your projects, or your interests..."
-                    className="w-full px-4 py-3 rounded-xl bg-[#0e1245] border border-[rgba(88,101,242,0.25)] text-white placeholder:text-[#525996] focus:outline-none focus:ring-2 focus:ring-[#5865f2] text-sm resize-none"
+                    className="w-full px-4 py-3 rounded-xl bg-[#0e1245] border border-[rgba(88,101,242,0.25)] text-white placeholder:text-[#a3a6c2] focus:outline-none focus:ring-2 focus:ring-[#5865f2] text-sm resize-none"
                   />
                   <p className="text-[11px] text-[#8b92d6]">
                     Plain text only. Max 500 characters. Live preview updates on the right.
@@ -504,7 +504,7 @@ export function ProfileCustomizer({
                         ? 'https://example.com/banner.png'
                         : 'Unlock custom profile backgrounds with ASC supporter status'
                     }
-                    className="w-full px-4 py-2.5 rounded-xl bg-[#0e1245] border border-[rgba(88,101,242,0.25)] text-white placeholder:text-[#525996] focus:outline-none focus:ring-2 focus:ring-[#5865f2] disabled:opacity-50 text-sm font-mono"
+                    className="w-full px-4 py-2.5 rounded-xl bg-[#0e1245] border border-[rgba(88,101,242,0.25)] text-white placeholder:text-[#a3a6c2] focus:outline-none focus:ring-2 focus:ring-[#5865f2] disabled:opacity-50 text-sm font-mono"
                   />
                   <p className="text-[11px] text-[#8b92d6]">
                     External HTTPS URL only. Never proxies or stores binary data. Gracefully falls back if image fails.
@@ -615,14 +615,14 @@ export function ProfileCustomizer({
                         value={newLinkLabel}
                         onChange={(e) => setNewLinkLabel(e.target.value.slice(0, 32))}
                         placeholder="Label (e.g. GitHub)"
-                        className="sm:col-span-4 px-3 py-2 rounded-xl bg-[#0e1245] border border-[rgba(88,101,242,0.25)] text-xs text-white placeholder:text-[#525996] focus:outline-none focus:ring-1 focus:ring-[#5865f2]"
+                        className="sm:col-span-4 px-3 py-2 rounded-xl bg-[#0e1245] border border-[rgba(88,101,242,0.25)] text-sm text-white placeholder:text-[#a3a6c2] focus:outline-none focus:ring-1 focus:ring-[#5865f2]"
                       />
                       <input
                         type="url"
                         value={newLinkUrl}
                         onChange={(e) => setNewLinkUrl(e.target.value)}
                         placeholder="https://..."
-                        className="sm:col-span-6 px-3 py-2 rounded-xl bg-[#0e1245] border border-[rgba(88,101,242,0.25)] text-xs text-white placeholder:text-[#525996] focus:outline-none focus:ring-1 focus:ring-[#5865f2] font-mono"
+                        className="sm:col-span-6 px-3 py-2 rounded-xl bg-[#0e1245] border border-[rgba(88,101,242,0.25)] text-sm text-white placeholder:text-[#a3a6c2] focus:outline-none focus:ring-1 focus:ring-[#5865f2] font-mono"
                       />
                       <Button
                         variant="primary"
@@ -721,7 +721,7 @@ export function ProfileCustomizer({
               <Eye className="w-3.5 h-3.5 text-[#5865f2]" />
               Live Interactive Preview
             </div>
-            <span className="text-[10px] text-[#525996] font-mono">Updates in real-time</span>
+            <span className="text-xs text-muted">Updates in real time</span>
           </div>
 
           {/* Simulated Public Profile View */}
@@ -790,7 +790,7 @@ export function ProfileCustomizer({
                   {bio}
                 </div>
               ) : (
-                <div className="text-xs text-[#525996] italic bg-[#141943]/30 p-3 rounded-xl">
+                <div className="text-sm text-muted italic bg-[#141943] p-3 rounded-xl">
                   No biography provided yet.
                 </div>
               )}

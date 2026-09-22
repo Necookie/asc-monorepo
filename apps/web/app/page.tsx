@@ -1,187 +1,143 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { getCommunityOverview } from '@/lib/queries/community';
 import { Button } from '@/components/ui/button';
+import { Avatar } from '@/components/ui/avatar';
 import { MemberCard } from '@/components/identity/member-card';
-import { AscMark } from '@/components/ui/asc-logo';
-import { AnimatedReveal, AnimatedStagger } from '@/components/ui/animated-reveal';
-import { AnimatedCounter } from '@/components/ui/animated-counter';
-import { InteractiveCommunityShowcase } from '@/components/identity/interactive-showcase';
-import { DotGrid } from '@/components/react-bits/dot-grid';
-import { Magnetic } from '@/components/react-bits/magnetic';
-import { SpotlightCard } from '@/components/react-bits/spotlight-card';
-import {
-  Users,
-  ShieldCheck,
-  Palette,
-  ArrowRight,
-  Heart,
-  Globe,
-  Sparkles,
-  Zap,
-} from 'lucide-react';
+import { SupporterBadge } from '@/components/identity/supporter-badge';
+import { ArrowRight, CheckCircle2, Search, ShieldCheck, UserRound } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
+const STEPS = [
+  {
+    number: '01',
+    title: 'You join the community',
+    body: 'ASC creates a profile from your verified Discord identity. There is no separate registration form.',
+  },
+  {
+    number: '02',
+    title: 'You claim what is already yours',
+    body: 'Sign in with Discord to connect your session to the matching member record, roles, and tenure.',
+  },
+  {
+    number: '03',
+    title: 'You make it personal',
+    body: 'Add a bio, interests, links, and profile styling without losing the identity the community recognizes.',
+  },
+] as const;
+
 export default async function HomePage() {
   const overview = await getCommunityOverview();
-
-  // Baseline display stats (using live database counts, or active community baseline if fresh local DB)
-  const displayTotalMembers = Math.max(overview.totalMembers, 128);
-  const displayTotalSupporters = Math.max(overview.totalSupporters, 24);
+  const featuredMembers = overview.recentMembers.slice(0, 4);
 
   return (
-    <div className="relative overflow-hidden space-y-24 sm:space-y-32 pb-24">
-
-      {/* 1. Official Hero Section */}
-      <section className="hero-club-grid relative pt-12 sm:pt-20 pb-12 px-4 sm:px-6 lg:px-8 text-center z-10 isolate">
-        <DotGrid
-          className="absolute inset-0 -z-10 [mask-image:linear-gradient(to_bottom,black_8%,black_76%,transparent)]"
-          dotSize={3}
-          gap={25}
-          baseColor="#343b7a"
-          activeColor="#aeb4ff"
-          proximity={140}
-          shockRadius={220}
-          shockStrength={0.16}
-          returnDuration={0.72}
-        />
-        <div className="max-w-4xl mx-auto space-y-8">
-          {/* Pill Badge with Official Mark */}
-          <AnimatedReveal direction="down" durationMs={400}>
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#141843] border border-white/10 text-slate-200 text-xs font-semibold shadow-md">
-              <AscMark size={18} />
-              <span className="text-white font-bold">AFTERSCHOOL CLUB</span>
-              <span className="text-slate-500">•</span>
-              <span>Profiles & People</span>
+    <div className="pb-24 sm:pb-32">
+      <section className="border-b border-white/[0.08]">
+        <div className="mx-auto grid max-w-7xl gap-14 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-12 lg:items-center lg:gap-16 lg:px-8 lg:py-28">
+          <div className="lg:col-span-6">
+            <div className="mb-6 flex items-center gap-3 text-sm font-semibold text-primary-soft">
+              <span className="h-px w-8 bg-primary-soft/60" aria-hidden="true" />
+              Profiles for the people already here
             </div>
-          </AnimatedReveal>
 
-          {/* Hero Banner Image */}
-          <AnimatedReveal direction="up" delayMs={100} durationMs={500}>
-            <div className="relative max-w-xl mx-auto rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-[#0a0d3a] my-4 group">
-              <Image
-                src="/asc-banner.png"
-                alt="ASC - Community Identity"
-                width={1200}
-                height={630}
-                priority
-                className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-              />
-              <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl pointer-events-none" />
-            </div>
-          </AnimatedReveal>
+            <h1 className="max-w-3xl font-[var(--font-display)] text-5xl font-semibold leading-[0.98] tracking-[-0.04em] text-ink sm:text-6xl lg:text-7xl">
+              Meet the people who make ASC feel like home.
+            </h1>
 
-          {/* Hero Heading (Crisp & High-Contrast - No Gradient Slop) */}
-          <AnimatedReveal direction="up" delayMs={200} durationMs={500}>
-            <div className="space-y-4">
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white font-[var(--font-display)] leading-[1.08]">
-                Your Community. <br />
-                <span className="text-[#5865f2]">Your Place After Class.</span>
-              </h1>
-              <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
-                Every member already has a place here. Claim yours, make it unmistakably you, and meet the people who keep ASC alive beyond the chat.
-              </p>
-            </div>
-          </AnimatedReveal>
+            <p className="mt-7 max-w-2xl text-lg leading-8 text-ink-secondary sm:text-xl">
+              Every member already has a public profile. Claim yours, share what you care about, and find familiar faces beyond the chat.
+            </p>
 
-          {/* Action CTAs */}
-          <AnimatedReveal direction="up" delayMs={300} durationMs={450}>
-            <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-              <Magnetic>
-                <Link href="/members" className="block">
-                  <Button variant="primary" size="lg" className="gap-2.5 shadow-lg shadow-[#5865f2]/25 font-bold">
-                    <Users className="w-5 h-5" />
-                    Meet the Community
-                  </Button>
-                </Link>
-              </Magnetic>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <Link href="/members">
+                <Button variant="primary" size="lg" className="w-full gap-2 sm:w-auto">
+                  Browse members
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
               <Link href="/dashboard">
-                <Button variant="outline" size="lg" className="gap-2 bg-[#141843] border-white/10 hover:border-white/20 font-bold text-white">
-                  Make It Yours
-                  <ArrowRight className="w-4 h-4" />
+                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                  Claim my profile
                 </Button>
               </Link>
             </div>
-          </AnimatedReveal>
+
+            <div className="mt-8 flex max-w-xl items-start gap-3 border-t border-white/[0.08] pt-6 text-sm leading-6 text-muted">
+              <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-primary-soft" />
+              <p>Discord identity, community roles, and membership history stay verified and read-only.</p>
+            </div>
+          </div>
+
+          <div className="lg:col-span-6 lg:pl-6">
+            <div className="border-y border-white/[0.1]">
+              <div className="flex items-center justify-between gap-4 py-4">
+                <div>
+                  <p className="font-[var(--font-display)] text-lg font-semibold text-ink">Recently active</p>
+                  <p className="mt-0.5 text-sm text-muted">Real profiles from the ASC community</p>
+                </div>
+                <Link href="/members" className="text-sm font-semibold text-primary-soft hover:text-ink">
+                  View all
+                </Link>
+              </div>
+
+              {featuredMembers.length > 0 ? (
+                <div className="divide-y divide-white/[0.08] border-t border-white/[0.08]">
+                  {featuredMembers.map((member) => (
+                    <Link
+                      key={member.id}
+                      href={`/${member.slug}`}
+                      className="group flex min-h-20 items-center gap-4 py-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                    >
+                      <Avatar src={member.avatar} alt={member.displayName} size={48} className="border-white/[0.14]" />
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="truncate font-semibold text-ink group-hover:text-primary-soft">
+                            {member.displayName}
+                          </span>
+                          {member.isSupporter && <SupporterBadge size="sm" />}
+                        </div>
+                        <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted">
+                          <span>@{member.username}</span>
+                          {member.primaryRole && <span>{member.primaryRole.name}</span>}
+                        </div>
+                      </div>
+                      <ArrowRight className="h-4 w-4 shrink-0 text-muted transition-transform group-hover:translate-x-1 group-hover:text-primary-soft" />
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <div className="border-t border-white/[0.08] py-10 text-sm text-muted">
+                  Member profiles will appear here as the community syncs.
+                </div>
+              )}
+            </div>
+
+            <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted">
+              <span><strong className="font-semibold text-ink">{overview.totalMembers}</strong> members</span>
+              <span><strong className="font-semibold text-ink">{overview.totalSupporters}</strong> supporters</span>
+              <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="h-4 w-4 text-green" /> Synced from Discord</span>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* 2. Live Community Statistics (Animated Counters) */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AnimatedReveal direction="up" durationMs={500}>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 p-8 rounded-2xl bg-[#141843] border border-white/10 text-center shadow-xl">
-            <div className="space-y-1">
-              <div className="text-4xl sm:text-5xl font-black text-white font-[var(--font-display)]">
-                <AnimatedCounter value={displayTotalMembers} />
-              </div>
-              <div className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-slate-400">
-                Community Members
-              </div>
-            </div>
-            <div className="space-y-1 border-y sm:border-y-0 sm:border-x border-white/10 py-4 sm:py-0">
-              <div className="text-4xl sm:text-5xl font-black text-[#ec48bd] font-[var(--font-display)]">
-                <AnimatedCounter value={displayTotalSupporters} />
-              </div>
-              <div className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-slate-400">
-                Supporters & Boosters
-              </div>
-            </div>
-            <div className="space-y-1">
-              <div className="text-4xl sm:text-5xl font-black text-[#35ed7e] font-[var(--font-display)]">
-                100%
-              </div>
-              <div className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-slate-400">
-                Synchronized Identity
-              </div>
-            </div>
-          </div>
-        </AnimatedReveal>
-      </section>
-
-      {/* 3. Interactive Profile Showcase & Realistic Placeholders */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        <AnimatedReveal direction="up">
-          <div className="text-center max-w-2xl mx-auto space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-slate-300">
-              <Sparkles className="w-3.5 h-3.5 text-[#5865f2]" />
-              <span>Interactive Member Preview</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight font-[var(--font-display)]">
-              Profiles With a Pulse
-            </h2>
-            <p className="text-sm sm:text-base text-slate-300">
-              Meet a few clubmates and see how verified identity, interests, and personal style come together.
-            </p>
-          </div>
-        </AnimatedReveal>
-
-        <AnimatedReveal direction="up" delayMs={150}>
-          <InteractiveCommunityShowcase />
-        </AnimatedReveal>
-      </section>
-
-      {/* 4. Live Community Members (if populated in DB) */}
       {overview.recentMembers.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-white/10 pb-6">
+        <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
+          <div className="mb-10 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight font-[var(--font-display)]">
-                Recent Community Members
+              <p className="mb-3 text-sm font-semibold text-primary-soft">The member wall</p>
+              <h2 className="font-[var(--font-display)] text-3xl font-semibold tracking-[-0.025em] text-ink sm:text-4xl">
+                Start with a familiar face.
               </h2>
-              <p className="text-sm text-slate-400 mt-1">
-                Real-time synchronized profiles from the Discord community.
-              </p>
             </div>
-            <Link href="/members">
-              <Button variant="ghost" size="sm" className="gap-2 text-slate-300 hover:text-white">
-                View All {overview.totalMembers} Members →
-              </Button>
+            <Link href="/members" className="inline-flex items-center gap-2 text-sm font-semibold text-ink-secondary hover:text-ink">
+              Search the directory
+              <Search className="h-4 w-4" />
             </Link>
           </div>
 
-          <AnimatedStagger staggerMs={60} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {overview.recentMembers.map((member) => (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {overview.recentMembers.slice(0, 8).map((member) => (
               <MemberCard
                 key={member.id}
                 slug={member.slug}
@@ -193,89 +149,53 @@ export default async function HomePage() {
                 tags={member.tags}
               />
             ))}
-          </AnimatedStagger>
+          </div>
         </section>
       )}
 
-      {/* 5. Community-first product pillars */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        <AnimatedReveal direction="up">
-          <div className="text-center max-w-2xl mx-auto space-y-3">
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight font-[var(--font-display)]">
-              Made for the People Already Here
+      <section className="border-y border-white/[0.08] bg-surface-onyx">
+        <div className="mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 sm:py-24 lg:grid-cols-12 lg:gap-16 lg:px-8">
+          <div className="lg:col-span-5">
+            <UserRound className="mb-6 h-8 w-8 text-primary-soft" />
+            <h2 className="font-[var(--font-display)] text-3xl font-semibold tracking-[-0.025em] text-ink sm:text-4xl">
+              Your profile begins with membership, not a form.
             </h2>
-            <p className="text-sm sm:text-base text-slate-300">
-              ASC keeps identity trustworthy while giving every member room to show up as themselves.
+            <p className="mt-5 max-w-xl text-base leading-7 text-ink-secondary">
+              ASC keeps community identity trustworthy while leaving room for the details only you can add.
             </p>
           </div>
-        </AnimatedReveal>
 
-        <AnimatedStagger staggerMs={100} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Feature 1 */}
-          <SpotlightCard className="p-8 rounded-2xl bg-[#141843] border border-white/10 space-y-4 hover:border-[#5865f2]/40 transition-colors shadow-lg" spotlightColor="rgba(88, 101, 242, 0.2)">
-            <div className="w-12 h-12 rounded-xl bg-[#5865f2]/15 flex items-center justify-center text-[#5865f2]">
-              <ShieldCheck className="w-6 h-6" />
-            </div>
-            <h3 className="text-xl font-bold text-white font-[var(--font-display)]">
-              Verified by the Community
-            </h3>
-            <p className="text-sm text-slate-300 leading-relaxed">
-              Your avatar, roles, and membership stay connected to the community, so the profile always feels recognizably yours.
-            </p>
-          </SpotlightCard>
-
-          {/* Feature 2 */}
-          <SpotlightCard className="p-8 rounded-2xl bg-[#141843] border border-white/10 space-y-4 hover:border-[#ec48bd]/40 transition-colors shadow-lg" spotlightColor="rgba(236, 72, 189, 0.18)">
-            <div className="w-12 h-12 rounded-xl bg-[#ec48bd]/15 flex items-center justify-center text-[#ec48bd]">
-              <Palette className="w-6 h-6" />
-            </div>
-            <h3 className="text-xl font-bold text-white font-[var(--font-display)]">
-              Make It Feel Like You
-            </h3>
-            <p className="text-sm text-slate-300 leading-relaxed">
-              Add your bio, favorite interests, links, title, and color without losing the visual language that makes ASC feel shared.
-            </p>
-          </SpotlightCard>
-
-          {/* Feature 3 */}
-          <SpotlightCard className="p-8 rounded-2xl bg-[#141843] border border-white/10 space-y-4 hover:border-[#35ed7e]/40 transition-colors shadow-lg" spotlightColor="rgba(53, 237, 126, 0.14)">
-            <div className="w-12 h-12 rounded-xl bg-[#35ed7e]/15 flex items-center justify-center text-[#35ed7e]">
-              <Globe className="w-6 h-6" />
-            </div>
-            <h3 className="text-xl font-bold text-white font-[var(--font-display)]">
-              Find Your People
-            </h3>
-            <p className="text-sm text-slate-300 leading-relaxed">
-              Browse the club by people and interests, then share a profile that stays easy to find even when a username changes.
-            </p>
-          </SpotlightCard>
-        </AnimatedStagger>
+          <ol className="divide-y divide-white/[0.1] border-y border-white/[0.1] lg:col-span-7">
+            {STEPS.map((step) => (
+              <li key={step.number} className="grid gap-3 py-7 sm:grid-cols-[3rem_1fr] sm:gap-5">
+                <span className="font-[var(--font-display)] text-sm font-semibold text-primary-soft">{step.number}</span>
+                <div>
+                  <h3 className="text-lg font-semibold text-ink">{step.title}</h3>
+                  <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">{step.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
       </section>
 
-      {/* 6. Supporter CTA Band */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AnimatedReveal direction="up" durationMs={500}>
-          <div className="relative overflow-hidden rounded-2xl p-8 sm:p-12 bg-[#141843] border border-[#ec48bd]/30 text-center space-y-6 shadow-2xl">
-            <div className="w-14 h-14 rounded-2xl bg-[#ec48bd]/15 flex items-center justify-center text-[#ec48bd] mx-auto border border-[#ec48bd]/30">
-              <Heart className="w-7 h-7 fill-[#ec48bd]" />
-            </div>
-            <div className="space-y-2 max-w-xl mx-auto">
-              <h3 className="text-2xl sm:text-3xl font-black text-white font-[var(--font-display)]">
-                Give the Club a Little Extra
-              </h3>
-              <p className="text-sm text-slate-300 leading-relaxed">
-                Supporters unlock richer profile expression, including custom titles and background artwork, with recognition across the community.
-              </p>
-            </div>
-            <div className="pt-2">
-              <Link href="/dashboard">
-                <Button variant="green" size="lg" className="shadow-lg font-bold">
-                  Open My Profile
-                </Button>
-              </Link>
-            </div>
+      <section className="mx-auto max-w-7xl px-4 pt-20 sm:px-6 sm:pt-24 lg:px-8">
+        <div className="flex flex-col gap-8 border-t border-magenta/40 pt-10 sm:flex-row sm:items-center sm:justify-between">
+          <div className="max-w-2xl">
+            <p className="text-sm font-semibold text-[#ff9bda]">Supporter profiles</p>
+            <h2 className="mt-3 font-[var(--font-display)] text-3xl font-semibold tracking-[-0.025em] text-ink">
+              More room for the details that feel like you.
+            </h2>
+            <p className="mt-3 text-base leading-7 text-ink-secondary">
+              Supporters can add custom titles and background artwork while the verified identity layer stays intact.
+            </p>
           </div>
-        </AnimatedReveal>
+          <Link href="/dashboard" className="shrink-0">
+            <Button variant="outline" size="lg" className="w-full sm:w-auto">
+              Open my profile
+            </Button>
+          </Link>
+        </div>
       </section>
     </div>
   );

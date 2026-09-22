@@ -19,12 +19,8 @@ export default async function LoginPage({
   const { error } = await searchParams;
 
   return (
-    <div className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      {/* Background atmospheric glows */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-[#5865f2]/15 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-[#ec48bd]/10 rounded-full blur-[100px] pointer-events-none" />
-
-      <div className="relative w-full max-w-4xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center z-10">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-4xl grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         {/* Left Column: Community Identity Explainer */}
         <div className="lg:col-span-6 space-y-6 text-left">
           <Link
@@ -86,7 +82,7 @@ export default async function LoginPage({
 
         {/* Right Column: Clerk Sign-In */}
         <div className="lg:col-span-6 flex justify-center">
-          <Card className="w-full max-w-md bg-[#0e1245]/90 border-[rgba(88,101,242,0.25)] shadow-2xl p-6">
+          <Card className="w-full max-w-md bg-surface-indigo border-white/[0.1] p-6">
             <CardHeader className="text-center pb-4">
               <CardTitle className="text-xl font-bold text-white">Sign In</CardTitle>
               <CardDescription className="text-xs text-[#8b92d6]">

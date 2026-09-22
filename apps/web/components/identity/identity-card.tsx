@@ -51,7 +51,7 @@ export function IdentityCard({
   return (
     <div
       className={cn(
-        'relative overflow-hidden rounded-2xl bg-[#1e2353]/95 backdrop-blur-xl border border-[rgba(88,101,242,0.25)] shadow-xl transition-all duration-300',
+        'relative overflow-hidden rounded-xl bg-surface-indigo border border-white/[0.1] transition-colors duration-200',
         className
       )}
       {...props}
@@ -60,14 +60,14 @@ export function IdentityCard({
       <div
         className="h-28 w-full relative transition-all"
         style={{
-          background: `linear-gradient(135deg, ${accentColor} 0%, #1e2353 100%)`,
+          backgroundColor: accentColor,
         }}
       >
         <div className="absolute inset-0 bg-black/20" />
         {/* Synced with ASC Tag */}
         <div className="absolute top-3 right-3">
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-semibold tracking-wide uppercase rounded-full bg-[#0a0d3a]/80 text-[#c7c9e5] border border-[rgba(88,101,242,0.3)] backdrop-blur-md">
-            <ShieldCheck className="w-3.5 h-3.5 text-[#5865f2]" />
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-full bg-canvas text-ink-secondary border border-white/[0.12]">
+            <ShieldCheck className="w-3.5 h-3.5 text-primary-soft" />
             Synced with ASC
           </span>
         </div>
@@ -80,7 +80,7 @@ export function IdentityCard({
             src={avatar}
             alt={displayName}
             size={96}
-            className="border-4 border-[#1e2353] shadow-lg"
+            className="border-4 border-surface-indigo"
           />
           {isSupporter && <SupporterBadge className="mb-2" />}
           {isFormerMember && (
@@ -93,11 +93,11 @@ export function IdentityCard({
 
         {/* Names & Handle */}
         <div className="space-y-1">
-          <h2 className="text-2xl font-extrabold text-white tracking-tight font-[var(--font-display)] flex items-center gap-2">
+          <h2 className="text-2xl font-semibold text-ink tracking-tight font-[var(--font-display)] flex items-center gap-2">
             <span>{displayName}</span>
           </h2>
-          <div className="flex flex-wrap items-center gap-2 text-sm text-[#c7c9e5]">
-            <span className="font-semibold text-[#5865f2]">@{username}</span>
+          <div className="flex flex-wrap items-center gap-2 text-sm text-ink-secondary">
+            <span className="font-semibold text-primary-soft">@{username}</span>
             {nickname && nickname !== displayName && (
               <span className="text-[#9498bd]">({nickname})</span>
             )}

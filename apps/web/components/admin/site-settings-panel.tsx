@@ -132,7 +132,7 @@ export function SiteSettingsPanel({ initialSettings }: SiteSettingsPanelProps) {
             value={announcement}
             onChange={(e) => setAnnouncement(e.target.value.slice(0, 255))}
             placeholder="e.g. Welcome to ASC v1.0! Check out the newly synchronized member directory."
-            className="w-full px-3.5 py-2.5 rounded-xl bg-[#141943] border border-[rgba(88,101,242,0.25)] text-xs text-white placeholder:text-[#525996] focus:outline-none focus:ring-2 focus:ring-[#5865f2] resize-none"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-[#141943] border border-[rgba(88,101,242,0.25)] text-sm text-white placeholder:text-[#a3a6c2] focus:outline-none focus:ring-2 focus:ring-[#5865f2] resize-none"
           />
           <div className="flex justify-between items-center text-[11px] text-[#8b92d6]">
             <span>Leave empty to hide the global banner.</span>

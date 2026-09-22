@@ -10,9 +10,8 @@ export function SupporterBadge({ size = 'md', className, ...props }: SupporterBa
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 font-bold uppercase tracking-wider rounded-full text-white shadow-xs select-none',
-        'bg-gradient-to-r from-[#5865f2] via-[#a855f7] to-[#ec48bd]',
-        size === 'sm' ? 'px-2.5 py-0.5 text-[10px]' : 'px-3.5 py-1 text-xs',
+        'inline-flex items-center gap-1.5 rounded-full border border-[#ec48bd]/35 bg-[#ec48bd]/12 font-semibold text-[#ff9bda] select-none',
+        size === 'sm' ? 'px-2 py-0.5 text-xs' : 'px-3 py-1 text-xs',
         className
       )}
       {...props}

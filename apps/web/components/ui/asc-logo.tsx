@@ -25,7 +25,7 @@ export function AscMark({ size = 36, className = '', useImage = true }: AscMarkP
           width={size}
           height={size}
           priority
-          className="object-contain w-full h-full drop-shadow-sm"
+          className="object-contain w-full h-full"
         />
       </div>
     );
@@ -98,7 +98,7 @@ export function AscLogo({ size = 'md', href, showText = true, className = '' }: 
     <div className={`inline-flex items-center gap-3 select-none group ${className}`}>
       <AscMark size={mark} />
       {showText && (
-        <span className={`font-black tracking-tight text-white font-[var(--font-display)] ${text} transition-colors group-hover:text-slate-100`}>
+        <span className={`font-semibold tracking-tight text-ink font-[var(--font-display)] ${text} transition-colors group-hover:text-ink-secondary`}>
           ASC
         </span>
       )}
@@ -109,7 +109,7 @@ export function AscLogo({ size = 'md', href, showText = true, className = '' }: 
     return (
       <Link
         href={href}
-        className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5865f2] rounded-xl transition-transform hover:scale-[1.02] active:scale-[0.98]"
+        className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5865f2] rounded-xl"
       >
         {content}
       </Link>
