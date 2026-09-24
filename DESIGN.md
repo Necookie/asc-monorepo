@@ -6,7 +6,7 @@ ASC is a community-first digital identity platform built around expressive membe
 
 The visual system should feel energetic, social, playful, and unmistakably ASC.
 
-Pages live on a deep-indigo canvas (`{colors.canvas}` — `#0a0d3a`). The canvas is intentionally calm so member avatars, names, roles, and profile expression remain the visual focus. Public-facing surfaces may introduce one authored atmospheric device at a time, such as a restrained pattern, a profile artwork treatment, or a single color field.
+Pages live on a monochrome canvas: warm white in light mode and near-black in dark mode. The canvas is intentionally calm so member avatars, names, roles, and profile expression remain the visual focus. Public-facing surfaces may introduce one authored atmospheric device at a time, such as a restrained pattern, a profile artwork treatment, or a single color field.
 
 The overall experience should feel like a digital home for a community rather than a corporate SaaS dashboard.
 
@@ -21,8 +21,9 @@ The application layer must remain clear and usable while still visibly belonging
 
 ### Core Characteristics
 
-* Deep-indigo canvas (`{colors.canvas}`) with solid, legible surfaces.
-* ASC Violet (`{colors.primary}`) acts as the main brand and interaction color.
+* Monochrome canvas (`{colors.canvas}`) with solid, legible surfaces.
+* White light mode and black dark mode are the main visual states, switched from the primary navigation.
+* Ink primary actions invert against the active canvas for reliable contrast.
 * Electric green (`{colors.green}`) is reserved for exceptional high-intent or positive actions.
 * Vibrant magenta (`{colors.magenta}`) provides the playful counterweight to violet.
 * Large, confident display typography.
@@ -57,11 +58,11 @@ ASC avoids the visual patterns that make community products feel generic or mach
 
 ## Brand & Accent
 
-### ASC Violet
+### Primary Ink
 
-`{colors.primary}` — `#5865f2`
+`{colors.primary}` — `#111111` in light mode, `#f7f7f7` in dark mode
 
-The primary ASC brand color.
+The primary ASC interaction color. It inverts with the active color mode so primary actions remain legible without relying on blue.
 
 Use for:
 
@@ -69,12 +70,14 @@ Use for:
 * Active navigation states
 * Selected controls
 * Links requiring emphasis
-* ASC brand mark
-* Important profile accents
-* Community statistics
+* Theme toggle states
+* Important actions
+* Active navigation states
 * Selected tabs
 * Focus states
-* Major CTA bands
+* Strong text links
+
+Blue remains available for synchronized role colors and legacy profile accent data, but it is no longer a global surface or interaction color.
 
 This is the most frequently used action color.
 
@@ -133,9 +136,9 @@ Use sparingly for recognizable inline links on dark surfaces where violet does n
 
 ### ASC Canvas
 
-`{colors.canvas}` — `#0a0d3a`
+`{colors.canvas}` — `#fafafa` in light mode, `#111111` in dark mode
 
-Primary application and website background.
+Primary application and website background. The light mode is white-tinted rather than pure white, and the dark mode is black-tinted rather than pure black, preserving comfortable contrast.
 
 This is ASC's visual foundation.
 
@@ -209,15 +212,15 @@ Used for active or selected interactive surfaces.
 
 ### Primary Ink
 
-`{colors.ink}` — `#f7f7ff`
+`{colors.ink}` — `#111111` in light mode, `#f7f7f7` in dark mode
 
-Primary text on dark surfaces.
+Primary text on the active canvas.
 
 ---
 
 ### Dark Ink
 
-`{colors.ink-dark}` — `#111329`
+`{colors.ink-dark}` — `#f7f7f7` in light mode, `#111111` in dark mode
 
 Text used on:
 
@@ -2154,9 +2157,9 @@ Do not let statistics overpower the human identity.
 
 # Do's
 
-* Lead with ASC's deep-indigo canvas.
-* Use violet-to-magenta gradients for atmospheric depth.
-* Keep ASC Violet as the primary action color.
+* Lead with the active monochrome canvas.
+* Use magenta atmosphere sparingly on expressive surfaces.
+* Keep primary actions monochrome and mode-aware.
 * Reserve electric green for exceptional high-intent/success actions.
 * Use strong display typography on expressive public surfaces.
 * Use Inter/Plus Jakarta Sans for functional application UI.
@@ -2207,22 +2210,24 @@ Agents should centralize these values rather than repeatedly hardcoding them.
 
 ```ts
 export const colors = {
-  primary: "#5865f2",
+  primary: "var(--asc-primary)",
+  primaryHover: "var(--asc-primary-hover)",
+  primarySoft: "var(--asc-primary-soft)",
   green: "#35ed7e",
   magenta: "#ec48bd",
   link: "#00b0f4",
 
-  canvas: "#0a0d3a",
-  surfaceIndigo: "#1e2353",
-  surfaceOnyx: "#23272a",
-  surfaceBlack: "#000000",
-  surfaceHover: "#292f68",
-  surfaceActive: "#343b7a",
+  canvas: "var(--asc-canvas)",
+  surfaceIndigo: "var(--asc-surface-indigo)",
+  surfaceOnyx: "var(--asc-surface-onyx)",
+  surfaceBlack: "var(--asc-surface-black)",
+  surfaceHover: "var(--asc-surface-hover)",
+  surfaceActive: "var(--asc-surface-active)",
 
-  ink: "#ffffff",
-  inkDark: "#000000",
-  inkSecondary: "#c7c9e5",
-  muted: "#9498bd",
+  ink: "var(--asc-ink)",
+  inkDark: "var(--asc-ink-dark)",
+  inkSecondary: "var(--asc-ink-secondary)",
+  muted: "var(--asc-muted)",
 
   success: "#35ed7e",
   warning: "#f0b232",
