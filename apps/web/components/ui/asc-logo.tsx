@@ -39,41 +39,29 @@ export function AscMark({ size = 36, className = '', useImage = true }: AscMarkP
       viewBox="0 0 100 100"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={`shrink-0 ${className}`}
+      className={`shrink-0 text-primary ${className}`}
     >
-      <defs>
-        <linearGradient id="ascGradient" x1="10" y1="20" x2="90" y2="85" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#00b0f4" />
-          <stop offset="50%" stopColor="#5865f2" />
-          <stop offset="100%" stopColor="#ec48bd" />
-        </linearGradient>
-        <filter id="ascGlow" x="-20%" y="-20%" width="140%" height="140%">
-          <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#5865f2" floodOpacity="0.35" />
-        </filter>
-      </defs>
-
       {/* Main Arch 'A' */}
       <path
         d="M26 80 L50 20 L74 80"
-        stroke="url(#ascGradient)"
+        stroke="currentColor"
         strokeWidth="12"
         strokeLinecap="round"
         strokeLinejoin="round"
-        filter="url(#ascGlow)"
       />
 
       {/* Connected Nodes Bridge */}
       <path
         d="M26 72 Q 50 56 74 72"
-        stroke="url(#ascGradient)"
+        stroke="currentColor"
         strokeWidth="6"
         strokeLinecap="round"
       />
 
       {/* Three interconnected circular nodes */}
-      <circle cx="26" cy="72" r="7" fill="#00b0f4" />
-      <circle cx="50" cy="62" r="7.5" fill="#5865f2" />
-      <circle cx="74" cy="72" r="7" fill="#ec48bd" />
+      <circle cx="26" cy="72" r="7" fill="currentColor" />
+      <circle cx="50" cy="62" r="7.5" fill="currentColor" />
+      <circle cx="74" cy="72" r="7" fill="currentColor" />
     </svg>
   );
 }

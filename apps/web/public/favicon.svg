@@ -1,10 +1,10 @@
 <svg width="64" height="64" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="100" height="100" rx="24" fill="#0a0d3a"/>
+  <rect width="100" height="100" rx="24" fill="#111111"/>
   <defs>
     <linearGradient id="ascGradient" x1="15" y1="20" x2="85" y2="85" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stopColor="#00b0f4" />
-      <stop offset="50%" stopColor="#5865f2" />
-      <stop offset="100%" stopColor="#ec48bd" />
+      <stop offset="0%" stopColor="#f7f7f7" />
+      <stop offset="50%" stopColor="#f7f7f7" />
+      <stop offset="100%" stopColor="#f7f7f7" />
     </linearGradient>
   </defs>
   <path
@@ -20,7 +20,7 @@
     strokeWidth="6"
     strokeLinecap="round"
   />
-  <circle cx="26" cy="72" r="7" fill="#00b0f4" />
-  <circle cx="50" cy="62" r="7.5" fill="#5865f2" />
-  <circle cx="74" cy="72" r="7" fill="#ec48bd" />
+  <circle cx="26" cy="72" r="7" fill="#f7f7f7" />
+  <circle cx="50" cy="62" r="7.5" fill="#f7f7f7" />
+  <circle cx="74" cy="72" r="7" fill="#f7f7f7" />
 </svg>
