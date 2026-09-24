@@ -8,6 +8,7 @@ import { AnimatePresence, m, useReducedMotion } from 'motion/react';
 import { Button } from '@/components/ui/button';
 import { Compass, Users, Home, User, Menu, X } from 'lucide-react';
 import { AscLogo } from '@/components/ui/asc-logo';
+import { ThemeToggle } from '@/components/theme/theme-toggle';
 
 const EASE_OUT_EXPO = [0.16, 1, 0.3, 1] as const;
 
@@ -81,6 +82,7 @@ export function NavBar({ user }: NavBarProps) {
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3">
+          <ThemeToggle />
           <button
             type="button"
             onClick={() => setMobileOpen((open) => !open)}

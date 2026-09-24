@@ -5,6 +5,7 @@ import './globals.css';
 import { NavBar } from '@/components/layout/nav-bar';
 import { Footer } from '@/components/layout/footer';
 import { AscMotionProvider } from '@/components/motion/motion-provider';
+import { ThemeToggle } from '@/components/theme/theme-toggle';
 
 const atkinson = Atkinson_Hyperlegible_Next({
   subsets: ['latin'],
@@ -58,16 +59,39 @@ export default function RootLayout({
       publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || 'pk_test_Y2xlcmsuZXhhbXBsZS5jb20k'}
       appearance={{
         variables: {
-          colorPrimary: '#5865f2',
-          colorBackground: '#0e1245',
-          colorText: '#f7f7ff',
-          colorTextSecondary: '#a3a6c2',
+          colorPrimary: 'var(--asc-primary)',
+          colorBackground: 'var(--asc-surface-onyx)',
+          colorText: 'var(--asc-ink)',
+          colorTextSecondary: 'var(--asc-ink-secondary)',
           borderRadius: '0.75rem',
         },
       }}
     >
-      <html lang="en" className={`${atkinson.variable} ${bricolage.variable} dark`}>
+      <html
+        lang="en"
+        className={`${atkinson.variable} ${bricolage.variable} dark`}
+        suppressHydrationWarning
+      >
         <head>
+          <script
+            id="asc-theme-init"
+            dangerouslySetInnerHTML={{
+              __html: `
+                (function () {
+                  try {
+                    var stored = window.localStorage.getItem('asc-theme');
+                    var theme = stored === 'light' || stored === 'dark'
+                      ? stored
+                      : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                    var root = document.documentElement;
+                    root.classList.toggle('dark', theme === 'dark');
+                    root.classList.toggle('light', theme === 'light');
+                    root.dataset.theme = theme;
+                  } catch (_) {}
+                })();
+              `,
+            }}
+          />
           <script
             dangerouslySetInnerHTML={{
               __html: `
@@ -85,7 +109,7 @@ export default function RootLayout({
             }}
           />
         </head>
-        <body className="asc-mesh-bg text-ink min-h-screen flex flex-col antialiased selection:bg-[#5865f2] selection:text-[#f7f7ff]">
+        <body className="asc-mesh-bg text-ink min-h-screen flex flex-col antialiased selection:bg-primary selection:text-ink-dark">
           <AscMotionProvider>
             <NavBar />
             <main className="flex-1">{children}</main>
