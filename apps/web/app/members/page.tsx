@@ -31,7 +31,7 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-10">
       {/* Header */}
-      <div className="space-y-4 text-center max-w-2xl mx-auto">
+      <div className="asc-anime-ink asc-anime-ink--compact space-y-4 text-center max-w-2xl mx-auto">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-surface-hover border border-border text-ink-secondary text-xs font-bold uppercase tracking-wider">
           <Users className="w-3.5 h-3.5 text-primary" />
           <span>ASC Directory</span>

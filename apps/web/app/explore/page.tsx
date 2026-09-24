@@ -22,7 +22,7 @@ export default async function ExplorePage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-12">
       {/* Header */}
-      <div className="space-y-4 text-center max-w-2xl mx-auto">
+      <div className="asc-anime-ink asc-anime-ink--compact space-y-4 text-center max-w-2xl mx-auto">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[rgba(236,72,189,0.15)] border border-[rgba(236,72,189,0.3)] text-[#ec48bd] text-xs font-bold uppercase tracking-wider">
           <Compass className="w-3.5 h-3.5" />
           <span>Discover ASC</span>
