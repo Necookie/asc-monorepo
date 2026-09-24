@@ -31,9 +31,9 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/asc-mark.png', type: 'image/png' },
+      { url: '/asc-mark-v2.png', type: 'image/png' },
     ],
-    apple: '/asc-mark.png',
+    apple: '/asc-mark-v2.png',
   },
   openGraph: {
     title: 'ASC — Community Identity & Member Discovery',

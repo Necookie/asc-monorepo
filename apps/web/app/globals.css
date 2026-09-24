@@ -224,99 +224,88 @@ body {
   animation: floatSubtle 4s ease-in-out infinite;
 }
 
-/* After School Club Mascot Layer & Dynamic Movement */
+/* The mascot can move across the viewport without blocking page controls. */
 .community-mascot-layer {
   position: fixed;
   inset: 0;
-  z-index: 45;
+  z-index: 40;
   pointer-events: none;
-  overflow: hidden;
 }
 
 .community-mascot-runner {
   position: absolute;
-  top: min(62vh, 38rem);
-  width: 134px;
-  pointer-events: none;
-  touch-action: manipulation;
+  right: -16px;
+  bottom: -28px;
+  width: 144px;
 }
 
 .community-mascot-btn {
-  position: relative;
   display: block;
   width: 100%;
   padding: 0;
   border: 0;
   background: transparent;
-  color: inherit;
-  cursor: pointer;
+  cursor: grab;
   pointer-events: auto;
-  touch-action: manipulation;
+  touch-action: none;
+  user-select: none;
+}
+
+.community-mascot-btn[data-dragging="true"] {
+  cursor: grabbing;
 }
 
 .community-mascot-btn:focus-visible {
   outline: 2px solid var(--asc-primary);
-  outline-offset: 4px;
-  border-radius: 20px;
+  outline-offset: -12px;
+  border-radius: 12px;
 }
 
-.community-mascot-sprite-wrap {
+.community-mascot-sprite {
+  display: block;
   width: 100%;
+  height: auto;
+  transform-origin: 70% 100%;
+  filter: drop-shadow(0 7px 10px rgba(0, 0, 0, 0.16));
 }
 
 .community-mascot-bubble {
   position: absolute;
-  bottom: calc(100% + 14px);
-  width: max-content;
-  max-width: 204px;
-  padding: 10px 14px;
+  right: 116px;
+  bottom: 104px;
+  width: 154px;
+  padding: 9px 12px;
   border: 1px solid var(--asc-border-strong);
-  border-radius: 16px;
+  border-radius: 8px;
   background: var(--asc-surface-onyx);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
   color: var(--asc-ink);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
   pointer-events: none;
-  z-index: 50;
 }
 
-.community-mascot-bubble--left {
-  left: 0;
+.community-mascot-bubble[data-side="right"] {
+  right: auto;
+  left: calc(100% - 12px);
 }
 
-.community-mascot-bubble--right {
-  right: 0;
-}
-
-.community-mascot-bubble-arrow {
-  position: absolute;
-  bottom: -5px;
-  width: 10px;
-  height: 10px;
-  background: var(--asc-surface-onyx);
-  border-right: 1px solid var(--asc-border-strong);
-  border-bottom: 1px solid var(--asc-border-strong);
-  transform: rotate(45deg);
-}
-
-.community-mascot-bubble-arrow--left {
-  left: 36px;
-}
-
-.community-mascot-bubble-arrow--right {
-  right: 36px;
+.community-mascot-bubble[data-vertical="below"] {
+  bottom: auto;
+  top: 20px;
 }
 
 @media (max-width: 640px) {
   .community-mascot-runner {
-    top: auto;
-    bottom: -20px;
-    width: 72px;
+    right: -14px;
+    bottom: -18px;
+    width: 84px;
   }
 
   .community-mascot-bubble {
-    max-width: 170px;
-    padding: 8px 11px;
-    bottom: calc(100% + 10px);
+    right: 67px;
+    bottom: 64px;
+    width: 138px;
   }
 }
 
