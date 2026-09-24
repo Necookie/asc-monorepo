@@ -143,7 +143,7 @@ export function CommunityMascot() {
         setSide(savedSide);
       }
       // Show initial greeting on first visit
-      if (!hasMet) {
+      if (!hasMet && window.innerWidth >= 640) {
         setShowSpeech(true);
       }
     } catch {
