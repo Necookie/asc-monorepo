@@ -1,23 +1,26 @@
 @import "tailwindcss";
 
 @theme {
-  --color-canvas: oklch(0.17 0.035 278);
-  --color-primary: #5865f2;
-  --color-primary-soft: #aeb4ff;
+  --color-canvas: var(--asc-canvas);
+  --color-primary: var(--asc-primary);
+  --color-primary-hover: var(--asc-primary-hover);
+  --color-primary-soft: var(--asc-primary-soft);
   --color-green: #35ed7e;
   --color-magenta: #ec48bd;
   --color-link: #00b0f4;
-  --color-surface-indigo: oklch(0.225 0.045 278);
-  --color-surface-elevated: oklch(0.255 0.05 278);
-  --color-surface-onyx: oklch(0.195 0.03 278);
-  --color-surface-black: oklch(0.13 0.025 278);
-  --color-surface-hover: oklch(0.29 0.055 278);
-  --color-surface-active: oklch(0.34 0.07 278);
+  --color-surface-indigo: var(--asc-surface-indigo);
+  --color-surface-elevated: var(--asc-surface-elevated);
+  --color-surface-onyx: var(--asc-surface-onyx);
+  --color-surface-black: var(--asc-surface-black);
+  --color-surface-hover: var(--asc-surface-hover);
+  --color-surface-active: var(--asc-surface-active);
+  --color-border: var(--asc-border);
+  --color-border-strong: var(--asc-border-strong);
 
-  --color-ink: #f7f7ff;
-  --color-ink-dark: #111329;
-  --color-ink-secondary: #c9cbe3;
-  --color-muted: #a3a6c2;
+  --color-ink: var(--asc-ink);
+  --color-ink-dark: var(--asc-ink-dark);
+  --color-ink-secondary: var(--asc-ink-secondary);
+  --color-muted: var(--asc-muted);
 
   --color-success: #35ed7e;
   --color-warning: #f0b232;
@@ -38,14 +41,53 @@
 }
 
 :root {
-  --background: #0a0d3a;
-  --foreground: #f7f7ff;
+  color-scheme: dark;
+  --asc-canvas: #111111;
+  --asc-surface-indigo: #1b1b1b;
+  --asc-surface-elevated: #242424;
+  --asc-surface-onyx: #0c0c0c;
+  --asc-surface-black: #080808;
+  --asc-surface-hover: #2d2d2d;
+  --asc-surface-active: #3a3a3a;
+  --asc-primary: #f7f7f7;
+  --asc-primary-hover: #ffffff;
+  --asc-primary-soft: #c4c4c4;
+  --asc-ink: #f7f7f7;
+  --asc-ink-dark: #111111;
+  --asc-ink-secondary: #c8c8c8;
+  --asc-muted: #929292;
+  --asc-border: rgba(255, 255, 255, 0.12);
+  --asc-border-strong: rgba(255, 255, 255, 0.22);
+  --background: var(--asc-canvas);
+  --foreground: var(--asc-ink);
   --motion-fast: 150ms;
   --motion-standard: 220ms;
   --motion-expressive: 520ms;
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root.light {
+  color-scheme: light;
+  --asc-canvas: #fafafa;
+  --asc-surface-indigo: #ffffff;
+  --asc-surface-elevated: #f0f0f0;
+  --asc-surface-onyx: #f2f2f2;
+  --asc-surface-black: #111111;
+  --asc-surface-hover: #ededed;
+  --asc-surface-active: #dedede;
+  --asc-primary: #111111;
+  --asc-primary-hover: #2a2a2a;
+  --asc-primary-soft: #4f4f4f;
+  --asc-ink: #111111;
+  --asc-ink-dark: #f7f7f7;
+  --asc-ink-secondary: #4f4f4f;
+  --asc-muted: #707070;
+  --asc-border: rgba(17, 17, 17, 0.12);
+  --asc-border-strong: rgba(17, 17, 17, 0.22);
+  --background: var(--asc-canvas);
+  --foreground: var(--asc-ink);
 }
 
 body {
@@ -107,13 +149,13 @@ body {
 /* Crisp, opaque card styling */
 .asc-card {
   background-color: var(--color-surface-indigo);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--asc-border);
   transition: border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
               background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .asc-card:hover {
-  border-color: rgba(174, 180, 255, 0.28);
+  border-color: var(--asc-border-strong);
   background-color: var(--color-surface-elevated);
 }
 
@@ -127,8 +169,8 @@ body {
   font-size: 0.75rem;
   font-weight: 600;
   line-height: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--asc-border);
+  background-color: var(--color-surface-hover);
 }
 
 /* Keyframe animations */
@@ -213,7 +255,7 @@ body {
 }
 
 .community-mascot-btn:focus-visible {
-  outline: 2px solid #5865f2;
+  outline: 2px solid var(--asc-primary);
   outline-offset: 4px;
   border-radius: 20px;
 }
@@ -286,7 +328,7 @@ button, a, input, select, textarea {
 }
 
 :focus-visible {
-  outline: 2px solid #5865f2;
+  outline: 2px solid var(--asc-primary);
   outline-offset: 2px;
 }
 
