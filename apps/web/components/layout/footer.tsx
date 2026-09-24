@@ -4,9 +4,9 @@ import { AscLogo } from '@/components/ui/asc-logo';
 
 export function Footer() {
   return (
-    <footer className="w-full border-t border-white/[0.08] bg-surface-black pt-16 pb-12 text-ink-secondary">
+    <footer className="w-full border-t border-border bg-surface-black pt-16 pb-12 text-ink-secondary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-white/10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-border">
           {/* Brand */}
           <div className="space-y-4 md:col-span-1">
             <AscLogo size="md" href="/" />
@@ -22,12 +22,12 @@ export function Footer() {
             </h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/members" className="hover:text-white transition-colors">
+                <Link href="/members" className="hover:text-ink transition-colors">
                   Members Directory
                 </Link>
               </li>
               <li>
-                <Link href="/explore" className="hover:text-white transition-colors">
+                <Link href="/explore" className="hover:text-ink transition-colors">
                   Explore Profiles
                 </Link>
               </li>
@@ -41,17 +41,17 @@ export function Footer() {
             </h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/dashboard" className="hover:text-white transition-colors">
+                <Link href="/dashboard" className="hover:text-ink transition-colors">
                   Dashboard
                 </Link>
               </li>
               <li>
-                <Link href="/dashboard/profile" className="hover:text-white transition-colors">
+                <Link href="/dashboard/profile" className="hover:text-ink transition-colors">
                   Customize Profile
                 </Link>
               </li>
               <li>
-                <Link href="/dashboard/appearance" className="hover:text-white transition-colors">
+                <Link href="/dashboard/appearance" className="hover:text-ink transition-colors">
                   Appearance
                 </Link>
               </li>
@@ -65,12 +65,12 @@ export function Footer() {
             </h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/privacy" className="hover:text-white transition-colors">
+                <Link href="/privacy" className="hover:text-ink transition-colors">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="hover:text-white transition-colors">
+                <Link href="/terms" className="hover:text-ink transition-colors">
                   Terms of Service
                 </Link>
               </li>

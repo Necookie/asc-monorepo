@@ -8,7 +8,7 @@ export function Card({
   return (
     <div
       className={cn(
-        'rounded-xl border border-white/[0.08] bg-surface-indigo text-ink p-6 transition-colors duration-200',
+        'rounded-xl border border-border bg-surface-indigo text-ink p-6 transition-colors duration-200',
         className
       )}
       {...props}
@@ -68,7 +68,7 @@ export function CardFooter({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn('flex items-center pt-4 border-t border-white/[0.08]', className)}
+      className={cn('flex items-center pt-4 border-t border-border', className)}
       {...props}
     />
   );

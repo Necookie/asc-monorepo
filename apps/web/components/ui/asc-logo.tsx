@@ -109,7 +109,7 @@ export function AscLogo({ size = 'md', href, showText = true, className = '' }: 
     return (
       <Link
         href={href}
-        className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5865f2] rounded-xl"
+        className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xl"
       >
         {content}
       </Link>

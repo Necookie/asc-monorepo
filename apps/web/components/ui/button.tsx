@@ -10,16 +10,16 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', ...props }, ref) => {
     const baseStyles =
-      'inline-flex items-center justify-center font-medium transition-[transform,background-color,border-color,color,opacity] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5865f2] disabled:opacity-50 disabled:pointer-events-none motion-safe:active:scale-[0.98] select-none';
+      'inline-flex items-center justify-center font-medium transition-[transform,background-color,border-color,color,opacity] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-50 disabled:pointer-events-none motion-safe:active:scale-[0.98] select-none';
 
     const variants = {
-      primary: 'bg-[#5865f2] text-[#f7f7ff] hover:bg-[#6874f4]',
+      primary: 'bg-primary text-ink-dark hover:bg-primary-hover',
       green: 'bg-[#35ed7e] text-[#111329] font-semibold hover:bg-[#55f195]',
-      white: 'bg-[#f7f7ff] text-[#111329] font-semibold hover:bg-[#e7e8f4]',
+      white: 'bg-ink text-ink-dark font-semibold hover:bg-surface-hover',
       ghost: 'bg-surface-indigo text-ink hover:bg-surface-hover',
       danger: 'bg-[#ed4245] text-[#f7f7ff] hover:bg-[#f05d60]',
       outline:
-        'border border-white/[0.14] text-ink-secondary hover:bg-surface-indigo hover:text-ink hover:border-white/[0.24]',
+        'border border-border-strong text-ink-secondary hover:bg-surface-indigo hover:text-ink hover:border-border-strong',
     };
 
     const sizes = {

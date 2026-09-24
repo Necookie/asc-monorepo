@@ -17,8 +17,8 @@ export function LoadingState({
         className
       )}
     >
-      <Loader2 className="w-9 h-9 text-[#5865f2] animate-spin" />
-      <p className="text-sm font-medium text-[#c7c9e5]">{message}</p>
+      <Loader2 className="w-9 h-9 text-primary animate-spin" />
+      <p className="text-sm font-medium text-ink-secondary">{message}</p>
     </div>
   );
 }
@@ -41,16 +41,16 @@ export function EmptyState({
   return (
     <div
       className={cn(
-        'flex flex-col items-center justify-center p-12 text-center rounded-2xl bg-[#1e2353]/60 border border-[rgba(88,101,242,0.15)] space-y-4',
+        'flex flex-col items-center justify-center p-12 text-center rounded-2xl bg-surface-indigo border border-border space-y-4',
         className
       )}
     >
-      <div className="p-4 rounded-full bg-[rgba(88,101,242,0.15)] text-[#5865f2]">
+      <div className="p-4 rounded-full bg-surface-hover text-primary">
         <Icon className="w-8 h-8" />
       </div>
       <div className="space-y-1 max-w-md">
-        <h3 className="text-lg font-bold text-white font-[var(--font-display)]">{title}</h3>
-        {description && <p className="text-sm text-[#9498bd]">{description}</p>}
+        <h3 className="text-lg font-bold text-ink font-[var(--font-display)]">{title}</h3>
+        {description && <p className="text-sm text-muted">{description}</p>}
       </div>
       {actionLabel && onAction && (
         <Button variant="primary" size="md" onClick={onAction}>
@@ -75,16 +75,16 @@ export function ErrorState({
   return (
     <div
       className={cn(
-        'flex flex-col items-center justify-center p-12 text-center rounded-2xl bg-[#1e2353]/80 border border-[#ed4245]/30 space-y-4',
+        'flex flex-col items-center justify-center p-12 text-center rounded-2xl bg-surface-indigo border border-danger/30 space-y-4',
         className
       )}
     >
-      <div className="p-4 rounded-full bg-[#ed4245]/15 text-[#ed4245]">
+      <div className="p-4 rounded-full bg-danger/15 text-danger">
         <AlertCircle className="w-8 h-8" />
       </div>
       <div className="space-y-1 max-w-md">
-        <h3 className="text-lg font-bold text-white font-[var(--font-display)]">{title}</h3>
-        <p className="text-sm text-[#c7c9e5]">{description}</p>
+        <h3 className="text-lg font-bold text-ink font-[var(--font-display)]">{title}</h3>
+        <p className="text-sm text-ink-secondary">{description}</p>
       </div>
       {onRetry && (
         <Button variant="ghost" size="md" onClick={onRetry}>
@@ -109,11 +109,11 @@ export function LockedState({
   return (
     <div
       className={cn(
-        'relative overflow-hidden flex flex-col items-center justify-center p-8 text-center rounded-2xl bg-[#1e2353]/90 border border-[rgba(236,72,189,0.3)] space-y-4 asc-glow-supporter',
+        'relative overflow-hidden flex flex-col items-center justify-center p-8 text-center rounded-2xl bg-surface-indigo border border-magenta/30 space-y-4 asc-glow-supporter',
         className
       )}
     >
-      <div className="p-3.5 rounded-full bg-gradient-to-tr from-[#5865f2] to-[#ec48bd] text-white">
+      <div className="p-3.5 rounded-full bg-gradient-to-tr from-primary to-magenta text-ink-dark">
         <Lock className="w-6 h-6" />
       </div>
       <div className="space-y-1 max-w-sm">
@@ -121,8 +121,8 @@ export function LockedState({
           <Sparkles className="w-3.5 h-3.5" />
           {perkName || 'Supporter Perk'}
         </div>
-        <h3 className="text-lg font-bold text-white font-[var(--font-display)]">{title}</h3>
-        <p className="text-sm text-[#c7c9e5]">{description}</p>
+        <h3 className="text-lg font-bold text-ink font-[var(--font-display)]">{title}</h3>
+        <p className="text-sm text-ink-secondary">{description}</p>
       </div>
     </div>
   );

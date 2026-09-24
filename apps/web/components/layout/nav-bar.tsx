@@ -49,7 +49,7 @@ export function NavBar({ user }: NavBarProps) {
     href === '/' ? pathname === '/' : pathname === href || Boolean(pathname?.startsWith(`${href}/`));
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-canvas">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-canvas">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div className="flex items-center gap-8">
           <AscLogo size="md" href="/" />
@@ -69,7 +69,7 @@ export function NavBar({ user }: NavBarProps) {
                   {active && (
                     <m.span
                       layoutId="primary-navigation-active"
-                      className="absolute inset-0 -z-10 rounded-xl bg-surface-indigo ring-1 ring-inset ring-white/[0.08]"
+                      className="absolute inset-0 -z-10 rounded-xl bg-surface-indigo ring-1 ring-inset ring-border"
                       transition={{ duration: reduceMotion ? 0.01 : 0.28, ease: EASE_OUT_EXPO }}
                     />
                   )}
@@ -86,7 +86,7 @@ export function NavBar({ user }: NavBarProps) {
           <button
             type="button"
             onClick={() => setMobileOpen((open) => !open)}
-            className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-xl bg-surface-indigo text-ink-secondary border border-white/[0.1] hover:text-ink hover:border-white/[0.18] transition-colors"
+            className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-xl bg-surface-indigo text-ink-secondary border border-border hover:text-ink hover:border-border-strong transition-colors"
             aria-label={mobileOpen ? 'Close navigation' : 'Open navigation'}
             aria-expanded={mobileOpen}
             aria-controls="mobile-primary-navigation"
@@ -150,7 +150,7 @@ export function NavBar({ user }: NavBarProps) {
           <m.nav
             id="mobile-primary-navigation"
             aria-label="Mobile navigation"
-            className="absolute inset-x-0 top-full md:hidden border-b border-white/[0.08] bg-canvas px-4 py-3 shadow-[0_18px_40px_rgba(6,8,28,0.32)]"
+            className="absolute inset-x-0 top-full md:hidden border-b border-border bg-canvas px-4 py-3 shadow-[0_18px_40px_rgba(0,0,0,0.18)]"
             initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -7 }}
@@ -166,7 +166,7 @@ export function NavBar({ user }: NavBarProps) {
                     aria-current={active ? 'page' : undefined}
                     className={`flex min-h-12 flex-col items-center justify-center gap-1 rounded-xl px-3 py-2 text-xs font-bold transition-colors ${
                       active
-                        ? 'bg-[#5865f2] text-white'
+                        ? 'bg-primary text-ink-dark'
                         : 'bg-surface-indigo text-ink-secondary hover:bg-surface-elevated hover:text-ink'
                     }`}
                   >
