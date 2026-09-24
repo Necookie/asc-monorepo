@@ -66,7 +66,7 @@ export default async function MemberProfilePage({ params }: PageProps) {
           aria-hidden="true"
         >
           {/* Contrast scrim overlay */}
-          <div className="absolute inset-0 bg-[#0a0d3a]/80 backdrop-blur-xs" />
+          <div className="absolute inset-0 bg-canvas/80 backdrop-blur-xs" />
         </div>
       )}
 
@@ -93,8 +93,8 @@ export default async function MemberProfilePage({ params }: PageProps) {
             {profile.isPrivate ? (
               <ProfileWidget title="Private Profile" icon={<Lock className="w-5 h-5" />}>
                 <div className="py-6 text-center space-y-2">
-                  <p className="text-base font-semibold text-white">This profile is private.</p>
-                  <p className="text-sm text-[#9498bd]">
+                  <p className="text-base font-semibold text-ink">This profile is private.</p>
+                  <p className="text-sm text-muted">
                     @{user.username} has chosen to keep their biography, tags, and links private.
                   </p>
                 </div>
@@ -107,7 +107,7 @@ export default async function MemberProfilePage({ params }: PageProps) {
                   icon={<User className="w-5 h-5" />}
                   action={
                     profile.customTitle ? (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold rounded-full bg-gradient-to-r from-[#5865f2] to-[#ec48bd] text-white shadow-xs">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold rounded-full bg-gradient-to-r from-primary to-[#ec48bd] text-ink shadow-xs">
                         <Sparkles className="w-3 h-3" />
                         {profile.customTitle}
                       </span>
@@ -115,11 +115,11 @@ export default async function MemberProfilePage({ params }: PageProps) {
                   }
                 >
                   {profile.bio ? (
-                    <p className="text-sm sm:text-base leading-relaxed text-[#c7c9e5] whitespace-pre-wrap">
+                    <p className="text-sm sm:text-base leading-relaxed text-ink-secondary whitespace-pre-wrap">
                       {profile.bio}
                     </p>
                   ) : (
-                    <p className="text-sm italic text-[#9498bd]">
+                    <p className="text-sm italic text-muted">
                       No biography provided yet.
                     </p>
                   )}
@@ -148,12 +148,12 @@ export default async function MemberProfilePage({ params }: PageProps) {
                             href={safeUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center justify-between p-3.5 rounded-xl bg-[#0a0d3a]/60 border border-[rgba(88,101,242,0.2)] hover:border-[#5865f2] hover:bg-[#1e2353] text-white transition-all group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5865f2]"
+                            className="flex items-center justify-between p-3.5 rounded-xl bg-canvas/60 border border-border hover:border-primary hover:bg-surface-indigo text-ink transition-all group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                           >
-                            <span className="text-sm font-semibold truncate group-hover:text-[#5865f2] transition-colors">
+                            <span className="text-sm font-semibold truncate group-hover:text-primary transition-colors">
                               {link.label}
                             </span>
-                            <ExternalLink className="w-4 h-4 text-[#9498bd] group-hover:text-white shrink-0 ml-2" />
+                            <ExternalLink className="w-4 h-4 text-muted group-hover:text-ink shrink-0 ml-2" />
                           </a>
                         );
                       })}

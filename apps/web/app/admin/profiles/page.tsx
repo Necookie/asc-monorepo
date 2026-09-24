@@ -17,10 +17,10 @@ export default async function AdminProfilesPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-[var(--font-display)]">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-ink tracking-tight font-[var(--font-display)]">
           Profile Moderation
         </h1>
-        <p className="text-sm text-[#8b92d6] mt-1">
+        <p className="text-sm text-muted mt-1">
           Review community profiles, hide non-compliant pages, or reset offensive bios, titles, and links. All actions require a reason and are logged to the tamper-evident audit trail.
         </p>
       </div>

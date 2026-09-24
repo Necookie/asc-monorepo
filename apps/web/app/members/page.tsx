@@ -32,14 +32,14 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-10">
       {/* Header */}
       <div className="space-y-4 text-center max-w-2xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[rgba(88,101,242,0.15)] border border-[rgba(88,101,242,0.3)] text-[#c7c9e5] text-xs font-bold uppercase tracking-wider">
-          <Users className="w-3.5 h-3.5 text-[#5865f2]" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-surface-hover border border-border text-ink-secondary text-xs font-bold uppercase tracking-wider">
+          <Users className="w-3.5 h-3.5 text-primary" />
           <span>ASC Directory</span>
         </div>
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight font-[var(--font-display)] uppercase">
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-ink tracking-tight font-[var(--font-display)] uppercase">
           COMMUNITY MEMBERS
         </h1>
-        <p className="text-sm sm:text-base text-[#c7c9e5]">
+        <p className="text-sm sm:text-base text-ink-secondary">
           Explore verified profiles of members in the ASC digital community.
         </p>
       </div>
@@ -54,7 +54,7 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
             name="q"
             defaultValue={q}
             placeholder="Search by username, display name, or tag..."
-            className="w-full pl-11 pr-4 py-3 text-sm rounded-xl bg-[#141843] border border-white/10 text-white placeholder-slate-400 focus:outline-none focus:border-[#5865f2] focus:ring-1 focus:ring-[#5865f2] transition-all"
+            className="w-full pl-11 pr-4 py-3 text-sm rounded-xl bg-surface-indigo border border-border text-ink placeholder:text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
           />
           {filter && <input type="hidden" name="filter" value={filter} />}
         </form>
@@ -65,8 +65,8 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
             href={`/members?filter=all${q ? `&q=${encodeURIComponent(q)}` : ''}`}
             className={`px-4 py-2 text-xs font-bold rounded-xl transition-all ${
               !isSupportersOnly
-                ? 'bg-[#5865f2] text-white shadow-sm'
-                : 'bg-[#141843] text-slate-300 hover:text-white border border-white/10'
+                ? 'bg-primary text-ink-dark shadow-sm'
+                : 'bg-surface-indigo text-ink-secondary hover:text-ink border border-border'
             }`}
           >
             All Members
@@ -75,8 +75,8 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
             href={`/members?filter=supporters${q ? `&q=${encodeURIComponent(q)}` : ''}`}
             className={`px-4 py-2 text-xs font-bold rounded-xl inline-flex items-center gap-1.5 transition-all ${
               isSupportersOnly
-                ? 'bg-[#ec48bd] text-white shadow-sm'
-                : 'bg-[#141843] text-slate-300 hover:text-white border border-white/10'
+                ? 'bg-[#ec48bd] text-ink shadow-sm'
+                : 'bg-surface-indigo text-ink-secondary hover:text-ink border border-border'
             }`}
           >
             <Sparkles className="w-3.5 h-3.5" />

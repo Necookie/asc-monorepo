@@ -18,13 +18,13 @@ export function ProfileWidget({
   return (
     <div
       className={cn(
-        'rounded-xl bg-surface-indigo border border-white/[0.08] p-6 transition-colors',
+        'rounded-xl bg-surface-indigo border border-border p-6 transition-colors',
         className
       )}
       {...props}
     >
       {(title || action) && (
-        <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/[0.08]">
+        <div className="flex items-center justify-between pb-4 mb-4 border-b border-border">
           <div className="flex items-center gap-2.5">
             {icon && <span className="text-primary-soft">{icon}</span>}
             {title && (

@@ -385,7 +385,7 @@ export function CommunityMascot() {
               className="relative select-none"
             >
               {/* Subtle ambient backglow */}
-              <div className="absolute inset-0 -z-10 rounded-full bg-[#5865f2]/15 blur-xl group-hover:bg-[#5865f2]/30 transition-all duration-300" />
+              <div className="absolute inset-0 -z-10 rounded-full bg-primary/15 blur-xl group-hover:bg-primary/30 transition-all duration-300" />
 
               {/* Official After School Club Cat Asset */}
               <img

@@ -15,7 +15,7 @@ import { LoadingState, EmptyState, ErrorState, LockedState } from '../ui/states'
 describe('ASC Design System UI Components', () => {
   it('renders Button with primary, green, and danger variants', () => {
     const primaryHtml = renderToString(<Button variant="primary">Save</Button>);
-    expect(primaryHtml).toContain('bg-[#5865f2]');
+    expect(primaryHtml).toContain('bg-primary');
     expect(primaryHtml).toContain('Save');
 
     const greenHtml = renderToString(<Button variant="green">Join ASC</Button>);

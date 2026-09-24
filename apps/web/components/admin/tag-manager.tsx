@@ -106,20 +106,20 @@ export function TagManager({ initialTags }: TagManagerProps) {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Form */}
         <div className="lg:col-span-5 space-y-4">
-          <Card className="bg-[#0e1245]/80 border-[rgba(88,101,242,0.2)] p-6 space-y-4">
+          <Card className="bg-surface-onyx/80 border-border p-6 space-y-4">
             <CardHeader className="p-0">
-              <CardTitle className="text-base font-bold text-white flex items-center gap-2">
+              <CardTitle className="text-base font-bold text-ink flex items-center gap-2">
                 <TagIcon className="w-4 h-4 text-[#ec48bd]" />
                 {editingTag ? `Edit Tag: ${editingTag.name}` : 'Create Community Tag'}
               </CardTitle>
-              <CardDescription className="text-xs text-[#8b92d6]">
+              <CardDescription className="text-xs text-muted">
                 Tags are community-wide skills and badges members can pin to profiles.
               </CardDescription>
             </CardHeader>
 
             <form onSubmit={handleSubmit} className="space-y-4 pt-2">
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-white">Tag Name</label>
+                <label className="text-xs font-semibold text-ink">Tag Name</label>
                 <input
                   type="text"
                   required
@@ -136,36 +136,36 @@ export function TagManager({ initialTags }: TagManagerProps) {
                     }
                   }}
                   placeholder="e.g. Full-Stack Developer"
-                  className="w-full px-3 py-2 rounded-xl bg-[#141943] border border-[rgba(88,101,242,0.25)] text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#ec48bd]"
+                  className="w-full px-3 py-2 rounded-xl bg-surface-indigo border border-border text-xs text-ink focus:outline-none focus:ring-2 focus:ring-[#ec48bd]"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-white">Slug (URL Safe)</label>
+                <label className="text-xs font-semibold text-ink">Slug (URL Safe)</label>
                 <input
                   type="text"
                   required
                   value={slug}
                   onChange={(e) => setSlug(e.target.value.toLowerCase())}
                   placeholder="e.g. full-stack-developer"
-                  className="w-full px-3 py-2 rounded-xl bg-[#141943] border border-[rgba(88,101,242,0.25)] text-xs text-white font-mono focus:outline-none focus:ring-2 focus:ring-[#ec48bd]"
+                  className="w-full px-3 py-2 rounded-xl bg-surface-indigo border border-border text-xs text-ink font-mono focus:outline-none focus:ring-2 focus:ring-[#ec48bd]"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-white">Description (Optional)</label>
+                <label className="text-xs font-semibold text-ink">Description (Optional)</label>
                 <input
                   type="text"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Short explanation of this tag..."
-                  className="w-full px-3 py-2 rounded-xl bg-[#141943] border border-[rgba(88,101,242,0.25)] text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#ec48bd]"
+                  className="w-full px-3 py-2 rounded-xl bg-surface-indigo border border-border text-xs text-ink focus:outline-none focus:ring-2 focus:ring-[#ec48bd]"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-white">Badge Color</label>
+                  <label className="text-xs font-semibold text-ink">Badge Color</label>
                   <div className="flex items-center gap-2">
                     <input
                       type="color"
@@ -173,12 +173,12 @@ export function TagManager({ initialTags }: TagManagerProps) {
                       onChange={(e) => setColor(e.target.value)}
                       className="w-8 h-8 rounded-lg cursor-pointer bg-transparent border-none"
                     />
-                    <span className="text-xs font-mono text-[#8b92d6]">{color}</span>
+                    <span className="text-xs font-mono text-muted">{color}</span>
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-white">Active Status</label>
+                  <label className="text-xs font-semibold text-ink">Active Status</label>
                   <div className="flex items-center gap-2 pt-1.5">
                     <input
                       type="checkbox"
@@ -187,7 +187,7 @@ export function TagManager({ initialTags }: TagManagerProps) {
                       onChange={(e) => setIsActive(e.target.checked)}
                       className="rounded text-[#ec48bd] focus:ring-[#ec48bd]"
                     />
-                    <label htmlFor="isActive" className="text-xs text-[#c7c9e5] cursor-pointer">
+                    <label htmlFor="isActive" className="text-xs text-ink-secondary cursor-pointer">
                       Enabled
                     </label>
                   </div>
@@ -210,7 +210,7 @@ export function TagManager({ initialTags }: TagManagerProps) {
                     size="sm"
                     type="button"
                     onClick={resetForm}
-                    className="text-xs text-[#8b92d6]"
+                    className="text-xs text-muted"
                   >
                     Cancel
                   </Button>
@@ -222,10 +222,10 @@ export function TagManager({ initialTags }: TagManagerProps) {
 
         {/* Right Column: Tags List Table */}
         <div className="lg:col-span-7 space-y-4">
-          <Card className="bg-[#0e1245]/80 border-[rgba(88,101,242,0.2)] overflow-hidden">
+          <Card className="bg-surface-onyx/80 border-border overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-[#141943] text-[#8b92d6] uppercase tracking-wider text-[10px] border-b border-[rgba(88,101,242,0.15)]">
+                <thead className="bg-surface-indigo text-muted uppercase tracking-wider text-[10px] border-b border-border">
                   <tr>
                     <th className="py-3 px-4">Tag</th>
                     <th className="py-3 px-4">Slug</th>
@@ -234,20 +234,20 @@ export function TagManager({ initialTags }: TagManagerProps) {
                     <th className="py-3 px-4 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[rgba(88,101,242,0.1)]">
+                <tbody className="divide-y divide-border">
                   {initialTags.map((tag) => (
-                    <tr key={tag.id} className="hover:bg-[#141943]/50 transition-colors">
+                    <tr key={tag.id} className="hover:bg-surface-indigo/50 transition-colors">
                       <td className="py-3 px-4 flex items-center gap-2">
                         <span
                           className="w-2.5 h-2.5 rounded-full shrink-0"
                           style={{ backgroundColor: tag.color }}
                         />
-                        <span className="font-bold text-white">{tag.name}</span>
+                        <span className="font-bold text-ink">{tag.name}</span>
                       </td>
 
-                      <td className="py-3 px-4 font-mono text-[#8b92d6]">{tag.slug}</td>
+                      <td className="py-3 px-4 font-mono text-muted">{tag.slug}</td>
 
-                      <td className="py-3 px-4 text-[#c7c9e5] font-semibold">
+                      <td className="py-3 px-4 text-ink-secondary font-semibold">
                         {tag.memberCount} members
                       </td>
 
@@ -278,7 +278,7 @@ export function TagManager({ initialTags }: TagManagerProps) {
 
                   {initialTags.length === 0 && (
                     <tr>
-                      <td colSpan={5} className="py-8 text-center text-xs text-[#8b92d6]">
+                      <td colSpan={5} className="py-8 text-center text-xs text-muted">
                         No community tags found. Create your first tag on the left.
                       </td>
                     </tr>

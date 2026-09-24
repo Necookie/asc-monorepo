@@ -134,7 +134,7 @@ export function NavBar({ user }: NavBarProps) {
                   <UserButton
                     appearance={{
                       elements: {
-                        avatarBox: 'w-8 h-8 ring-2 ring-[rgba(88,101,242,0.3)]',
+                        avatarBox: 'w-8 h-8 ring-2 ring-border-strong',
                       },
                     }}
                   />

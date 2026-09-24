@@ -11,10 +11,10 @@ export default function ProfileNotFound() {
         </div>
 
         <div className="space-y-2">
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-white font-[var(--font-display)] tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-ink font-[var(--font-display)] tracking-tight">
             MEMBER NOT FOUND
           </h1>
-          <p className="text-sm sm:text-base text-[#c7c9e5] leading-relaxed">
+          <p className="text-sm sm:text-base text-ink-secondary leading-relaxed">
             We couldn&apos;t find an ASC member with this profile slug. The member might not have joined the community yet, or their username may have changed.
           </p>
         </div>

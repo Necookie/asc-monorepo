@@ -77,22 +77,22 @@ export function SiteSettingsPanel({ initialSettings }: SiteSettingsPanelProps) {
       )}
 
       {/* Maintenance Mode Card */}
-      <Card className="bg-[#0e1245]/80 border-[rgba(88,101,242,0.2)] p-6 space-y-4">
+      <Card className="bg-surface-onyx/80 border-border p-6 space-y-4">
         <CardHeader className="p-0">
-          <CardTitle className="text-base font-bold text-white flex items-center gap-2">
+          <CardTitle className="text-base font-bold text-ink flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 text-[#f59e0b]" />
             Maintenance Mode
           </CardTitle>
-          <CardDescription className="text-xs text-[#8b92d6]">
+          <CardDescription className="text-xs text-muted">
             When enabled, public mutations are temporarily paused for routine database maintenance.
           </CardDescription>
         </CardHeader>
 
         <CardContent className="p-0 pt-2">
-          <div className="flex items-center justify-between p-3.5 rounded-xl bg-[#141943] border border-[rgba(88,101,242,0.15)]">
+          <div className="flex items-center justify-between p-3.5 rounded-xl bg-surface-indigo border border-border">
             <div className="space-y-0.5">
-              <div className="text-xs font-bold text-white">Enable Maintenance Mode</div>
-              <div className="text-[11px] text-[#8b92d6]">
+              <div className="text-xs font-bold text-ink">Enable Maintenance Mode</div>
+              <div className="text-[11px] text-muted">
                 Only administrators will be permitted to access dashboard editors.
               </div>
             </div>
@@ -101,7 +101,7 @@ export function SiteSettingsPanel({ initialSettings }: SiteSettingsPanelProps) {
               type="button"
               onClick={() => setMaintenanceMode(!maintenanceMode)}
               className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                maintenanceMode ? 'bg-[#f59e0b]' : 'bg-[#1e2353]'
+                maintenanceMode ? 'bg-[#f59e0b]' : 'bg-surface-indigo'
               }`}
             >
               <span
@@ -115,13 +115,13 @@ export function SiteSettingsPanel({ initialSettings }: SiteSettingsPanelProps) {
       </Card>
 
       {/* System Announcement Banner Card */}
-      <Card className="bg-[#0e1245]/80 border-[rgba(88,101,242,0.2)] p-6 space-y-4">
+      <Card className="bg-surface-onyx/80 border-border p-6 space-y-4">
         <CardHeader className="p-0">
-          <CardTitle className="text-base font-bold text-white flex items-center gap-2">
-            <Megaphone className="w-4 h-4 text-[#5865f2]" />
+          <CardTitle className="text-base font-bold text-ink flex items-center gap-2">
+            <Megaphone className="w-4 h-4 text-primary" />
             Community Announcement Banner
           </CardTitle>
-          <CardDescription className="text-xs text-[#8b92d6]">
+          <CardDescription className="text-xs text-muted">
             Display a global broadcast announcement message at the top of all public pages.
           </CardDescription>
         </CardHeader>
@@ -132,9 +132,9 @@ export function SiteSettingsPanel({ initialSettings }: SiteSettingsPanelProps) {
             value={announcement}
             onChange={(e) => setAnnouncement(e.target.value.slice(0, 255))}
             placeholder="e.g. Welcome to ASC v1.0! Check out the newly synchronized member directory."
-            className="w-full px-3.5 py-2.5 rounded-xl bg-[#141943] border border-[rgba(88,101,242,0.25)] text-sm text-white placeholder:text-[#a3a6c2] focus:outline-none focus:ring-2 focus:ring-[#5865f2] resize-none"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-surface-indigo border border-border text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary resize-none"
           />
-          <div className="flex justify-between items-center text-[11px] text-[#8b92d6]">
+          <div className="flex justify-between items-center text-[11px] text-muted">
             <span>Leave empty to hide the global banner.</span>
             <span>{announcement.length} / 255</span>
           </div>

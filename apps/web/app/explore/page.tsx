@@ -27,19 +27,19 @@ export default async function ExplorePage() {
           <Compass className="w-3.5 h-3.5" />
           <span>Discover ASC</span>
         </div>
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight font-[var(--font-display)] uppercase">
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-ink tracking-tight font-[var(--font-display)] uppercase">
           EXPLORE COMMUNITY
         </h1>
-        <p className="text-sm sm:text-base text-[#c7c9e5]">
+        <p className="text-sm sm:text-base text-ink-secondary">
           Find members who share your passions, skills, and interests across ASC.
         </p>
       </div>
 
       {/* Popular Tags Section */}
       {allTags.length > 0 && (
-        <div className="p-6 rounded-2xl bg-[#1e2353]/80 border border-[rgba(88,101,242,0.2)] space-y-4">
-          <div className="flex items-center gap-2 text-sm font-bold text-white uppercase tracking-wider font-[var(--font-display)]">
-            <Tag className="w-4 h-4 text-[#5865f2]" />
+        <div className="p-6 rounded-2xl bg-surface-indigo/80 border border-border space-y-4">
+          <div className="flex items-center gap-2 text-sm font-bold text-ink uppercase tracking-wider font-[var(--font-display)]">
+            <Tag className="w-4 h-4 text-primary" />
             <span>Community Interests</span>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -54,8 +54,8 @@ export default async function ExplorePage() {
 
       {/* Featured Members Section */}
       <div className="space-y-6">
-        <div className="flex items-center justify-between border-b border-[rgba(88,101,242,0.15)] pb-4">
-          <div className="flex items-center gap-2 font-bold text-xl text-white font-[var(--font-display)]">
+        <div className="flex items-center justify-between border-b border-border pb-4">
+          <div className="flex items-center gap-2 font-bold text-xl text-ink font-[var(--font-display)]">
             <Sparkles className="w-5 h-5 text-[#ec48bd]" />
             <span>Community Profiles</span>
           </div>

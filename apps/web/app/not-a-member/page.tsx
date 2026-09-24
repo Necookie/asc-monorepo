@@ -22,17 +22,17 @@ export default function NotAMemberPage() {
           </div>
 
           <div className="space-y-2">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-[var(--font-display)]">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-ink tracking-tight font-[var(--font-display)]">
               Not a Community Member Yet
             </h1>
-            <p className="text-sm text-[#c7c9e5] leading-relaxed">
+            <p className="text-sm text-ink-secondary leading-relaxed">
               You’ve successfully authenticated with Discord, but we couldn’t find an active member record for your account in the ASC community server.
             </p>
           </div>
 
-          <div className="p-4 rounded-xl bg-[#141943] border border-[rgba(88,101,242,0.15)] text-left text-xs text-[#8b92d6] space-y-2">
-            <div className="font-semibold text-white flex items-center gap-1.5 text-sm">
-              <Users className="w-4 h-4 text-[#5865f2]" />
+          <div className="p-4 rounded-xl bg-surface-indigo border border-border text-left text-xs text-muted space-y-2">
+            <div className="font-semibold text-ink flex items-center gap-1.5 text-sm">
+              <Users className="w-4 h-4 text-primary" />
               How ASC Profiles Work
             </div>
             <p>
@@ -72,10 +72,10 @@ export default function NotAMemberPage() {
             </div>
           </div>
 
-          <div className="pt-2 border-t border-[rgba(88,101,242,0.15)]">
+          <div className="pt-2 border-t border-border">
             <Link
               href="/members"
-              className="text-xs text-[#8b92d6] hover:text-white transition-colors"
+              className="text-xs text-muted hover:text-ink transition-colors"
             >
               ← Or browse public community members
             </Link>

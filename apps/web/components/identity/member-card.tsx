@@ -34,8 +34,8 @@ export function MemberCard({
     >
       <div
         className={cn(
-          'relative flex h-full flex-col items-center rounded-xl border border-white/[0.08] bg-surface-indigo p-6 text-center transition-colors duration-200',
-          'group-hover:bg-surface-elevated group-hover:border-white/[0.16]',
+          'relative flex h-full flex-col items-center rounded-xl border border-border bg-surface-indigo p-6 text-center transition-colors duration-200',
+          'group-hover:bg-surface-elevated group-hover:border-border-strong',
           className
         )}
         {...props}
@@ -53,7 +53,7 @@ export function MemberCard({
             src={avatar}
             alt={displayName}
             size={64}
-            className="border-2 border-white/[0.14]"
+            className="border-2 border-border-strong"
           />
         </div>
 
@@ -81,7 +81,7 @@ export function MemberCard({
               <TagChip key={tag.id} name={tag.name} />
             ))}
             {tags.length > 3 && (
-              <span className="text-[11px] font-semibold text-[#9498bd] self-center">
+              <span className="text-[11px] font-semibold text-muted self-center">
                 +{tags.length - 3}
               </span>
             )}

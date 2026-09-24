@@ -51,7 +51,7 @@ export function IdentityCard({
   return (
     <div
       className={cn(
-        'relative overflow-hidden rounded-xl bg-surface-indigo border border-white/[0.1] transition-colors duration-200',
+        'relative overflow-hidden rounded-xl bg-surface-indigo border border-border transition-colors duration-200',
         className
       )}
       {...props}
@@ -66,7 +66,7 @@ export function IdentityCard({
         <div className="absolute inset-0 bg-black/20" />
         {/* Synced with ASC Tag */}
         <div className="absolute top-3 right-3">
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-full bg-canvas text-ink-secondary border border-white/[0.12]">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-full bg-canvas text-ink-secondary border border-border">
             <ShieldCheck className="w-3.5 h-3.5 text-primary-soft" />
             Synced with ASC
           </span>
@@ -84,7 +84,7 @@ export function IdentityCard({
           />
           {isSupporter && <SupporterBadge className="mb-2" />}
           {isFormerMember && (
-            <span className="mb-2 inline-flex items-center gap-1 px-3 py-1 text-xs font-semibold rounded-full bg-[#23272a] text-[#9498bd] border border-[#9498bd]/30">
+            <span className="mb-2 inline-flex items-center gap-1 px-3 py-1 text-xs font-semibold rounded-full bg-[#23272a] text-muted border border-[#9498bd]/30">
               <UserX className="w-3.5 h-3.5" />
               Former Member
             </span>
@@ -99,14 +99,14 @@ export function IdentityCard({
           <div className="flex flex-wrap items-center gap-2 text-sm text-ink-secondary">
             <span className="font-semibold text-primary-soft">@{username}</span>
             {nickname && nickname !== displayName && (
-              <span className="text-[#9498bd]">({nickname})</span>
+              <span className="text-muted">({nickname})</span>
             )}
           </div>
         </div>
 
         {/* Roles Section */}
         {showRoles && roles.length > 0 && (
-          <div className="mt-4 pt-4 border-t border-[rgba(88,101,242,0.15)]">
+          <div className="mt-4 pt-4 border-t border-border">
             <div className="flex flex-wrap gap-1.5">
               {roles.map((role) => (
                 <RoleChip
@@ -122,8 +122,8 @@ export function IdentityCard({
 
         {/* Membership Tenure */}
         {showMembershipDate && formattedDate && (
-          <div className="mt-4 pt-3 border-t border-[rgba(88,101,242,0.12)] flex items-center gap-2 text-xs font-medium text-[#9498bd]">
-            <Calendar className="w-3.5 h-3.5 text-[#5865f2]" />
+          <div className="mt-4 pt-3 border-t border-border flex items-center gap-2 text-xs font-medium text-muted">
+            <Calendar className="w-3.5 h-3.5 text-primary" />
             <span>Member since {formattedDate}</span>
           </div>
         )}

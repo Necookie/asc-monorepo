@@ -32,7 +32,7 @@ export default async function HomePage() {
 
   return (
     <div className="pb-24 sm:pb-32">
-      <section className="border-b border-white/[0.08]">
+      <section className="border-b border-border">
         <div className="mx-auto grid max-w-7xl gap-14 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-12 lg:items-center lg:gap-16 lg:px-8 lg:py-28">
           <div className="lg:col-span-6">
             <div className="mb-6 flex items-center gap-3 text-sm font-semibold text-primary-soft">
@@ -62,14 +62,14 @@ export default async function HomePage() {
               </Link>
             </div>
 
-            <div className="mt-8 flex max-w-xl items-start gap-3 border-t border-white/[0.08] pt-6 text-sm leading-6 text-muted">
+            <div className="mt-8 flex max-w-xl items-start gap-3 border-t border-border pt-6 text-sm leading-6 text-muted">
               <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-primary-soft" />
               <p>Discord identity, community roles, and membership history stay verified and read-only.</p>
             </div>
           </div>
 
           <div className="lg:col-span-6 lg:pl-6">
-            <div className="border-y border-white/[0.1]">
+            <div className="border-y border-border">
               <div className="flex items-center justify-between gap-4 py-4">
                 <div>
                   <p className="font-[var(--font-display)] text-lg font-semibold text-ink">Recently active</p>
@@ -81,14 +81,14 @@ export default async function HomePage() {
               </div>
 
               {featuredMembers.length > 0 ? (
-                <div className="divide-y divide-white/[0.08] border-t border-white/[0.08]">
+                <div className="divide-y divide-border border-t border-border">
                   {featuredMembers.map((member) => (
                     <Link
                       key={member.id}
                       href={`/${member.slug}`}
                       className="group flex min-h-20 items-center gap-4 py-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                     >
-                      <Avatar src={member.avatar} alt={member.displayName} size={48} className="border-white/[0.14]" />
+                      <Avatar src={member.avatar} alt={member.displayName} size={48} className="border-border-strong" />
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2">
                           <span className="truncate font-semibold text-ink group-hover:text-primary-soft">
@@ -106,7 +106,7 @@ export default async function HomePage() {
                   ))}
                 </div>
               ) : (
-                <div className="border-t border-white/[0.08] py-10 text-sm text-muted">
+                <div className="border-t border-border py-10 text-sm text-muted">
                   Member profiles will appear here as the community syncs.
                 </div>
               )}
@@ -153,7 +153,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      <section className="border-y border-white/[0.08] bg-surface-onyx">
+      <section className="border-y border-border bg-surface-onyx">
         <div className="mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 sm:py-24 lg:grid-cols-12 lg:gap-16 lg:px-8">
           <div className="lg:col-span-5">
             <UserRound className="mb-6 h-8 w-8 text-primary-soft" />
@@ -165,7 +165,7 @@ export default async function HomePage() {
             </p>
           </div>
 
-          <ol className="divide-y divide-white/[0.1] border-y border-white/[0.1] lg:col-span-7">
+          <ol className="divide-y divide-border border-y border-border lg:col-span-7">
             {STEPS.map((step) => (
               <li key={step.number} className="grid gap-3 py-7 sm:grid-cols-[3rem_1fr] sm:gap-5">
                 <span className="font-[var(--font-display)] text-sm font-semibold text-primary-soft">{step.number}</span>

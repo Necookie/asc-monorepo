@@ -29,10 +29,10 @@ export default async function DashboardLayout({
   return (
     <div className="min-h-[calc(100vh-4rem)] flex flex-col lg:flex-row bg-canvas">
       {/* Desktop Sidebar (lg+) */}
-      <aside className="hidden lg:flex flex-col w-72 border-r border-white/[0.08] bg-surface-onyx p-6 justify-between shrink-0">
+      <aside className="hidden lg:flex flex-col w-72 border-r border-border bg-surface-onyx p-6 justify-between shrink-0">
         <div className="space-y-6">
           {/* Member Card in Sidebar */}
-          <div className="p-4 rounded-2xl bg-[#141943] border border-[rgba(88,101,242,0.2)] space-y-3">
+          <div className="p-4 rounded-2xl bg-surface-indigo border border-border space-y-3">
             <div className="flex items-center gap-3">
               <Avatar
                 src={member.user.avatar}
@@ -41,16 +41,16 @@ export default async function DashboardLayout({
                 fallbackText={member.user.displayName.slice(0, 2).toUpperCase()}
               />
               <div className="truncate">
-                <div className="text-sm font-bold text-white truncate">
+                <div className="text-sm font-bold text-ink truncate">
                   {member.user.displayName}
                 </div>
-                <div className="text-xs text-[#8b92d6] truncate">
+                <div className="text-xs text-muted truncate">
                   @{member.user.username}
                 </div>
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-1 items-center pt-1 border-t border-[rgba(88,101,242,0.15)]">
+            <div className="flex flex-wrap gap-1 items-center pt-1 border-t border-border">
               {member.isSupporter && <SupporterBadge />}
               {member.roles.slice(0, 2).map((role) => (
                 <RoleChip
@@ -67,35 +67,35 @@ export default async function DashboardLayout({
           <nav className="space-y-1 text-sm font-semibold">
             <Link
               href="/dashboard"
-              className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[#c7c9e5] hover:text-white hover:bg-[#1e2353]/80 transition-colors"
+              className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors"
             >
-              <User className="w-4 h-4 text-[#5865f2]" />
+              <User className="w-4 h-4 text-primary" />
               Bio & Custom Title
             </Link>
             <Link
               href="/dashboard/appearance"
-              className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[#c7c9e5] hover:text-white hover:bg-[#1e2353]/80 transition-colors"
+              className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors"
             >
               <Palette className="w-4 h-4 text-[#ec48bd]" />
               Theme & Appearance
             </Link>
             <Link
               href="/dashboard/tags"
-              className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[#c7c9e5] hover:text-white hover:bg-[#1e2353]/80 transition-colors"
+              className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors"
             >
               <TagIcon className="w-4 h-4 text-[#35ed7e]" />
               Community Tags
             </Link>
             <Link
               href="/dashboard/links"
-              className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[#c7c9e5] hover:text-white hover:bg-[#1e2353]/80 transition-colors"
+              className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors"
             >
               <LinkIcon className="w-4 h-4 text-[#06b6d4]" />
               Outbound Links
             </Link>
             <Link
               href="/dashboard/privacy"
-              className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[#c7c9e5] hover:text-white hover:bg-[#1e2353]/80 transition-colors"
+              className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors"
             >
               <Shield className="w-4 h-4 text-[#f59e0b]" />
               Privacy Controls
@@ -104,7 +104,7 @@ export default async function DashboardLayout({
         </div>
 
         {/* Sidebar Footer */}
-        <div className="space-y-2 pt-6 border-t border-[rgba(88,101,242,0.15)] text-xs font-semibold">
+        <div className="space-y-2 pt-6 border-t border-border text-xs font-semibold">
           {member.isAdmin && (
             <Link
               href="/admin"
@@ -119,7 +119,7 @@ export default async function DashboardLayout({
             <Link
               href={`/${member.primarySlug}`}
               target="_blank"
-              className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-[#8b92d6] hover:text-white hover:bg-[#1e2353]/60 transition-colors"
+              className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-muted hover:text-ink hover:bg-surface-indigo/60 transition-colors"
             >
               <ExternalLink className="w-4 h-4" />
               View Public Profile
@@ -129,7 +129,7 @@ export default async function DashboardLayout({
           <SignOutButton redirectUrl="/">
             <button
               type="button"
-              className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-[#8b92d6] hover:text-white hover:bg-[#1e2353]/60 transition-colors text-left"
+              className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-muted hover:text-ink hover:bg-surface-indigo/60 transition-colors text-left"
             >
               <LogOut className="w-4 h-4" />
               Sign Out
@@ -139,7 +139,7 @@ export default async function DashboardLayout({
       </aside>
 
       {/* Mobile Sub-Header & Navigation Tabs (lg:hidden) */}
-      <div className="lg:hidden border-b border-white/[0.08] bg-surface-onyx sticky top-16 z-30 px-4 py-2.5">
+      <div className="lg:hidden border-b border-border bg-surface-onyx sticky top-16 z-30 px-4 py-2.5">
         <div className="flex items-center justify-between gap-2 mb-2">
           <div className="flex items-center gap-2 truncate">
             <Avatar
@@ -148,7 +148,7 @@ export default async function DashboardLayout({
               size={32}
               fallbackText={member.user.displayName.slice(0, 2).toUpperCase()}
             />
-            <span className="text-xs font-bold text-white truncate">
+            <span className="text-xs font-bold text-ink truncate">
               {member.user.displayName}
             </span>
           </div>
@@ -157,7 +157,7 @@ export default async function DashboardLayout({
               <Link
                 href={`/${member.primarySlug}`}
                 target="_blank"
-                className="text-[11px] font-semibold text-[#8b92d6] hover:text-white px-2 py-1 rounded-md bg-[#141943] border border-[rgba(88,101,242,0.2)]"
+                className="text-[11px] font-semibold text-muted hover:text-ink px-2 py-1 rounded-md bg-surface-indigo border border-border"
               >
                 Profile
               </Link>
@@ -176,31 +176,31 @@ export default async function DashboardLayout({
         <nav className="flex items-center gap-1.5 text-xs font-semibold overflow-x-auto scrollbar-none py-1">
           <Link
             href="/dashboard"
-            className="px-3 py-1.5 rounded-lg text-[#c7c9e5] hover:text-white hover:bg-[#1e2353]/80 transition-colors shrink-0"
+            className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
           >
             Bio
           </Link>
           <Link
             href="/dashboard/appearance"
-            className="px-3 py-1.5 rounded-lg text-[#c7c9e5] hover:text-white hover:bg-[#1e2353]/80 transition-colors shrink-0"
+            className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
           >
             Appearance
           </Link>
           <Link
             href="/dashboard/tags"
-            className="px-3 py-1.5 rounded-lg text-[#c7c9e5] hover:text-white hover:bg-[#1e2353]/80 transition-colors shrink-0"
+            className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
           >
             Tags
           </Link>
           <Link
             href="/dashboard/links"
-            className="px-3 py-1.5 rounded-lg text-[#c7c9e5] hover:text-white hover:bg-[#1e2353]/80 transition-colors shrink-0"
+            className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
           >
             Links
           </Link>
           <Link
             href="/dashboard/privacy"
-            className="px-3 py-1.5 rounded-lg text-[#c7c9e5] hover:text-white hover:bg-[#1e2353]/80 transition-colors shrink-0"
+            className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
           >
             Privacy
           </Link>

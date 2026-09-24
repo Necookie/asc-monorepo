@@ -6,15 +6,15 @@ export default function NotFound() {
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-20">
       <div className="max-w-md w-full text-center space-y-6">
-        <div className="w-16 h-16 rounded-3xl bg-[rgba(88,101,242,0.15)] border border-[rgba(88,101,242,0.3)] flex items-center justify-center mx-auto text-[#5865f2] shadow-lg">
+        <div className="w-16 h-16 rounded-3xl bg-surface-hover border border-border flex items-center justify-center mx-auto text-primary shadow-lg">
           <HelpCircle className="w-8 h-8" />
         </div>
 
         <div className="space-y-2">
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-white font-[var(--font-display)] tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-ink font-[var(--font-display)] tracking-tight">
             PAGE NOT FOUND
           </h1>
-          <p className="text-sm sm:text-base text-[#c7c9e5] leading-relaxed">
+          <p className="text-sm sm:text-base text-ink-secondary leading-relaxed">
             The profile or page you are looking for does not exist, may have moved, or is temporarily unavailable.
           </p>
         </div>

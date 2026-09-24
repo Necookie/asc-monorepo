@@ -221,12 +221,12 @@ export function ProfileCustomizer({
   return (
     <div className="space-y-6">
       {/* Top Section / Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-[rgba(88,101,242,0.15)] pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-border pb-5">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-[var(--font-display)]">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-ink tracking-tight font-[var(--font-display)]">
             Profile Customization
           </h1>
-          <p className="text-sm text-[#8b92d6] mt-1">
+          <p className="text-sm text-muted mt-1">
             Customize how you appear across the ASC community surface.
           </p>
         </div>
@@ -238,7 +238,7 @@ export function ProfileCustomizer({
               target="_blank"
               className="hidden sm:inline-flex"
             >
-              <Button variant="outline" size="sm" className="gap-1.5 text-xs text-[#8b92d6]">
+              <Button variant="outline" size="sm" className="gap-1.5 text-xs text-muted">
                 <ExternalLink className="w-3.5 h-3.5" />
                 View Public Profile
               </Button>
@@ -287,13 +287,13 @@ export function ProfileCustomizer({
         {/* Left Column: Navigation Tabs & Editor Form */}
         <div className="lg:col-span-7 space-y-6">
           {/* Section Tabs */}
-          <div className="flex items-center gap-1.5 p-1 bg-[#141943] border border-[rgba(88,101,242,0.2)] rounded-xl overflow-x-auto text-xs font-semibold">
+          <div className="flex items-center gap-1.5 p-1 bg-surface-indigo border border-border rounded-xl overflow-x-auto text-xs font-semibold">
             <button
               onClick={() => setActiveTab('profile')}
               className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
                 activeTab === 'profile'
-                  ? 'bg-[#5865f2] text-white shadow-md'
-                  : 'text-[#8b92d6] hover:text-white hover:bg-[#1e2353]/60'
+                  ? 'bg-primary text-ink-dark shadow-md'
+                  : 'text-muted hover:text-ink hover:bg-surface-indigo/60'
               }`}
             >
               <User className="w-3.5 h-3.5" />
@@ -303,8 +303,8 @@ export function ProfileCustomizer({
               onClick={() => setActiveTab('appearance')}
               className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
                 activeTab === 'appearance'
-                  ? 'bg-[#5865f2] text-white shadow-md'
-                  : 'text-[#8b92d6] hover:text-white hover:bg-[#1e2353]/60'
+                  ? 'bg-primary text-ink-dark shadow-md'
+                  : 'text-muted hover:text-ink hover:bg-surface-indigo/60'
               }`}
             >
               <Palette className="w-3.5 h-3.5" />
@@ -314,8 +314,8 @@ export function ProfileCustomizer({
               onClick={() => setActiveTab('tags')}
               className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
                 activeTab === 'tags'
-                  ? 'bg-[#5865f2] text-white shadow-md'
-                  : 'text-[#8b92d6] hover:text-white hover:bg-[#1e2353]/60'
+                  ? 'bg-primary text-ink-dark shadow-md'
+                  : 'text-muted hover:text-ink hover:bg-surface-indigo/60'
               }`}
             >
               <TagIcon className="w-3.5 h-3.5" />
@@ -325,8 +325,8 @@ export function ProfileCustomizer({
               onClick={() => setActiveTab('links')}
               className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
                 activeTab === 'links'
-                  ? 'bg-[#5865f2] text-white shadow-md'
-                  : 'text-[#8b92d6] hover:text-white hover:bg-[#1e2353]/60'
+                  ? 'bg-primary text-ink-dark shadow-md'
+                  : 'text-muted hover:text-ink hover:bg-surface-indigo/60'
               }`}
             >
               <LinkIcon className="w-3.5 h-3.5" />
@@ -336,8 +336,8 @@ export function ProfileCustomizer({
               onClick={() => setActiveTab('privacy')}
               className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
                 activeTab === 'privacy'
-                  ? 'bg-[#5865f2] text-white shadow-md'
-                  : 'text-[#8b92d6] hover:text-white hover:bg-[#1e2353]/60'
+                  ? 'bg-primary text-ink-dark shadow-md'
+                  : 'text-muted hover:text-ink hover:bg-surface-indigo/60'
               }`}
             >
               <Shield className="w-3.5 h-3.5" />
@@ -347,10 +347,10 @@ export function ProfileCustomizer({
 
           {/* TAB 1: Profile Bio & Title */}
           {activeTab === 'profile' && (
-            <Card className="bg-[#141943]/80 border-[rgba(88,101,242,0.2)] p-6 space-y-6">
+            <Card className="bg-surface-indigo/80 border-border p-6 space-y-6">
               <CardHeader className="p-0">
-                <CardTitle className="text-lg font-bold text-white">Biography & Title</CardTitle>
-                <CardDescription className="text-xs text-[#8b92d6]">
+                <CardTitle className="text-lg font-bold text-ink">Biography & Title</CardTitle>
+                <CardDescription className="text-xs text-muted">
                   Express your digital identity, skills, and community interests.
                 </CardDescription>
               </CardHeader>
@@ -359,7 +359,7 @@ export function ProfileCustomizer({
                 {/* Custom Title */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <label className="text-sm font-semibold text-white flex items-center gap-1.5">
+                    <label className="text-sm font-semibold text-ink flex items-center gap-1.5">
                       Custom Title
                       {!entitlements.canCustomTitle && (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-[#f59e0b]/15 text-[#f59e0b] border border-[#f59e0b]/30">
@@ -367,7 +367,7 @@ export function ProfileCustomizer({
                         </span>
                       )}
                     </label>
-                    <span className="text-xs text-[#8b92d6]">{customTitle.length}/64</span>
+                    <span className="text-xs text-muted">{customTitle.length}/64</span>
                   </div>
                   <input
                     type="text"
@@ -379,24 +379,24 @@ export function ProfileCustomizer({
                         ? 'e.g. Lead Core Contributor'
                         : 'Unlock custom titles with community supporter status'
                     }
-                    className="w-full px-4 py-2.5 rounded-xl bg-[#0e1245] border border-[rgba(88,101,242,0.25)] text-white placeholder:text-[#a3a6c2] focus:outline-none focus:ring-2 focus:ring-[#5865f2] disabled:opacity-50 text-sm"
+                    className="w-full px-4 py-2.5 rounded-xl bg-surface-onyx border border-border text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 text-sm"
                   />
                 </div>
 
                 {/* Biography */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <label className="text-sm font-semibold text-white">About Me</label>
-                    <span className="text-xs text-[#8b92d6]">{bio.length}/500</span>
+                    <label className="text-sm font-semibold text-ink">About Me</label>
+                    <span className="text-xs text-muted">{bio.length}/500</span>
                   </div>
                   <textarea
                     value={bio}
                     onChange={(e) => setBio(e.target.value.slice(0, 500))}
                     rows={5}
                     placeholder="Tell the community about yourself, your projects, or your interests..."
-                    className="w-full px-4 py-3 rounded-xl bg-[#0e1245] border border-[rgba(88,101,242,0.25)] text-white placeholder:text-[#a3a6c2] focus:outline-none focus:ring-2 focus:ring-[#5865f2] text-sm resize-none"
+                    className="w-full px-4 py-3 rounded-xl bg-surface-onyx border border-border text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary text-sm resize-none"
                   />
-                  <p className="text-[11px] text-[#8b92d6]">
+                  <p className="text-[11px] text-muted">
                     Plain text only. Max 500 characters. Live preview updates on the right.
                   </p>
                 </div>
@@ -406,10 +406,10 @@ export function ProfileCustomizer({
 
           {/* TAB 2: Appearance */}
           {activeTab === 'appearance' && (
-            <Card className="bg-[#141943]/80 border-[rgba(88,101,242,0.2)] p-6 space-y-6">
+            <Card className="bg-surface-indigo/80 border-border p-6 space-y-6">
               <CardHeader className="p-0">
-                <CardTitle className="text-lg font-bold text-white">Theme & Appearance</CardTitle>
-                <CardDescription className="text-xs text-[#8b92d6]">
+                <CardTitle className="text-lg font-bold text-ink">Theme & Appearance</CardTitle>
+                <CardDescription className="text-xs text-muted">
                   Personalize the accent color and theme styling for your profile.
                 </CardDescription>
               </CardHeader>
@@ -417,7 +417,7 @@ export function ProfileCustomizer({
               <CardContent className="p-0 space-y-6">
                 {/* Theme Selection */}
                 <div className="space-y-3">
-                  <label className="text-sm font-semibold text-white">Profile Theme</label>
+                  <label className="text-sm font-semibold text-ink">Profile Theme</label>
                   <div className="grid grid-cols-3 gap-3">
                     {[
                       { id: 'canvas', name: 'Deep Indigo', desc: 'Standard ASC atmosphere' },
@@ -430,12 +430,12 @@ export function ProfileCustomizer({
                         onClick={() => setTheme(th.id as any)}
                         className={`p-3.5 rounded-xl border text-left transition-all ${
                           theme === th.id
-                            ? 'bg-[#5865f2]/20 border-[#5865f2] ring-2 ring-[#5865f2]/40 text-white'
-                            : 'bg-[#0e1245] border-[rgba(88,101,242,0.2)] text-[#c7c9e5] hover:border-[rgba(88,101,242,0.4)]'
+                            ? 'bg-primary/20 border-primary ring-2 ring-primary/40 text-ink'
+                            : 'bg-surface-onyx border-border text-ink-secondary hover:border-border'
                         }`}
                       >
-                        <div className="font-semibold text-xs text-white">{th.name}</div>
-                        <div className="text-[10px] text-[#8b92d6] mt-0.5">{th.desc}</div>
+                        <div className="font-semibold text-xs text-ink">{th.name}</div>
+                        <div className="text-[10px] text-muted mt-0.5">{th.desc}</div>
                       </button>
                     ))}
                   </div>
@@ -444,13 +444,13 @@ export function ProfileCustomizer({
                 {/* Accent Color Selection */}
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <label className="text-sm font-semibold text-white">Accent Color</label>
+                    <label className="text-sm font-semibold text-ink">Accent Color</label>
                     <div className="flex items-center gap-2">
                       <div
-                        className="w-4 h-4 rounded-full border border-white/20"
+                        className="w-4 h-4 rounded-full border border-border-strong"
                         style={{ backgroundColor: accentColor }}
                       />
-                      <span className="text-xs font-mono text-[#8b92d6]">{accentColor}</span>
+                      <span className="text-xs font-mono text-muted">{accentColor}</span>
                     </div>
                   </div>
 
@@ -471,21 +471,21 @@ export function ProfileCustomizer({
                     ))}
 
                     <div className="flex items-center gap-2 ml-2">
-                      <span className="text-xs text-[#8b92d6]">Custom:</span>
+                      <span className="text-xs text-muted">Custom:</span>
                       <input
                         type="text"
                         value={accentColor}
                         onChange={(e) => setAccentColor(e.target.value)}
-                        className="w-24 px-2 py-1 text-xs rounded-lg bg-[#0e1245] border border-[rgba(88,101,242,0.3)] text-white font-mono focus:outline-none focus:ring-1 focus:ring-[#5865f2]"
+                        className="w-24 px-2 py-1 text-xs rounded-lg bg-surface-onyx border border-border text-ink font-mono focus:outline-none focus:ring-1 focus:ring-primary"
                       />
                     </div>
                   </div>
                 </div>
 
                 {/* Supporter Background URL */}
-                <div className="space-y-2 pt-2 border-t border-[rgba(88,101,242,0.15)]">
+                <div className="space-y-2 pt-2 border-t border-border">
                   <div className="flex items-center justify-between">
-                    <label className="text-sm font-semibold text-white flex items-center gap-1.5">
+                    <label className="text-sm font-semibold text-ink flex items-center gap-1.5">
                       Supporter Background Image
                       {!entitlements.canCustomBackground && (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-[#f59e0b]/15 text-[#f59e0b] border border-[#f59e0b]/30">
@@ -504,9 +504,9 @@ export function ProfileCustomizer({
                         ? 'https://example.com/banner.png'
                         : 'Unlock custom profile backgrounds with ASC supporter status'
                     }
-                    className="w-full px-4 py-2.5 rounded-xl bg-[#0e1245] border border-[rgba(88,101,242,0.25)] text-white placeholder:text-[#a3a6c2] focus:outline-none focus:ring-2 focus:ring-[#5865f2] disabled:opacity-50 text-sm font-mono"
+                    className="w-full px-4 py-2.5 rounded-xl bg-surface-onyx border border-border text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 text-sm font-mono"
                   />
-                  <p className="text-[11px] text-[#8b92d6]">
+                  <p className="text-[11px] text-muted">
                     External HTTPS URL only. Never proxies or stores binary data. Gracefully falls back if image fails.
                   </p>
                 </div>
@@ -516,15 +516,15 @@ export function ProfileCustomizer({
 
           {/* TAB 3: Community Tags */}
           {activeTab === 'tags' && (
-            <Card className="bg-[#141943]/80 border-[rgba(88,101,242,0.2)] p-6 space-y-6">
+            <Card className="bg-surface-indigo/80 border-border p-6 space-y-6">
               <CardHeader className="p-0 flex flex-row items-center justify-between">
                 <div>
-                  <CardTitle className="text-lg font-bold text-white">Community Tags</CardTitle>
-                  <CardDescription className="text-xs text-[#8b92d6]">
+                  <CardTitle className="text-lg font-bold text-ink">Community Tags</CardTitle>
+                  <CardDescription className="text-xs text-muted">
                     Select up to {entitlements.maxTags} admin-approved tags to display on your profile.
                   </CardDescription>
                 </div>
-                <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#5865f2]/20 text-[#8b92d6] border border-[#5865f2]/30">
+                <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-primary/20 text-muted border border-primary/30">
                   {selectedTagIds.length} / {entitlements.maxTags} Selected
                 </span>
               </CardHeader>
@@ -540,8 +540,8 @@ export function ProfileCustomizer({
                         onClick={() => handleToggleTag(tag.id)}
                         className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all border ${
                           isSelected
-                            ? 'bg-[#5865f2] text-white border-[#5865f2] shadow-md ring-2 ring-[#5865f2]/30'
-                            : 'bg-[#0e1245] text-[#8b92d6] border-[rgba(88,101,242,0.2)] hover:border-[#5865f2]/50 hover:text-white'
+                            ? 'bg-primary text-ink-dark border-primary shadow-md ring-2 ring-primary/30'
+                            : 'bg-surface-onyx text-muted border-border hover:border-primary/50 hover:text-ink'
                         }`}
                       >
                         <span
@@ -560,15 +560,15 @@ export function ProfileCustomizer({
 
           {/* TAB 4: External Links */}
           {activeTab === 'links' && (
-            <Card className="bg-[#141943]/80 border-[rgba(88,101,242,0.2)] p-6 space-y-6">
+            <Card className="bg-surface-indigo/80 border-border p-6 space-y-6">
               <CardHeader className="p-0 flex flex-row items-center justify-between">
                 <div>
-                  <CardTitle className="text-lg font-bold text-white">Outbound Links</CardTitle>
-                  <CardDescription className="text-xs text-[#8b92d6]">
+                  <CardTitle className="text-lg font-bold text-ink">Outbound Links</CardTitle>
+                  <CardDescription className="text-xs text-muted">
                     Add verified links to your website, GitHub, Twitter, or portfolio.
                   </CardDescription>
                 </div>
-                <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#5865f2]/20 text-[#8b92d6] border border-[#5865f2]/30">
+                <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-primary/20 text-muted border border-primary/30">
                   {links.length} / {entitlements.maxLinks} Links
                 </span>
               </CardHeader>
@@ -579,18 +579,18 @@ export function ProfileCustomizer({
                   {links.map((link) => (
                     <div
                       key={link.id}
-                      className="flex items-center justify-between p-3 rounded-xl bg-[#0e1245] border border-[rgba(88,101,242,0.2)]"
+                      className="flex items-center justify-between p-3 rounded-xl bg-surface-onyx border border-border"
                     >
                       <div className="space-y-0.5 truncate pr-3">
-                        <div className="text-xs font-bold text-white">{link.label}</div>
-                        <div className="text-[11px] text-[#8b92d6] truncate font-mono">
+                        <div className="text-xs font-bold text-ink">{link.label}</div>
+                        <div className="text-[11px] text-muted truncate font-mono">
                           {link.url}
                         </div>
                       </div>
                       <button
                         type="button"
                         onClick={() => handleRemoveLink(link.id)}
-                        className="p-1.5 rounded-lg text-[#8b92d6] hover:text-[#ed4245] hover:bg-[#ed4245]/10 transition-colors"
+                        className="p-1.5 rounded-lg text-muted hover:text-[#ed4245] hover:bg-[#ed4245]/10 transition-colors"
                         title="Remove link"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -599,7 +599,7 @@ export function ProfileCustomizer({
                   ))}
 
                   {links.length === 0 && (
-                    <div className="p-6 text-center rounded-xl bg-[#0e1245]/50 border border-dashed border-[rgba(88,101,242,0.2)] text-xs text-[#8b92d6]">
+                    <div className="p-6 text-center rounded-xl bg-surface-onyx/50 border border-dashed border-border text-xs text-muted">
                       No links added yet. Add your first external link below.
                     </div>
                   )}
@@ -607,22 +607,22 @@ export function ProfileCustomizer({
 
                 {/* Add New Link Box */}
                 {links.length < entitlements.maxLinks && (
-                  <div className="pt-3 border-t border-[rgba(88,101,242,0.15)] space-y-3">
-                    <div className="text-xs font-semibold text-white">Add New Link</div>
+                  <div className="pt-3 border-t border-border space-y-3">
+                    <div className="text-xs font-semibold text-ink">Add New Link</div>
                     <div className="grid grid-cols-1 sm:grid-cols-12 gap-2.5">
                       <input
                         type="text"
                         value={newLinkLabel}
                         onChange={(e) => setNewLinkLabel(e.target.value.slice(0, 32))}
                         placeholder="Label (e.g. GitHub)"
-                        className="sm:col-span-4 px-3 py-2 rounded-xl bg-[#0e1245] border border-[rgba(88,101,242,0.25)] text-sm text-white placeholder:text-[#a3a6c2] focus:outline-none focus:ring-1 focus:ring-[#5865f2]"
+                        className="sm:col-span-4 px-3 py-2 rounded-xl bg-surface-onyx border border-border text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-1 focus:ring-primary"
                       />
                       <input
                         type="url"
                         value={newLinkUrl}
                         onChange={(e) => setNewLinkUrl(e.target.value)}
                         placeholder="https://..."
-                        className="sm:col-span-6 px-3 py-2 rounded-xl bg-[#0e1245] border border-[rgba(88,101,242,0.25)] text-sm text-white placeholder:text-[#a3a6c2] focus:outline-none focus:ring-1 focus:ring-[#5865f2] font-mono"
+                        className="sm:col-span-6 px-3 py-2 rounded-xl bg-surface-onyx border border-border text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-1 focus:ring-primary font-mono"
                       />
                       <Button
                         variant="primary"
@@ -642,10 +642,10 @@ export function ProfileCustomizer({
 
           {/* TAB 5: Privacy */}
           {activeTab === 'privacy' && (
-            <Card className="bg-[#141943]/80 border-[rgba(88,101,242,0.2)] p-6 space-y-6">
+            <Card className="bg-surface-indigo/80 border-border p-6 space-y-6">
               <CardHeader className="p-0">
-                <CardTitle className="text-lg font-bold text-white">Privacy Controls</CardTitle>
-                <CardDescription className="text-xs text-[#8b92d6]">
+                <CardTitle className="text-lg font-bold text-ink">Privacy Controls</CardTitle>
+                <CardDescription className="text-xs text-muted">
                   Configure what information is visible on your public profile. Hidden fields are stripped server-side.
                 </CardDescription>
               </CardHeader>
@@ -682,11 +682,11 @@ export function ProfileCustomizer({
                   return (
                     <div
                       key={item.key}
-                      className="flex items-center justify-between p-3.5 rounded-xl bg-[#0e1245] border border-[rgba(88,101,242,0.2)]"
+                      className="flex items-center justify-between p-3.5 rounded-xl bg-surface-onyx border border-border"
                     >
                       <div className="space-y-0.5 pr-4">
-                        <div className="text-xs font-bold text-white">{item.title}</div>
-                        <div className="text-[11px] text-[#8b92d6]">{item.desc}</div>
+                        <div className="text-xs font-bold text-ink">{item.title}</div>
+                        <div className="text-[11px] text-muted">{item.desc}</div>
                       </div>
                       <button
                         type="button"
@@ -697,7 +697,7 @@ export function ProfileCustomizer({
                           }))
                         }
                         className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                          val ? 'bg-[#5865f2]' : 'bg-[#1e2353]'
+                          val ? 'bg-primary' : 'bg-surface-indigo'
                         }`}
                       >
                         <span
@@ -717,8 +717,8 @@ export function ProfileCustomizer({
         {/* Right Column: Sticky Live Interactive Preview */}
         <div className="lg:col-span-5 sticky top-24 space-y-4">
           <div className="flex items-center justify-between px-1">
-            <div className="flex items-center gap-1.5 text-xs font-semibold text-[#8b92d6]">
-              <Eye className="w-3.5 h-3.5 text-[#5865f2]" />
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-muted">
+              <Eye className="w-3.5 h-3.5 text-primary" />
               Live Interactive Preview
             </div>
             <span className="text-xs text-muted">Updates in real time</span>
@@ -726,17 +726,17 @@ export function ProfileCustomizer({
 
           {/* Simulated Public Profile View */}
           <div
-            className="rounded-3xl border border-[rgba(88,101,242,0.25)] bg-[#0e1245] shadow-2xl overflow-hidden transition-all"
+            className="rounded-3xl border border-border bg-surface-onyx shadow-2xl overflow-hidden transition-all"
             style={{ borderColor: accentColor }}
           >
             {/* Header / Supporter Banner Preview */}
             <div
-              className="relative h-28 w-full bg-[#141943] bg-cover bg-center"
+              className="relative h-28 w-full bg-surface-indigo bg-cover bg-center"
               style={{
                 backgroundImage: backgroundUrl ? `url(${backgroundUrl})` : undefined,
               }}
             >
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0e1245] via-transparent to-black/20" />
+              <div className="absolute inset-0 bg-gradient-to-t from-surface-onyx via-transparent to-black/20" />
             </div>
 
             {/* Content Body */}
@@ -748,26 +748,26 @@ export function ProfileCustomizer({
                   alt={member.user.displayName}
                   size={64}
                   fallbackText={member.user.displayName.slice(0, 2).toUpperCase()}
-                  className="ring-4 ring-[#0e1245] shadow-xl"
+                  className="ring-4 ring-surface-onyx shadow-xl"
                 />
                 {member.isSupporter && <SupporterBadge />}
               </div>
 
               <div>
                 <div className="flex items-center gap-2">
-                  <h2 className="text-xl font-extrabold text-white font-[var(--font-display)]">
+                  <h2 className="text-xl font-extrabold text-ink font-[var(--font-display)]">
                     {member.user.displayName}
                   </h2>
                   {customTitle && (
                     <span
-                      className="px-2 py-0.5 rounded text-[10px] font-bold text-white shadow-sm"
+                      className="px-2 py-0.5 rounded text-[10px] font-bold text-ink shadow-sm"
                       style={{ backgroundColor: accentColor }}
                     >
                       {customTitle}
                     </span>
                   )}
                 </div>
-                <div className="text-xs text-[#8b92d6]">@{member.user.username}</div>
+                <div className="text-xs text-muted">@{member.user.username}</div>
               </div>
 
               {/* Roles */}
@@ -786,11 +786,11 @@ export function ProfileCustomizer({
 
               {/* Bio */}
               {bio ? (
-                <div className="text-xs text-[#c7c9e5] leading-relaxed whitespace-pre-wrap bg-[#141943]/60 p-3 rounded-xl border border-[rgba(88,101,242,0.15)]">
+                <div className="text-xs text-ink-secondary leading-relaxed whitespace-pre-wrap bg-surface-indigo/60 p-3 rounded-xl border border-border">
                   {bio}
                 </div>
               ) : (
-                <div className="text-sm text-muted italic bg-[#141943] p-3 rounded-xl">
+                <div className="text-sm text-muted italic bg-surface-indigo p-3 rounded-xl">
                   No biography provided yet.
                 </div>
               )}
@@ -798,7 +798,7 @@ export function ProfileCustomizer({
               {/* Tags */}
               {privacy.showTags && previewTags.length > 0 && (
                 <div className="space-y-1.5">
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-[#8b92d6]">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-muted">
                     Tags
                   </div>
                   <div className="flex flex-wrap gap-1.5">
@@ -812,16 +812,16 @@ export function ProfileCustomizer({
               {/* Links */}
               {privacy.showLinks && links.length > 0 && (
                 <div className="space-y-1.5 pt-1">
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-[#8b92d6]">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-muted">
                     Links
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {links.map((link) => (
                       <span
                         key={link.id}
-                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-[#141943] border border-[rgba(88,101,242,0.2)] text-xs text-[#c7c9e5]"
+                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-surface-indigo border border-border text-xs text-ink-secondary"
                       >
-                        <ExternalLink className="w-3 h-3 text-[#5865f2]" />
+                        <ExternalLink className="w-3 h-3 text-primary" />
                         {link.label}
                       </span>
                     ))}

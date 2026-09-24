@@ -98,10 +98,10 @@ export function ProfileModerationPanel({ members }: ProfileModerationPanelProps)
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Select Member */}
         <div className="lg:col-span-5 space-y-4">
-          <Card className="bg-[#0e1245]/80 border-[rgba(88,101,242,0.2)] p-5 space-y-4">
+          <Card className="bg-surface-onyx/80 border-border p-5 space-y-4">
             <CardHeader className="p-0">
-              <CardTitle className="text-base font-bold text-white">Select Target Member</CardTitle>
-              <CardDescription className="text-xs text-[#8b92d6]">
+              <CardTitle className="text-base font-bold text-ink">Select Target Member</CardTitle>
+              <CardDescription className="text-xs text-muted">
                 Choose a member to inspect or apply moderation actions.
               </CardDescription>
             </CardHeader>
@@ -114,8 +114,8 @@ export function ProfileModerationPanel({ members }: ProfileModerationPanelProps)
                   onClick={() => setSelectedUserId(m.id)}
                   className={`w-full flex items-center gap-3 p-3 rounded-xl border text-left transition-all ${
                     selectedUserId === m.id
-                      ? 'bg-[#5865f2]/20 border-[#5865f2] ring-1 ring-[#5865f2]'
-                      : 'bg-[#141943] border-[rgba(88,101,242,0.15)] hover:border-[rgba(88,101,242,0.4)]'
+                      ? 'bg-primary/20 border-primary ring-1 ring-primary'
+                      : 'bg-surface-indigo border-border hover:border-border'
                   }`}
                 >
                   <Avatar
@@ -125,10 +125,10 @@ export function ProfileModerationPanel({ members }: ProfileModerationPanelProps)
                     fallbackText={m.displayName.slice(0, 2).toUpperCase()}
                   />
                   <div className="truncate">
-                    <div className="text-xs font-bold text-white truncate">
+                    <div className="text-xs font-bold text-ink truncate">
                       {m.displayName}
                     </div>
-                    <div className="text-[10px] text-[#8b92d6] truncate">@{m.username}</div>
+                    <div className="text-[10px] text-muted truncate">@{m.username}</div>
                   </div>
                 </button>
               ))}
@@ -139,8 +139,8 @@ export function ProfileModerationPanel({ members }: ProfileModerationPanelProps)
         {/* Right Column: Moderation Actions */}
         <div className="lg:col-span-7 space-y-4">
           {selectedMember ? (
-            <Card className="bg-[#0e1245]/80 border-[rgba(88,101,242,0.2)] p-6 space-y-6">
-              <CardHeader className="p-0 pb-4 border-b border-[rgba(88,101,242,0.15)] flex flex-row items-center justify-between">
+            <Card className="bg-surface-onyx/80 border-border p-6 space-y-6">
+              <CardHeader className="p-0 pb-4 border-b border-border flex flex-row items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Avatar
                     src={selectedMember.avatar}
@@ -149,10 +149,10 @@ export function ProfileModerationPanel({ members }: ProfileModerationPanelProps)
                     fallbackText={selectedMember.displayName.slice(0, 2).toUpperCase()}
                   />
                   <div>
-                    <h2 className="text-base font-bold text-white">
+                    <h2 className="text-base font-bold text-ink">
                       {selectedMember.displayName}
                     </h2>
-                    <div className="text-xs text-[#8b92d6]">
+                    <div className="text-xs text-muted">
                       @{selectedMember.username} · Snowflake: {selectedMember.externalUserId}
                     </div>
                   </div>
@@ -171,7 +171,7 @@ export function ProfileModerationPanel({ members }: ProfileModerationPanelProps)
 
               {/* Mandatory Reason Input */}
               <div className="space-y-2">
-                <label className="text-xs font-bold text-white flex items-center gap-1.5">
+                <label className="text-xs font-bold text-ink flex items-center gap-1.5">
                   <ShieldAlert className="w-3.5 h-3.5 text-[#ec48bd]" />
                   Moderation Reason (Required for Audit Logging)
                 </label>
@@ -180,13 +180,13 @@ export function ProfileModerationPanel({ members }: ProfileModerationPanelProps)
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
                   placeholder="e.g. Violation of community guidelines: offensive bio text"
-                  className="w-full px-3.5 py-2 rounded-xl bg-[#141943] border border-[rgba(88,101,242,0.25)] text-sm text-white placeholder:text-[#a3a6c2] focus:outline-none focus:ring-2 focus:ring-[#ec48bd]"
+                  className="w-full px-3.5 py-2 rounded-xl bg-surface-indigo border border-border text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-[#ec48bd]"
                 />
               </div>
 
               {/* Moderation Actions Grid */}
               <div className="space-y-3 pt-2">
-                <div className="text-xs font-bold uppercase tracking-wider text-[#8b92d6]">
+                <div className="text-xs font-bold uppercase tracking-wider text-muted">
                   Available Moderation Actions
                 </div>
 
@@ -220,7 +220,7 @@ export function ProfileModerationPanel({ members }: ProfileModerationPanelProps)
                     size="sm"
                     onClick={() => handleModerate('RESET_BIO')}
                     disabled={isLoading}
-                    className="gap-2 text-xs border-[rgba(88,101,242,0.3)] text-[#c7c9e5] hover:text-white justify-start"
+                    className="gap-2 text-xs border-border text-ink-secondary hover:text-ink justify-start"
                   >
                     <RotateCcw className="w-4 h-4 text-[#f59e0b]" />
                     Reset Bio & Custom Title
@@ -231,7 +231,7 @@ export function ProfileModerationPanel({ members }: ProfileModerationPanelProps)
                     size="sm"
                     onClick={() => handleModerate('RESET_BACKGROUND')}
                     disabled={isLoading}
-                    className="gap-2 text-xs border-[rgba(88,101,242,0.3)] text-[#c7c9e5] hover:text-white justify-start"
+                    className="gap-2 text-xs border-border text-ink-secondary hover:text-ink justify-start"
                   >
                     <Image className="w-4 h-4 text-[#ec48bd]" />
                     Reset Background Image
@@ -242,7 +242,7 @@ export function ProfileModerationPanel({ members }: ProfileModerationPanelProps)
                     size="sm"
                     onClick={() => handleModerate('RESET_LINKS')}
                     disabled={isLoading}
-                    className="gap-2 text-xs border-[rgba(88,101,242,0.3)] text-[#c7c9e5] hover:text-white justify-start"
+                    className="gap-2 text-xs border-border text-ink-secondary hover:text-ink justify-start"
                   >
                     <LinkIcon className="w-4 h-4 text-[#06b6d4]" />
                     Reset Outbound Links
@@ -251,7 +251,7 @@ export function ProfileModerationPanel({ members }: ProfileModerationPanelProps)
               </div>
             </Card>
           ) : (
-            <div className="p-12 text-center text-xs text-[#8b92d6]">
+            <div className="p-12 text-center text-xs text-muted">
               No member selected.
             </div>
           )}

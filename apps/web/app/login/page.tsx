@@ -25,21 +25,21 @@ export default async function LoginPage({
         <div className="lg:col-span-6 space-y-6 text-left">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-sm text-[#8b92d6] hover:text-white transition-colors group"
+            className="inline-flex items-center gap-2 text-sm text-muted hover:text-ink transition-colors group"
           >
             <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" />
             Back to Home
           </Link>
 
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-[#5865f2]/15 text-[#8b92d6] border border-[#5865f2]/30 mb-3">
-              <Sparkles className="w-3.5 h-3.5 text-[#5865f2]" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-primary/15 text-muted border border-primary/30 mb-3">
+              <Sparkles className="w-3.5 h-3.5 text-primary" />
               Community Digital Identity
             </div>
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight font-[var(--font-display)]">
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-ink tracking-tight font-[var(--font-display)]">
               Claim & Customize Your ASC Profile
             </h1>
-            <p className="mt-3 text-[#c7c9e5] text-base leading-relaxed">
+            <p className="mt-3 text-ink-secondary text-base leading-relaxed">
               Every current member of the ASC Discord server already has a public profile. Authenticate with Discord to claim yours.
             </p>
           </div>
@@ -48,7 +48,7 @@ export default async function LoginPage({
             <div className="p-4 rounded-xl bg-[#ed4245]/15 border border-[#ed4245]/30 text-sm text-[#ff8f91] flex items-start gap-3">
               <AlertCircle className="w-5 h-5 shrink-0 mt-0.5 text-[#ed4245]" />
               <div>
-                <span className="font-semibold text-white">Discord Account Required</span>
+                <span className="font-semibold text-ink">Discord Account Required</span>
                 <p className="mt-0.5 text-xs text-[#ffb0b2]">
                   Your Clerk account must be connected with Discord to verify your community identity.
                 </p>
@@ -58,21 +58,21 @@ export default async function LoginPage({
 
           {/* Pillars */}
           <div className="space-y-3 pt-2">
-            <div className="flex items-start gap-3 p-3.5 rounded-xl bg-[#141943]/60 border border-[rgba(88,101,242,0.15)]">
+            <div className="flex items-start gap-3 p-3.5 rounded-xl bg-surface-indigo/60 border border-border">
               <UserCheck className="w-5 h-5 text-[#35ed7e] shrink-0 mt-0.5" />
               <div>
-                <div className="text-sm font-semibold text-white">Automatic Profile</div>
-                <div className="text-xs text-[#8b92d6] mt-0.5">
+                <div className="text-sm font-semibold text-ink">Automatic Profile</div>
+                <div className="text-xs text-muted mt-0.5">
                   No registration form. Your profile was automatically generated when you joined Discord.
                 </div>
               </div>
             </div>
 
-            <div className="flex items-start gap-3 p-3.5 rounded-xl bg-[#141943]/60 border border-[rgba(88,101,242,0.15)]">
-              <ShieldCheck className="w-5 h-5 text-[#5865f2] shrink-0 mt-0.5" />
+            <div className="flex items-start gap-3 p-3.5 rounded-xl bg-surface-indigo/60 border border-border">
+              <ShieldCheck className="w-5 h-5 text-primary shrink-0 mt-0.5" />
               <div>
-                <div className="text-sm font-semibold text-white">Zero-Trust Ownership</div>
-                <div className="text-xs text-[#8b92d6] mt-0.5">
+                <div className="text-sm font-semibold text-ink">Zero-Trust Ownership</div>
+                <div className="text-xs text-muted mt-0.5">
                   Profile mutations are verified server-side against your immutable Discord Snowflake.
                 </div>
               </div>
@@ -82,10 +82,10 @@ export default async function LoginPage({
 
         {/* Right Column: Clerk Sign-In */}
         <div className="lg:col-span-6 flex justify-center">
-          <Card className="w-full max-w-md bg-surface-indigo border-white/[0.1] p-6">
+          <Card className="w-full max-w-md bg-surface-indigo border-border p-6">
             <CardHeader className="text-center pb-4">
-              <CardTitle className="text-xl font-bold text-white">Sign In</CardTitle>
-              <CardDescription className="text-xs text-[#8b92d6]">
+              <CardTitle className="text-xl font-bold text-ink">Sign In</CardTitle>
+              <CardDescription className="text-xs text-muted">
                 Connect your Discord account to continue
               </CardDescription>
             </CardHeader>
@@ -100,11 +100,11 @@ export default async function LoginPage({
                     headerTitle: 'hidden',
                     headerSubtitle: 'hidden',
                     socialButtonsBlockButton:
-                      'bg-[#5865f2] hover:bg-[#4752c4] text-white border-none py-3 font-semibold rounded-xl transition-all shadow-md',
-                    socialButtonsBlockButtonText: 'text-white font-semibold text-sm',
+                      'bg-primary hover:bg-primary-hover text-ink-dark border-none py-3 font-semibold rounded-xl transition-all shadow-md',
+                    socialButtonsBlockButtonText: 'text-ink font-semibold text-sm',
                     dividerRow: 'hidden',
-                    formFieldInput: 'bg-[#141943] border-[rgba(88,101,242,0.3)] text-white rounded-xl',
-                    formButtonPrimary: 'bg-[#5865f2] hover:bg-[#4752c4] text-white rounded-xl',
+                    formFieldInput: 'bg-surface-indigo border-border text-ink rounded-xl',
+                    formButtonPrimary: 'bg-primary hover:bg-primary-hover text-ink-dark rounded-xl',
                     footerAction: 'hidden',
                   },
                 }}

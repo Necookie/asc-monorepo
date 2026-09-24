@@ -17,10 +17,10 @@ export default async function AdminTagsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-[var(--font-display)]">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-ink tracking-tight font-[var(--font-display)]">
           Community Tags
         </h1>
-        <p className="text-sm text-[#8b92d6] mt-1">
+        <p className="text-sm text-muted mt-1">
           Create, customize, and deactivate community tags that members can pin to their public profile identity.
         </p>
       </div>

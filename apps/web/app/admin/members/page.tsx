@@ -29,32 +29,32 @@ export default async function AdminMembersPage({
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-[var(--font-display)]">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-ink tracking-tight font-[var(--font-display)]">
             Member Management
           </h1>
-          <p className="text-sm text-[#8b92d6] mt-1">
+          <p className="text-sm text-muted mt-1">
             View canonical Discord Snowflake identities, active statuses, and assigned roles.
           </p>
         </div>
 
         {/* Search Input */}
         <form method="GET" className="relative w-full sm:w-80">
-          <Search className="w-4 h-4 text-[#8b92d6] absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="search"
             name="q"
             defaultValue={q || ''}
             placeholder="Search by name, handle, or snowflake..."
-            className="w-full pl-10 pr-4 py-2 rounded-xl bg-[#0e1245] border border-[rgba(88,101,242,0.25)] text-sm text-white placeholder:text-[#a3a6c2] focus:outline-none focus:ring-2 focus:ring-[#5865f2]"
+            className="w-full pl-10 pr-4 py-2 rounded-xl bg-surface-onyx border border-border text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </form>
       </div>
 
       {/* Members Table */}
-      <Card className="bg-[#0e1245]/80 border-[rgba(88,101,242,0.2)] overflow-hidden">
+      <Card className="bg-surface-onyx/80 border-border overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-[#141943] text-[#8b92d6] uppercase tracking-wider text-[10px] border-b border-[rgba(88,101,242,0.15)]">
+            <thead className="bg-surface-indigo text-muted uppercase tracking-wider text-[10px] border-b border-border">
               <tr>
                 <th className="py-3 px-4">Member</th>
                 <th className="py-3 px-4">Discord Snowflake</th>
@@ -64,9 +64,9 @@ export default async function AdminMembersPage({
                 <th className="py-3 px-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[rgba(88,101,242,0.1)]">
+            <tbody className="divide-y divide-border">
               {members.map((member) => (
-                <tr key={member.id} className="hover:bg-[#141943]/50 transition-colors">
+                <tr key={member.id} className="hover:bg-surface-indigo/50 transition-colors">
                   <td className="py-3.5 px-4 flex items-center gap-3">
                     <Avatar
                       src={member.avatar}
@@ -75,15 +75,15 @@ export default async function AdminMembersPage({
                       fallbackText={member.displayName.slice(0, 2).toUpperCase()}
                     />
                     <div>
-                      <div className="font-bold text-white flex items-center gap-1.5">
+                      <div className="font-bold text-ink flex items-center gap-1.5">
                         {member.displayName}
                         {member.roles.some((r) => r.isSupporter) && <SupporterBadge />}
                       </div>
-                      <div className="text-[11px] text-[#8b92d6]">@{member.username}</div>
+                      <div className="text-[11px] text-muted">@{member.username}</div>
                     </div>
                   </td>
 
-                  <td className="py-3.5 px-4 font-mono text-xs text-[#c7c9e5]">
+                  <td className="py-3.5 px-4 font-mono text-xs text-ink-secondary">
                     {member.externalUserId}
                   </td>
 
@@ -117,7 +117,7 @@ export default async function AdminMembersPage({
                     </div>
                   </td>
 
-                  <td className="py-3.5 px-4 text-[#8b92d6]">
+                  <td className="py-3.5 px-4 text-muted">
                     {new Date(member.firstJoinedAt).toLocaleDateString()}
                   </td>
 
@@ -136,7 +136,7 @@ export default async function AdminMembersPage({
 
               {members.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="py-12 text-center text-xs text-[#8b92d6]">
+                  <td colSpan={6} className="py-12 text-center text-xs text-muted">
                     No members found matching your search.
                   </td>
                 </tr>
