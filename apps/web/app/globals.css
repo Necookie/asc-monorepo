@@ -224,17 +224,16 @@ body {
   animation: floatSubtle 4s ease-in-out infinite;
 }
 
-/* The mascot peeks in from the viewport edge without blocking page controls. */
+/* The mascot can move across the viewport without blocking page controls. */
 .community-mascot-layer {
   position: fixed;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   z-index: 40;
   pointer-events: none;
 }
 
 .community-mascot-runner {
-  position: relative;
+  position: absolute;
   right: -16px;
   bottom: -28px;
   width: 144px;
@@ -246,8 +245,14 @@ body {
   padding: 0;
   border: 0;
   background: transparent;
-  cursor: pointer;
+  cursor: grab;
   pointer-events: auto;
+  touch-action: none;
+  user-select: none;
+}
+
+.community-mascot-btn[data-dragging="true"] {
+  cursor: grabbing;
 }
 
 .community-mascot-btn:focus-visible {
@@ -278,6 +283,16 @@ body {
   font-weight: 600;
   line-height: 1.4;
   pointer-events: none;
+}
+
+.community-mascot-bubble[data-side="right"] {
+  right: auto;
+  left: calc(100% - 12px);
+}
+
+.community-mascot-bubble[data-vertical="below"] {
+  bottom: auto;
+  top: 20px;
 }
 
 @media (max-width: 640px) {
