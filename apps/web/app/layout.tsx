@@ -5,6 +5,7 @@ import './globals.css';
 import { NavBar } from '@/components/layout/nav-bar';
 import { Footer } from '@/components/layout/footer';
 import { AscMotionProvider } from '@/components/motion/motion-provider';
+import { CommunityMascot } from '@/components/motion/community-mascot';
 import { ThemeToggle } from '@/components/theme/theme-toggle';
 
 const atkinson = Atkinson_Hyperlegible_Next({
@@ -114,6 +115,7 @@ export default function RootLayout({
             <NavBar />
             <main className="flex-1">{children}</main>
             <Footer />
+            <CommunityMascot />
           </AscMotionProvider>
         </body>
       </html>
