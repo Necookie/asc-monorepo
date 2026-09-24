@@ -151,24 +151,10 @@ export function CommunityMascot() {
     }
   }, []);
 
-  // Periodic autonomous roaming / wandering ("kee it movin lol")
-  React.useEffect(() => {
-    if (reduceMotion) return;
-
-    // Periodically dash across the screen if not hovered
-    const roamInterval = window.setInterval(() => {
-      if (!isHovered && !isDashing) {
-        triggerMove(false);
-      }
-    }, 11000);
-
-    return () => window.clearInterval(roamInterval);
-  }, [side, isHovered, isDashing, poseIndex, reduceMotion]);
-
   const currentPose = MASCOT_POSES[poseIndex];
 
   // Trigger movement and pose change
-  const triggerMove = (interactive = true) => {
+  const triggerMove = () => {
     if (isDashing) return;
 
     const nextSide = side === 'left' ? 'right' : 'left';
@@ -214,7 +200,7 @@ export function CommunityMascot() {
       setParticles((prev) => prev.filter((p) => !newParticles.some((np) => np.id === p.id)));
     }, 900);
 
-    triggerMove(true);
+    triggerMove();
   };
 
   if (hiddenRoute || !mounted) return null;
@@ -298,15 +284,15 @@ export function CommunityMascot() {
                 transition={{ duration: 0.28, ease: EASE_OUT_EXPO }}
               >
                 <div className="flex items-center gap-1.5 mb-1">
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#35ed7e] animate-pulse" />
-                  <span className="text-[10px] font-mono tracking-wider text-[#a2a8d3] uppercase font-semibold">
+                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-green" />
+                  <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-muted">
                     {currentPose.badge}
                   </span>
                 </div>
-                <div className="text-[12px] font-bold text-[#f4f1ff] leading-snug">
+                <div className="text-[12px] font-bold leading-snug text-ink">
                   {currentDialogue}
                 </div>
-                <div className="mt-1.5 text-[9px] text-[#717bb5] flex items-center gap-1 font-medium">
+                <div className="mt-1.5 flex items-center gap-1 text-[9px] font-medium text-muted">
                   <span>🐾</span>
                   <span>{currentPose.hint}</span>
                 </div>
@@ -326,7 +312,7 @@ export function CommunityMascot() {
             {particles.map((p) => (
               <m.span
                 key={p.id}
-                className="pointer-events-none absolute select-none text-base font-bold z-50 drop-shadow-[0_2px_8px_rgba(88,101,242,0.8)]"
+                className="pointer-events-none absolute z-50 select-none text-base font-bold drop-shadow-[0_2px_8px_rgba(0,0,0,0.24)]"
                 initial={{ opacity: 1, x: p.x - 12, y: p.y - 12, scale: 0.5 }}
                 animate={{
                   opacity: 0,
@@ -384,9 +370,6 @@ export function CommunityMascot() {
               }}
               className="relative select-none"
             >
-              {/* Subtle ambient backglow */}
-              <div className="absolute inset-0 -z-10 rounded-full bg-primary/15 blur-xl group-hover:bg-primary/30 transition-all duration-300" />
-
               {/* Official After School Club Cat Asset */}
               <img
                 src={currentPose.src}
@@ -394,7 +377,7 @@ export function CommunityMascot() {
                 width={currentPose.width}
                 height={currentPose.height}
                 draggable={false}
-                className="h-auto w-full select-none object-contain drop-shadow-[0_16px_28px_rgba(5,7,30,0.65)] filter transition-all duration-200 group-hover:brightness-105"
+                className="h-auto w-full select-none object-contain drop-shadow-[0_16px_28px_rgba(0,0,0,0.34)] filter transition-all duration-200 group-hover:brightness-105"
               />
             </div>
           </m.div>

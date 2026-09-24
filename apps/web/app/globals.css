@@ -111,7 +111,7 @@ body {
   position: absolute;
   inset: 6% 8% auto;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(174, 180, 255, 0.28), transparent);
+  background: var(--asc-border-strong);
   pointer-events: none;
 }
 
@@ -270,13 +270,11 @@ body {
   width: max-content;
   max-width: 204px;
   padding: 10px 14px;
-  border: 1px solid rgba(88, 101, 242, 0.45);
+  border: 1px solid var(--asc-border-strong);
   border-radius: 16px;
-  background: rgba(13, 18, 38, 0.94);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 16px 36px rgba(5, 7, 30, 0.65), 0 0 24px rgba(88, 101, 242, 0.25);
-  color: #f4f1ff;
+  background: var(--asc-surface-onyx);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
+  color: var(--asc-ink);
   pointer-events: none;
   z-index: 50;
 }
@@ -294,9 +292,9 @@ body {
   bottom: -5px;
   width: 10px;
   height: 10px;
-  background: rgba(13, 18, 38, 0.94);
-  border-right: 1px solid rgba(88, 101, 242, 0.45);
-  border-bottom: 1px solid rgba(88, 101, 242, 0.45);
+  background: var(--asc-surface-onyx);
+  border-right: 1px solid var(--asc-border-strong);
+  border-bottom: 1px solid var(--asc-border-strong);
   transform: rotate(45deg);
 }
 
