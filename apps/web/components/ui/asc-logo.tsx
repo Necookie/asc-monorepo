@@ -1,67 +1,36 @@
 import * as React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 
 export interface AscMarkProps {
   size?: number;
   className?: string;
-  useImage?: boolean;
 }
 
-/**
- * AscMark - The iconic ASC connected-node "A" emblem.
- * Uses the official brand image with fallback / SVG option.
- */
-export function AscMark({ size = 36, className = '', useImage = true }: AscMarkProps) {
-  if (useImage) {
-    return (
-      <div
-        className={`relative inline-flex items-center justify-center rounded-xl overflow-hidden shrink-0 ${className}`}
-        style={{ width: size, height: size }}
-      >
-        <Image
-          src="/asc-mark.png"
-          alt="ASC Mark"
-          width={size}
-          height={size}
-          priority
-          className="object-contain w-full h-full"
-        />
-      </div>
-    );
-  }
-
-  // Vector SVG representation of the ASC connected-nodes emblem
+export function AscMark({ size = 36, className = '' }: AscMarkProps) {
   return (
     <svg
       width={size}
       height={size}
-      viewBox="0 0 100 100"
+      viewBox="0 0 64 64"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={`shrink-0 text-primary ${className}`}
+      className={`shrink-0 text-ink ${className}`}
+      aria-hidden="true"
     >
-      {/* Main Arch 'A' */}
       <path
-        d="M26 80 L50 20 L74 80"
+        d="M9.5 52 28.5 13.5c1.4-2.9 5.6-2.9 7 0L54.5 52"
         stroke="currentColor"
-        strokeWidth="12"
+        strokeWidth="7.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-
-      {/* Connected Nodes Bridge */}
       <path
-        d="M26 72 Q 50 56 74 72"
+        d="M19.5 40.5c7.5-4.4 17.5-4.4 25 0"
         stroke="currentColor"
-        strokeWidth="6"
+        strokeWidth="5.5"
         strokeLinecap="round"
       />
-
-      {/* Three interconnected circular nodes */}
-      <circle cx="26" cy="72" r="7" fill="currentColor" />
-      <circle cx="50" cy="62" r="7.5" fill="currentColor" />
-      <circle cx="74" cy="72" r="7" fill="currentColor" />
+      <circle cx="19.5" cy="40.5" r="3.6" fill="currentColor" />
+      <circle cx="44.5" cy="40.5" r="3.6" fill="currentColor" />
     </svg>
   );
 }
@@ -74,35 +43,27 @@ export interface AscLogoProps {
 }
 
 export function AscLogo({ size = 'md', href, showText = true, className = '' }: AscLogoProps) {
-  const pixelSizes = {
-    sm: { mark: 28, text: 'text-xl' },
-    md: { mark: 36, text: 'text-2xl' },
-    lg: { mark: 48, text: 'text-3xl' },
+  const sizes = {
+    sm: { mark: 26, text: 'text-xl' },
+    md: { mark: 34, text: 'text-2xl' },
+    lg: { mark: 46, text: 'text-3xl' },
   };
-
-  const { mark, text } = pixelSizes[size];
+  const { mark, text } = sizes[size];
 
   const content = (
-    <div className={`inline-flex items-center gap-3 select-none group ${className}`}>
+    <span className={`inline-flex select-none items-center gap-2.5 ${className}`}>
       <AscMark size={mark} />
-      {showText && (
-        <span className={`font-semibold tracking-tight text-ink font-[var(--font-display)] ${text} transition-colors group-hover:text-ink-secondary`}>
-          ASC
-        </span>
+      {showText ? (
+        <span className={`font-[var(--font-display)] font-extrabold text-ink ${text}`}>ASC</span>
+      ) : (
+        <span className="sr-only">ASC</span>
       )}
-    </div>
+    </span>
   );
 
-  if (href) {
-    return (
-      <Link
-        href={href}
-        className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xl"
-      >
-        {content}
-      </Link>
-    );
-  }
-
-  return content;
+  return href ? (
+    <Link href={href} aria-label="ASC home" className="rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+      {content}
+    </Link>
+  ) : content;
 }

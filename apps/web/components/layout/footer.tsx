@@ -4,7 +4,7 @@ import { AscLogo } from '@/components/ui/asc-logo';
 
 export function Footer() {
   return (
-    <footer className="w-full border-t border-border bg-surface-black pt-16 pb-12 text-ink-secondary">
+    <footer className="w-full border-t border-border bg-surface-onyx pt-16 pb-12 text-ink-secondary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-border">
           {/* Brand */}
