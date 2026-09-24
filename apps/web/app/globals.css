@@ -63,6 +63,7 @@
   --motion-fast: 150ms;
   --motion-standard: 220ms;
   --motion-expressive: 520ms;
+  --asc-ink-art-opacity: 0.14;
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -88,6 +89,7 @@
   --asc-border-strong: rgba(17, 17, 17, 0.22);
   --background: var(--asc-canvas);
   --foreground: var(--asc-ink);
+  --asc-ink-art-opacity: 0.12;
 }
 
 body {
@@ -103,6 +105,51 @@ body {
 /* Calm deep-indigo foundation. Expression comes from member identity, not wallpaper. */
 .asc-mesh-bg {
   background-color: var(--color-canvas);
+}
+
+.asc-anime-ink {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.asc-anime-ink::before {
+  content: "";
+  position: absolute;
+  inset: -2%;
+  z-index: 0;
+  background: url('/asc-anime-ink.png') right center / cover no-repeat;
+  filter: invert(1);
+  opacity: var(--asc-ink-art-opacity);
+  pointer-events: none;
+  transform-origin: right center;
+  animation: asc-ink-drift 22s var(--ease-out-expo) infinite alternate;
+}
+
+:root.light .asc-anime-ink::before {
+  filter: none;
+}
+
+.asc-anime-ink > * {
+  position: relative;
+  z-index: 1;
+}
+
+.asc-anime-ink--compact::before {
+  background-size: auto 210%;
+  opacity: 0.1;
+}
+
+@keyframes asc-ink-drift {
+  from { transform: translate3d(0, 0, 0) scale(1.02); }
+  to { transform: translate3d(-2%, 1%, 0) scale(1.06); }
+}
+
+@media (max-width: 1024px) {
+  .asc-anime-ink:not(.asc-anime-ink--compact)::before {
+    background-size: auto 75%;
+    opacity: 0.1;
+  }
 }
 
 /* React Bits DotGrid, tuned into ASC's crisp club-notebook visual language. */
@@ -321,6 +368,10 @@ button, a, input, select, textarea {
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
+  .asc-anime-ink::before {
+    animation: none;
+  }
+
   *, ::before, ::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;

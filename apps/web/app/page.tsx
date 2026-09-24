@@ -32,7 +32,7 @@ export default async function HomePage() {
 
   return (
     <div className="pb-24 sm:pb-32">
-      <section className="border-b border-border">
+      <section className="asc-anime-ink border-b border-border">
         <div className="mx-auto grid max-w-7xl gap-14 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-12 lg:items-center lg:gap-16 lg:px-8 lg:py-28">
           <div className="lg:col-span-6">
             <div className="mb-6 flex items-center gap-3 text-sm font-semibold text-primary-soft">
