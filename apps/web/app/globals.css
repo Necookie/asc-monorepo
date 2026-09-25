@@ -126,6 +126,8 @@ body {
   pointer-events: none;
   transform-origin: right center;
   animation: asc-ink-drift 22s var(--ease-out-expo) infinite alternate;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 :root.light .asc-anime-ink::before {
