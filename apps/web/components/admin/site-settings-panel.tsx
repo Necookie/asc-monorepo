@@ -92,7 +92,7 @@ export function SiteSettingsPanel({ initialSettings }: SiteSettingsPanelProps) {
           <div className="flex items-center justify-between p-3.5 rounded-xl bg-surface-indigo border border-border">
             <div className="space-y-0.5">
               <div className="text-xs font-bold text-ink">Enable Maintenance Mode</div>
-              <div className="text-[11px] text-muted">
+              <div className="text-sm text-muted">
                 Only administrators will be permitted to access dashboard editors.
               </div>
             </div>
@@ -134,7 +134,7 @@ export function SiteSettingsPanel({ initialSettings }: SiteSettingsPanelProps) {
             placeholder="e.g. Welcome to ASC v1.0! Check out the newly synchronized member directory."
             className="w-full px-3.5 py-2.5 rounded-xl bg-surface-indigo border border-border text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary resize-none"
           />
-          <div className="flex justify-between items-center text-[11px] text-muted">
+          <div className="flex justify-between items-center text-sm text-muted">
             <span>Leave empty to hide the global banner.</span>
             <span>{announcement.length} / 255</span>
           </div>

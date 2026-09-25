@@ -27,10 +27,11 @@ export default async function DashboardLayout({
   const member = await requireAuthenticatedMember();
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex flex-col lg:flex-row bg-canvas">
+    <div className="arcade-app-shell min-h-[calc(100vh-4rem)] flex flex-col lg:flex-row bg-canvas">
       {/* Desktop Sidebar (lg+) */}
       <aside className="hidden lg:flex flex-col w-72 border-r border-border bg-surface-onyx p-6 justify-between shrink-0">
         <div className="space-y-6">
+          <p className="arcade-kicker">Profile studio</p>
           {/* Member Card in Sidebar */}
           <div className="p-4 rounded-2xl bg-surface-indigo border border-border space-y-3">
             <div className="flex items-center gap-3">
@@ -157,7 +158,7 @@ export default async function DashboardLayout({
               <Link
                 href={`/${member.primarySlug}`}
                 target="_blank"
-                className="text-[11px] font-semibold text-muted hover:text-ink px-2 py-1 rounded-md bg-surface-indigo border border-border"
+                className="text-sm font-semibold text-muted hover:text-ink px-2 py-1 rounded-md bg-surface-indigo border border-border"
               >
                 Profile
               </Link>
@@ -165,7 +166,7 @@ export default async function DashboardLayout({
             {member.isAdmin && (
               <Link
                 href="/admin"
-                className="text-[11px] font-semibold text-[#ec48bd] px-2 py-1 rounded-md bg-[#ec48bd]/10 border border-[#ec48bd]/25"
+                className="text-sm font-semibold text-[#ec48bd] px-2 py-1 rounded-md bg-[#ec48bd]/10 border border-[#ec48bd]/25"
               >
                 Admin
               </Link>

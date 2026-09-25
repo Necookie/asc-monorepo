@@ -128,7 +128,7 @@ export function ProfileModerationPanel({ members }: ProfileModerationPanelProps)
                     <div className="text-xs font-bold text-ink truncate">
                       {m.displayName}
                     </div>
-                    <div className="text-[10px] text-muted truncate">@{m.username}</div>
+                    <div className="text-sm text-muted truncate">@{m.username}</div>
                   </div>
                 </button>
               ))}
@@ -159,7 +159,7 @@ export function ProfileModerationPanel({ members }: ProfileModerationPanelProps)
                 </div>
 
                 <span
-                  className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                  className={`text-sm font-bold px-2 py-0.5 rounded-full ${
                     selectedMember.isPrivate
                       ? 'bg-[#ed4245]/15 text-[#ff8f91] border border-[#ed4245]/30'
                       : 'bg-[#35ed7e]/15 text-[#84f7b2] border border-[#35ed7e]/30'
