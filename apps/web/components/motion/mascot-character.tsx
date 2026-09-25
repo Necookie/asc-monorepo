@@ -2,7 +2,7 @@
 
 import { useId } from 'react';
 
-export type MascotMood = 'idle' | 'wave' | 'happy' | 'celebrate' | 'sleep' | 'held' | 'land';
+export type MascotMood = 'idle' | 'wave' | 'happy' | 'celebrate' | 'sleep' | 'wake' | 'held' | 'land';
 
 // Partitions follow the original artwork; all parts share one decoded image.
 const HEAD = 'M210 0H960V550L852 608L710 650L552 692L453 679L294 637L310 584L229 538L210 460Z';
@@ -14,7 +14,7 @@ export function MascotCharacter({ mood, reactionKey }: { mood: MascotMood; react
   return (
     <svg className="community-mascot-sprite" viewBox="-65 -55 1310 1450" aria-hidden="true" focusable="false" data-mood={mood}>
       <defs>
-        <image id={`${id}-art`} href="/mascot/cat-front-cutout.png" width="1177" height="1337" />
+        <image id={`${id}-art`} href="/mascot/cat-arcade.png" width="1177" height="1337" />
         <clipPath id={`${id}-head`}><path d={HEAD} /></clipPath>
         <clipPath id={`${id}-paw`}><path d={PAW} /></clipPath>
         <clipPath id={`${id}-tail`}><path d={TAIL} /></clipPath>
