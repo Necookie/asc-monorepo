@@ -76,6 +76,7 @@ export default async function MemberProfilePage({ params }: PageProps) {
           {/* Left Column: Authoritative Identity Card */}
           <div className="lg:col-span-5 space-y-6">
             <IdentityCard
+              className="profile-identity-stage"
               avatar={user.avatar}
               displayName={user.displayName}
               username={user.username}
