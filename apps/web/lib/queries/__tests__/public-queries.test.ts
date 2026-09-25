@@ -351,6 +351,55 @@ describe('Public Website Queries & Privacy Enforcement', () => {
       expect(searchTag.length).toBe(1);
     });
 
+    it('lists and counts current members while preserving former profile links', async () => {
+      const [current, former] = await testDb
+        .insert(users)
+        .values([
+          {
+            externalUserId: '200000000000000010',
+            username: 'current_member',
+            displayName: 'Current Member',
+            membershipStatus: 'ACTIVE',
+            firstJoinedAt: new Date(),
+            lastSyncedAt: new Date(),
+          },
+          {
+            externalUserId: '200000000000000011',
+            username: 'former_member',
+            displayName: 'Former Member',
+            membershipStatus: 'LEFT',
+            firstJoinedAt: new Date(),
+            lastSyncedAt: new Date(),
+          },
+        ])
+        .returning();
+
+      await testDb.insert(profiles).values({ userId: former.id });
+      await testDb.insert(profileSlugs).values({
+        userId: former.id,
+        slug: 'former_member',
+        isPrimary: true,
+      });
+      const [supporterRole] = await testDb
+        .insert(communityRoles)
+        .values({ externalRoleId: 'former_supporter_role', name: 'Booster', isSupporter: true })
+        .returning();
+      await testDb.insert(memberRoles).values([
+        { userId: current.id, roleId: supporterRole.id },
+        { userId: former.id, roleId: supporterRole.id },
+      ]);
+
+      const directory = await getMembersDirectory({ database: testDb });
+      expect(directory.map((member) => member.username)).toEqual(['current_member']);
+      expect(await getMembersDirectory({ search: 'former', database: testDb })).toEqual([]);
+      expect(await getCommunityOverview(testDb)).toMatchObject({
+        totalMembers: 1,
+        totalSupporters: 1,
+      });
+      const formerProfile = await getPublicProfileBySlug('former_member', testDb);
+      expect(formerProfile.profile?.user.membershipStatus).toBe('LEFT');
+    });
+
     it('computes real community overview statistics', async () => {
       const [u] = await testDb
         .insert(users)

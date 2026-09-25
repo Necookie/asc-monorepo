@@ -1,4 +1,4 @@
-import { eq, or, like, and, not, inArray } from 'drizzle-orm';
+import { eq, or, like, and, inArray } from 'drizzle-orm';
 import { db, users, profileSlugs, tags as tagsTable, memberTags as memberTagsTable, type ASCDatabase } from '@asc/db';
 
 export interface MemberDirectoryItem {
@@ -39,7 +39,7 @@ export async function getMembersDirectory({
     // 1. Direct user match by username or displayName
     const directUsers = await database.query.users.findMany({
       where: and(
-        not(eq(users.membershipStatus, 'BANNED')),
+        eq(users.membershipStatus, 'ACTIVE'),
         or(
           like(users.username, `%${searchTerm}%`),
           like(users.displayName, `%${searchTerm}%`)
@@ -65,8 +65,8 @@ export async function getMembersDirectory({
     }
   }
 
-  // Query active users (excluding banned users)
-  const whereConditions = [not(eq(users.membershipStatus, 'BANNED'))];
+  // Keep former members' profiles reachable by slug without listing them as current members.
+  const whereConditions = [eq(users.membershipStatus, 'ACTIVE')];
   if (matchedUserIds) {
     whereConditions.push(inArray(users.id, matchedUserIds));
   }
