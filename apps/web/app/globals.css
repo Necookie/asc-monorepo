@@ -239,12 +239,75 @@ body {
   height: 3px;
   background: var(--asc-arcade-accent);
 }
+.arcade-stage {
+  position: relative;
+  height: clamp(330px, 36vw, 460px);
+  overflow: hidden;
+  border: 1px solid var(--asc-border-strong);
+  border-radius: 30px;
+  background: var(--asc-surface-onyx);
+  isolation: isolate;
+}
+.arcade-stage::before {
+  content: '';
+  position: absolute;
+  inset: 18px;
+  border: 1px solid var(--asc-border);
+  border-radius: 20px;
+  pointer-events: none;
+  z-index: 2;
+}
+.arcade-stage::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 38%;
+  height: 4px;
+  background: var(--asc-arcade-accent);
+  z-index: 3;
+}
+.arcade-scene { position: absolute; inset: 0; outline-offset: -6px; touch-action: none; cursor: grab; }
+.arcade-scene:active { cursor: grabbing; }
+.arcade-scene:focus-visible { outline: 2px solid var(--asc-primary); }
+.arcade-scene canvas { display: block; width: 100%; height: 100%; }
+.arcade-stage__still { position: absolute; inset: 0; display: grid; place-items: center; }
+.arcade-stage__orbit { position: absolute; width: 54%; aspect-ratio: 1; border: 1px solid var(--asc-border-strong); border-radius: 50%; transform: rotateX(28deg); }
+.arcade-stage__orbit--outer { width: 72%; border-color: var(--asc-arcade-accent); opacity: 0.42; }
+.arcade-stage__mark { display: grid; width: 42%; aspect-ratio: 1; place-items: center; transform: rotate(-7deg); }
+.arcade-stage__mark svg { width: 100%; height: auto; filter: drop-shadow(12px 14px 0 var(--asc-arcade-accent)); }
+.arcade-stage__caption {
+  position: absolute;
+  z-index: 3;
+  inset: auto 35px 31px;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--asc-ink-secondary);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
 .member-wall {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
 }
-.member-wall__slot { min-width: 0; }
+.member-wall__slot { min-width: 0; perspective: 900px; }
+@media (prefers-reduced-motion: no-preference) {
+  .arcade-hero h1 { animation: arcade-arrive 650ms var(--ease-out-expo) both; }
+  .arcade-stage { animation: arcade-arrive 780ms 90ms var(--ease-out-expo) both; }
+  .member-wall__slot { animation: arcade-arrive 520ms var(--ease-out-expo) both; }
+  .member-wall__slot:nth-child(4n + 2) { animation-delay: 65ms; }
+  .member-wall__slot:nth-child(4n + 3) { animation-delay: 130ms; }
+  .member-wall__slot:nth-child(4n + 4) { animation-delay: 195ms; }
+}
+@keyframes arcade-arrive {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 .member-ticket { min-height: 250px; }
 .member-ticket::before {
   content: '';
@@ -277,8 +340,10 @@ body {
   .member-wall { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .member-ticket:hover { transform: translateY(-3px); box-shadow: 0 12px 24px rgb(0 0 0 / 11%); }
+  .member-ticket:hover { transform: translateY(-4px) rotateX(2deg) rotateY(-2deg); box-shadow: 0 16px 28px rgb(0 0 0 / 13%); }
+  .profile-identity-stage:hover { transform: perspective(1100px) rotateY(-2deg) translateY(-2px); }
 }
+.profile-identity-stage { transition: transform 220ms var(--ease-out-expo); }
 
 /* Subtle badge & pill styles */
 .asc-pill {
