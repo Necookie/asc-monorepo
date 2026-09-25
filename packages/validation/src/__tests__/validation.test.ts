@@ -5,9 +5,22 @@ import {
   updateBioSchema,
   profileLinkSchema,
   adminTagSchema,
+  updateAppearanceSchema,
 } from '../index';
 
 describe('Validation Schemas', () => {
+  describe('profile studio appearance', () => {
+    const base = { theme: 'canvas', accentColor: '#5865f2', layout: 'split' };
+    it('accepts bounded curated choices and HTTPS artwork', () => {
+      expect(updateAppearanceSchema.safeParse({ ...base, supporterLayout: 'arcade', typography: 'playful', avatarFrame: 'crest', coverTreatment: 'artwork', coverPosition: 100, motion: 'lively', backgroundUrl: 'https://example.com/art.jpg' }).success).toBe(true);
+    });
+    it('rejects unknown layouts, out of range positions, and non-HTTPS covers', () => {
+      expect(updateAppearanceSchema.safeParse({ ...base, supporterLayout: 'custom' }).success).toBe(false);
+      expect(updateAppearanceSchema.safeParse({ ...base, coverPosition: 101 }).success).toBe(false);
+      expect(updateAppearanceSchema.safeParse({ ...base, coverPosition: -1 }).success).toBe(false);
+      expect(updateAppearanceSchema.safeParse({ ...base, backgroundUrl: 'http://example.com/art.jpg' }).success).toBe(false);
+    });
+  });
   describe('safeUrlSchema', () => {
     it('accepts valid https URLs', () => {
       expect(safeUrlSchema.safeParse('https://github.com/necookie').success).toBe(true);
