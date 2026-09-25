@@ -6,7 +6,7 @@ import {
   tags,
   type ASCDatabase,
 } from '@asc/db';
-import { resolveMemberEntitlements } from '@asc/entitlements';
+import { getResolvedMemberEntitlements } from './entitlements';
 import type {
   AuthenticatedMember,
   CommunityRole,
@@ -69,7 +69,7 @@ export async function getDashboardData(
   }));
 
   // 4. Resolve entitlements
-  const entitlements = resolveMemberEntitlements(member.roles);
+  const entitlements = await getResolvedMemberEntitlements(member, database);
 
   return {
     member,

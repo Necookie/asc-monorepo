@@ -22,6 +22,7 @@ export interface IdentityCardProps extends React.HTMLAttributes<HTMLDivElement> 
   joinedAt?: Date | string | null;
   membershipStatus?: 'ACTIVE' | 'LEFT' | 'BANNED';
   accentColor?: string;
+  avatarFrame?: 'none' | 'pixel' | 'neon' | 'crest';
   showRoles?: boolean;
   showMembershipDate?: boolean;
 }
@@ -36,6 +37,7 @@ export function IdentityCard({
   joinedAt,
   membershipStatus = 'ACTIVE',
   accentColor = '#5865f2',
+  avatarFrame = 'none',
   showRoles = true,
   showMembershipDate = true,
   className,
@@ -76,12 +78,14 @@ export function IdentityCard({
       {/* Avatar Container with Overlap */}
       <div className="px-6 pb-6 pt-0 relative">
         <div className="flex justify-between items-end -mt-14 mb-4">
-          <Avatar
+          <span className="profile-avatar-frame" data-frame={avatarFrame}>
+            <Avatar
             src={avatar}
             alt={displayName}
             size={96}
             className="border-4 border-surface-indigo"
-          />
+            />
+          </span>
           {isSupporter && <SupporterBadge className="mb-2" />}
           {isFormerMember && (
             <span className="mb-2 inline-flex items-center gap-1 px-3 py-1 text-xs font-semibold rounded-full bg-[#23272a] text-muted border border-[#9498bd]/30">

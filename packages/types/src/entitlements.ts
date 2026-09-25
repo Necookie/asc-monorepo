@@ -3,6 +3,7 @@ export type EntitlementKey =
   | 'profile.custom_title'
   | 'profile.gradient'
   | 'profile.frame'
+  | 'profile.studio'
   | 'profile.max_tags'
   | 'profile.max_links';
 
@@ -20,6 +21,7 @@ export interface ResolvedEntitlements {
   canCustomBackground: boolean;
   canCustomTitle: boolean;
   canGradientAccent: boolean;
+  canProfileStudio: boolean;
   maxTags: number;
   maxLinks: number;
 }

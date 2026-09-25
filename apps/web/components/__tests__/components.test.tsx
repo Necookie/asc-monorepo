@@ -10,9 +10,24 @@ import { SupporterBadge } from '../identity/supporter-badge';
 import { IdentityCard } from '../identity/identity-card';
 import { MemberCard } from '../identity/member-card';
 import { ProfileWidget } from '../ui/profile-widget';
+import { ProfileDisplay } from '../identity/profile-display';
+import { resolveMemberEntitlements, resolveVisibleAppearance } from '@asc/entitlements';
+import type { PublicProfileData } from '@/lib/queries/profiles';
 import { LoadingState, EmptyState, ErrorState, LockedState } from '../ui/states';
 
 describe('ASC Design System UI Components', () => {
+  it('uses identical profile content and layout in preview and public rendering', () => {
+    const entitlements = resolveMemberEntitlements([]);
+    const appearance = resolveVisibleAppearance({ theme: 'canvas', accentColor: '#5865f2', backgroundUrl: null, layout: 'split', supporterLayout: 'arcade', typography: 'bold', avatarFrame: 'neon', coverTreatment: 'pattern', coverPosition: 70, motion: 'lively' }, entitlements);
+    const data: PublicProfileData = { user: { username: 'alex', displayName: 'Alex', nickname: null, avatar: null, membershipStatus: 'ACTIVE', firstJoinedAt: null, slug: 'alex' }, profile: { ...appearance, bio: 'A readable profile story.', customTitle: null, isPrivate: false }, roles: [], tags: [{ id: 'tag', name: 'Art' }], links: [], isSupporter: false, entitlements };
+    const publicHtml = renderToString(<ProfileDisplay data={data} />);
+    const previewHtml = renderToString(<ProfileDisplay data={data} preview />);
+    expect(previewHtml.replace(' profile-studio--preview', '')).toBe(publicHtml);
+    expect(publicHtml).toContain('data-layout="split"');
+    expect(publicHtml).toContain('A readable profile story.');
+    const privateHtml = renderToString(<ProfileDisplay data={{ ...data, profile: { ...data.profile, bio: null, isPrivate: true }, tags: [] }} />);
+    expect(privateHtml).not.toContain('A readable profile story.');
+  });
   it('renders Button with primary, green, and danger variants', () => {
     const primaryHtml = renderToString(<Button variant="primary">Save</Button>);
     expect(primaryHtml).toContain('bg-primary');

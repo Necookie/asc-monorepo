@@ -72,9 +72,17 @@ export const updateLinksSchema = z.object({
 export const updateAppearanceSchema = z.object({
   theme: themeSchema.default('canvas'),
   accentColor: hexColorSchema.default('#5865f2'),
+  layout: z.enum(['classic', 'split']).default('classic'),
+  supporterLayout: z.enum(['arcade', 'showcase']).nullable().optional(),
+  typography: z.enum(['balanced', 'bold', 'playful']).optional(),
+  avatarFrame: z.enum(['none', 'pixel', 'neon', 'crest']).optional(),
+  coverTreatment: z.enum(['solid', 'artwork', 'pattern']).optional(),
+  coverPosition: z.number().int().min(0).max(100).optional(),
+  motion: z.enum(['off', 'subtle', 'lively']).optional(),
   backgroundUrl: z
     .string()
     .trim()
+    .max(1024)
     .optional()
     .nullable()
     .refine(
@@ -82,13 +90,13 @@ export const updateAppearanceSchema = z.object({
         if (!val) return true;
         try {
           const parsed = new URL(val);
-          return parsed.protocol === 'https:' || parsed.protocol === 'http:';
+          return parsed.protocol === 'https:';
         } catch {
           return false;
         }
       },
       {
-        message: 'Background URL must be a valid http/https URL',
+        message: 'Background URL must be a valid HTTPS URL',
       }
     ),
 });
@@ -167,4 +175,5 @@ export type UpdateBioInput = z.infer<typeof updateBioSchema>;
 export type ProfileLinkInput = z.infer<typeof profileLinkSchema>;
 export type UpdateLinksInput = z.infer<typeof updateLinksSchema>;
 export type UpdateAppearanceInput = z.infer<typeof updateAppearanceSchema>;
+export type UpdateAppearanceDraft = z.input<typeof updateAppearanceSchema>;
 export type UpdateMemberTagsInput = z.infer<typeof updateMemberTagsSchema>;

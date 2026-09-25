@@ -18,6 +18,13 @@ export const profiles = sqliteTable(
       .notNull()
       .default('canvas'),
     backgroundUrl: text('background_url'),
+    layout: text('layout', { enum: ['classic', 'split'] }).notNull().default('classic'),
+    supporterLayout: text('supporter_layout', { enum: ['arcade', 'showcase'] }),
+    typography: text('typography', { enum: ['balanced', 'bold', 'playful'] }).notNull().default('balanced'),
+    avatarFrame: text('avatar_frame', { enum: ['none', 'pixel', 'neon', 'crest'] }).notNull().default('none'),
+    coverTreatment: text('cover_treatment', { enum: ['solid', 'artwork', 'pattern'] }).notNull().default('solid'),
+    coverPosition: integer('cover_position').notNull().default(50),
+    motion: text('motion', { enum: ['off', 'subtle', 'lively'] }).notNull().default('subtle'),
     isPrivate: integer('is_private', { mode: 'boolean' })
       .notNull()
       .default(false),

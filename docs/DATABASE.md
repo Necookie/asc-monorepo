@@ -194,6 +194,15 @@ Holds the ASC-specific customization data associated with a member.
 - `accent_color` (`text`, NULLABLE, DEFAULT `'#5865f2'`): Custom hex accent color adhering to palette.
 - `theme` (`text`, NOT NULL, DEFAULT `'canvas'`): Base theme token (`'canvas'`, `'indigo'`, `'onyx'`).
 - `background_url` (`text`, NULLABLE): Outbound image URL for profile background (entitlement-gated).
+- `layout` (`text`, NOT NULL, DEFAULT `'classic'`): Standard `classic` or `split` layout.
+- `supporter_layout` (`text`, NULLABLE): Optional `arcade` or `showcase` layout. Kept when supporter access ends.
+- `typography` (`text`, NOT NULL, DEFAULT `'balanced'`): `balanced`, `bold`, or `playful`.
+- `avatar_frame` (`text`, NOT NULL, DEFAULT `'none'`): `none`, `pixel`, `neon`, or `crest`.
+- `cover_treatment` (`text`, NOT NULL, DEFAULT `'solid'`): `solid`, `artwork`, or `pattern`.
+- `cover_position` (`integer`, NOT NULL, DEFAULT `50`): Artwork focal position from 0 to 100.
+- `motion` (`text`, NOT NULL, DEFAULT `'subtle'`): `off`, `subtle`, or `lively`.
+
+Migration `0001_tough_mach_iv.sql` adds these columns with defaults for existing profiles. Public rendering resolves supporter and active explicit entitlements before exposing premium choices; a lost entitlement leaves stored choices intact.
 - `is_private` (`integer / boolean`, NOT NULL, DEFAULT `0`): Complete profile privacy toggle.
 - `show_roles` (`integer / boolean`, NOT NULL, DEFAULT `1`): Toggle to show community roles publicly.
 - `show_membership_date` (`integer / boolean`, NOT NULL, DEFAULT `1`): Toggle to show tenure publicly.

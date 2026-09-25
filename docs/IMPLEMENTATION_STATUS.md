@@ -15,6 +15,9 @@
 | **Phase 10: Security & Quality** | `VERIFIED` | `main` (merged `feature/security-hardening`) | `apps/web/next.config.ts`, `packages/validation`, security test suite | End-to-end security, CSP, sanitization & a11y tests (9/9 passed, 106/106 overall) | None | Completed |
 | **Phase 11: Deployment** | `VERIFIED` | `main` (merged `feature/deployment`) | `apps/bot/Dockerfile`, `apps/web/Dockerfile`, `compose.yaml`, `docs/DEPLOYMENT.md` | Multi-stage Docker configurations, healthcheck route, compose orchestrations | None | Completed |
 | **Phase 12: Final MVP Audit** | `VERIFIED` | `chore/mvp-final-audit` | Full repository review | Full suite: lint, typecheck, test, build (106/106 tests passed) | None | Complete |
+| **Phase 13: Mascot & Arcade Visual System** | `VERIFIED` | `main` (merged `feature/mascot-interactions`, `feature/arcade-visual-system`) | `components/motion/community-mascot.tsx`, `member-wall.tsx`, `globals.css` | 106 tests, typecheck, lint, build, desktop/mobile browser review | None | Complete |
+| **Phase 14: Interactive 3D** | `VERIFIED` | `main` (merged `feature/interactive-3d`) | `components/motion/arcade-stage.tsx`, `arcade-scene.tsx` | 106 tests, typecheck, lint, build, browser drag and theme review | None | Complete |
+| **Phase 15: Profile Studio** | `VERIFIED` | `main` (merged `feature/profile-appearance-studio`) | `drizzle/0001_tough_mach_iv.sql`, `profile-display.tsx`, `profile-customizer.tsx` | 113 tests, typecheck, lint, build, desktop/mobile browser review | None | Complete |
 
 ---
 

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { resolveMemberEntitlements } from '../index';
-import type { CommunityRole, Entitlement } from '@asc/types';
+import { resolveMemberEntitlements, resolveVisibleAppearance } from '../index';
+import type { CommunityRole, Entitlement, AppearanceSettings } from '@asc/types';
 
 describe('Entitlements Engine', () => {
   const supporterRole: CommunityRole = {
@@ -75,5 +75,24 @@ describe('Entitlements Engine', () => {
 
     const entitlements = resolveMemberEntitlements([standardRole], [expiredGrant]);
     expect(entitlements.canCustomBackground).toBe(false);
+  });
+
+  it('hides saved supporter styling after loss and restores it when access returns', () => {
+    const saved: AppearanceSettings = { theme: 'indigo', accentColor: '#ec48bd', backgroundUrl: 'https://example.com/art.jpg', layout: 'split', supporterLayout: 'showcase', typography: 'playful', avatarFrame: 'crest', coverTreatment: 'artwork', coverPosition: 73, motion: 'lively' };
+    const lost = resolveVisibleAppearance(saved, resolveMemberEntitlements([standardRole]));
+    expect(lost.activeLayout).toBe('split');
+    expect(lost.backgroundUrl).toBeNull();
+    expect(lost.avatarFrame).toBe('none');
+    const restored = resolveVisibleAppearance(saved, resolveMemberEntitlements([supporterRole]));
+    expect(restored.activeLayout).toBe('showcase');
+    expect(restored.backgroundUrl).toBe(saved.backgroundUrl);
+    expect(restored.avatarFrame).toBe('crest');
+    expect(restored.coverPosition).toBe(73);
+  });
+
+  it('honors active explicit studio grants and ignores expired ones', () => {
+    const grant: Entitlement = { id: 'studio', userId: 'member', key: 'profile.studio', value: 'true', source: 'ADMIN_GRANT', grantedAt: new Date(), expiresAt: new Date(Date.now() + 1000) };
+    expect(resolveMemberEntitlements([standardRole], [grant]).canProfileStudio).toBe(true);
+    expect(resolveMemberEntitlements([standardRole], [{ ...grant, expiresAt: new Date(Date.now() - 1000) }]).canProfileStudio).toBe(false);
   });
 });

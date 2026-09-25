@@ -1,7 +1,7 @@
 import { eq, and } from 'drizzle-orm';
 import { db, users, profileSlugs, profiles, type ASCDatabase } from '@asc/db';
-import { resolveMemberEntitlements } from '@asc/entitlements';
-import type { ResolvedEntitlements } from '@asc/types';
+import { resolveMemberEntitlements, resolveVisibleAppearance } from '@asc/entitlements';
+import type { ResolvedEntitlements, AppearanceSettings } from '@asc/types';
 
 export interface PublicProfileResult {
   profile?: PublicProfileData;
@@ -19,12 +19,10 @@ export interface PublicProfileData {
     firstJoinedAt: Date | null;
     slug: string;
   };
-  profile: {
+  profile: AppearanceSettings & {
+    activeLayout: 'classic' | 'split' | 'arcade' | 'showcase';
     bio: string | null;
     customTitle: string | null;
-    accentColor: string;
-    theme: 'canvas' | 'indigo' | 'onyx';
-    backgroundUrl: string | null;
     isPrivate: boolean;
   };
   roles: {
@@ -148,6 +146,13 @@ export async function getPublicProfileBySlug(
     accentColor: '#5865f2',
     theme: 'canvas' as const,
     backgroundUrl: null,
+    layout: 'classic' as const,
+    supporterLayout: null,
+    typography: 'balanced' as const,
+    avatarFrame: 'none' as const,
+    coverTreatment: 'solid' as const,
+    coverPosition: 50,
+    motion: 'subtle' as const,
     isPrivate: false,
     showRoles: true,
     showMembershipDate: true,
@@ -170,10 +175,20 @@ export async function getPublicProfileBySlug(
       slug: slugRecord?.slug || user.username,
     },
     profile: {
+      ...resolveVisibleAppearance({
+        theme: profile.theme,
+        accentColor: profile.accentColor,
+        backgroundUrl: profile.backgroundUrl,
+        layout: profile.layout,
+        supporterLayout: profile.supporterLayout,
+        typography: profile.typography,
+        avatarFrame: profile.avatarFrame,
+        coverTreatment: profile.coverTreatment,
+        coverPosition: profile.coverPosition,
+        motion: profile.motion,
+      }, resolvedEntitlements),
       bio: isPrivate ? null : profile.bio,
       customTitle: isPrivate || !resolvedEntitlements.canCustomTitle ? null : profile.customTitle,
-      accentColor: profile.accentColor || '#5865f2',
-      theme: (profile.theme as 'canvas' | 'indigo' | 'onyx') || 'canvas',
       backgroundUrl:
         isPrivate || !resolvedEntitlements.canCustomBackground ? null : profile.backgroundUrl,
       isPrivate,

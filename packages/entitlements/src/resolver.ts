@@ -35,6 +35,12 @@ export function resolveMemberEntitlements(
       case 'profile.gradient':
         result.canGradientAccent = ent.value === 'true';
         break;
+      case 'profile.studio':
+        result.canProfileStudio = ent.value === 'true';
+        break;
+      case 'profile.frame':
+        result.canProfileStudio = ent.value === 'true';
+        break;
       case 'profile.max_tags':
         result.maxTags = Math.max(result.maxTags, parseInt(ent.value, 10) || 5);
         break;

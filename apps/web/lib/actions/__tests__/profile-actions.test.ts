@@ -13,6 +13,7 @@ import {
   memberRoles,
   tags,
   memberTags,
+  entitlements,
 } from '@asc/db';
 import {
   updateProfileBioAction,
@@ -69,6 +70,7 @@ describe('Profile Customization Server Actions & Entitlement Enforcement', () =>
         accentColor: '#5865f2',
         theme: 'canvas',
         backgroundUrl: null,
+        layout: 'classic', supporterLayout: null, typography: 'balanced', avatarFrame: 'none', coverTreatment: 'solid', coverPosition: 50, motion: 'subtle',
         isPrivate: false,
         showRoles: true,
         showMembershipDate: true,
@@ -86,6 +88,16 @@ describe('Profile Customization Server Actions & Entitlement Enforcement', () =>
   }
 
   describe('1. Biography & Custom Title', () => {
+    it('keeps a saved supporter title when the member later edits their bio without access', async () => {
+      const [user] = await testDb.insert(users).values({ id: 'former_supporter', externalUserId: '100000000000000106', username: 'former_supporter', displayName: 'Former Supporter', firstJoinedAt: new Date(), lastSyncedAt: new Date() }).returning();
+      await testDb.insert(profiles).values({ userId: user.id, customTitle: 'Old supporter title' });
+      const member = createMember(user.id, user.externalUserId);
+      const response = await updateProfileBioAction({ bio: 'Updated bio' }, testDb, member);
+      expect(response.success).toBe(true);
+      const stored = await testDb.query.profiles.findFirst({ where: eq(profiles.userId, user.id) });
+      expect(stored?.bio).toBe('Updated bio');
+      expect(stored?.customTitle).toBe('Old supporter title');
+    });
     it('updates member biography successfully', async () => {
       const [user] = await testDb
         .insert(users)
@@ -211,6 +223,25 @@ describe('Profile Customization Server Actions & Entitlement Enforcement', () =>
   });
 
   describe('2. Appearance & Supporter Background', () => {
+    it('retains premium choices through downgrade and restores editing with an active grant', async () => {
+      const [user] = await testDb.insert(users).values({ id: 'studio_member', externalUserId: '100000000000000105', username: 'studio_member', displayName: 'Studio Member', firstJoinedAt: new Date(), lastSyncedAt: new Date() }).returning();
+      await testDb.insert(profiles).values({ userId: user.id, layout: 'classic', supporterLayout: 'arcade', typography: 'bold', avatarFrame: 'neon', coverTreatment: 'pattern', motion: 'lively' });
+      const member = createMember(user.id, user.externalUserId);
+      const rejected = await updateProfileAppearanceAction({ theme: 'canvas', accentColor: '#5865f2', supporterLayout: 'showcase' }, testDb, member);
+      expect(rejected.success).toBe(false);
+      const standard = await updateProfileAppearanceAction({ theme: 'indigo', accentColor: '#35ed7e', layout: 'split' }, testDb, member);
+      expect(standard.success).toBe(true);
+      let stored = await testDb.query.profiles.findFirst({ where: eq(profiles.userId, user.id) });
+      expect(stored?.supporterLayout).toBe('arcade');
+      expect(stored?.avatarFrame).toBe('neon');
+      expect(stored?.layout).toBe('split');
+      await testDb.insert(entitlements).values({ userId: user.id, key: 'profile.studio', value: 'true', source: 'ADMIN_GRANT', expiresAt: new Date(Date.now() + 86400000) });
+      const granted = await updateProfileAppearanceAction({ theme: 'indigo', accentColor: '#35ed7e', layout: 'split', supporterLayout: 'showcase', coverPosition: 67 }, testDb, member);
+      expect(granted.success).toBe(true);
+      stored = await testDb.query.profiles.findFirst({ where: eq(profiles.userId, user.id) });
+      expect(stored?.supporterLayout).toBe('showcase');
+      expect(stored?.coverPosition).toBe(67);
+    });
     it('updates theme and accent color', async () => {
       const [user] = await testDb
         .insert(users)

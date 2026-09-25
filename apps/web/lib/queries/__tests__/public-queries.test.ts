@@ -231,6 +231,7 @@ describe('Public Website Queries & Privacy Enforcement', () => {
         userId: user.id,
         customTitle: 'Unearned Title',
         backgroundUrl: 'https://images.unsplash.com/photo-1234',
+        layout: 'split', supporterLayout: 'arcade', typography: 'bold', avatarFrame: 'neon', coverTreatment: 'artwork', motion: 'lively',
         isPrivate: false,
       });
 
@@ -245,6 +246,16 @@ describe('Public Website Queries & Privacy Enforcement', () => {
       expect(res.profile?.isSupporter).toBe(false);
       expect(res.profile?.profile.backgroundUrl).toBeNull();
       expect(res.profile?.profile.customTitle).toBeNull();
+      expect(res.profile?.profile.activeLayout).toBe('split');
+      expect(res.profile?.profile.avatarFrame).toBe('none');
+      await testDb.insert(entitlements).values([
+        { userId: user.id, key: 'profile.studio', value: 'true', source: 'ADMIN_GRANT', expiresAt: new Date(Date.now() + 86400000) },
+        { userId: user.id, key: 'profile.background', value: 'true', source: 'ADMIN_GRANT', expiresAt: new Date(Date.now() + 86400000) },
+      ]);
+      const granted = await getPublicProfileBySlug('standard_user', testDb);
+      expect(granted.profile?.profile.activeLayout).toBe('arcade');
+      expect(granted.profile?.profile.avatarFrame).toBe('neon');
+      expect(granted.profile?.profile.backgroundUrl).toBe('https://images.unsplash.com/photo-1234');
     });
 
     it('preserves supporter background and title if member has supporter role', async () => {
@@ -278,6 +289,7 @@ describe('Public Website Queries & Privacy Enforcement', () => {
         userId: user.id,
         customTitle: 'Diamond Supporter',
         backgroundUrl: 'https://images.unsplash.com/photo-1234',
+        layout: 'split', supporterLayout: 'showcase', typography: 'playful', avatarFrame: 'crest', coverTreatment: 'artwork', coverPosition: 72, motion: 'lively',
         isPrivate: false,
       });
 
@@ -292,6 +304,9 @@ describe('Public Website Queries & Privacy Enforcement', () => {
       expect(res.profile?.isSupporter).toBe(true);
       expect(res.profile?.profile.backgroundUrl).toBe('https://images.unsplash.com/photo-1234');
       expect(res.profile?.profile.customTitle).toBe('Diamond Supporter');
+      expect(res.profile?.profile.activeLayout).toBe('showcase');
+      expect(res.profile?.profile.avatarFrame).toBe('crest');
+      expect(res.profile?.profile.coverPosition).toBe(72);
     });
   });
 
