@@ -1,4 +1,4 @@
-import { eq, not, count } from 'drizzle-orm';
+import { and, eq, inArray, count, countDistinct } from 'drizzle-orm';
 import { db, users, communityRoles, memberRoles, type ASCDatabase } from '@asc/db';
 import { getMembersDirectory, type MemberDirectoryItem } from './members';
 
@@ -11,11 +11,11 @@ export interface CommunityOverview {
 export async function getCommunityOverview(
   database: ASCDatabase = db
 ): Promise<CommunityOverview> {
-  // Count non-banned users
+  // The community total reflects the currently selected Discord guild.
   const [totalRes] = await database
     .select({ val: count() })
     .from(users)
-    .where(not(eq(users.membershipStatus, 'BANNED')));
+    .where(eq(users.membershipStatus, 'ACTIVE'));
   const totalMembers = totalRes?.val ?? 0;
 
   // Count supporters
@@ -26,11 +26,12 @@ export async function getCommunityOverview(
 
   let totalSupporters = 0;
   if (supporterRoleIds.length > 0) {
-    const supporterMembers = await database.query.memberRoles.findMany({
-      where: (mr, { inArray }) => inArray(mr.roleId, supporterRoleIds),
-    });
-    const uniqueSupporterUserIds = new Set(supporterMembers.map((m) => m.userId));
-    totalSupporters = uniqueSupporterUserIds.size;
+    const [supporterRes] = await database
+      .select({ val: countDistinct(memberRoles.userId) })
+      .from(memberRoles)
+      .innerJoin(users, eq(memberRoles.userId, users.id))
+      .where(and(inArray(memberRoles.roleId, supporterRoleIds), eq(users.membershipStatus, 'ACTIVE')));
+    totalSupporters = supporterRes?.val ?? 0;
   }
 
   // Fetch recent members for showcase
