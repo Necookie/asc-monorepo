@@ -27,6 +27,11 @@ export interface IdentityCardProps extends React.HTMLAttributes<HTMLDivElement> 
   showMembershipDate?: boolean;
 }
 
+const MEMBERSHIP_DATE_FORMATTER = new Intl.DateTimeFormat('en-US', {
+  month: 'short',
+  year: 'numeric',
+});
+
 export function IdentityCard({
   avatar,
   displayName,
@@ -45,9 +50,7 @@ export function IdentityCard({
 }: IdentityCardProps) {
   const isFormerMember = membershipStatus === 'LEFT';
   const formattedDate = joinedAt
-    ? new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' }).format(
-        new Date(joinedAt)
-      )
+    ? MEMBERSHIP_DATE_FORMATTER.format(new Date(joinedAt))
     : null;
 
   return (
