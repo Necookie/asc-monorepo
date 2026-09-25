@@ -69,6 +69,7 @@ describe('Profile Customization Server Actions & Entitlement Enforcement', () =>
         accentColor: '#5865f2',
         theme: 'canvas',
         backgroundUrl: null,
+        layout: 'classic', supporterLayout: null, typography: 'balanced', avatarFrame: 'none', coverTreatment: 'solid', coverPosition: 50, motion: 'subtle',
         isPrivate: false,
         showRoles: true,
         showMembershipDate: true,

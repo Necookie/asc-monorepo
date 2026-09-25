@@ -19,6 +19,8 @@ import {
   updateMemberTagsSchema,
 } from '@asc/validation';
 import { resolveMemberEntitlements } from '@asc/entitlements';
+import { getResolvedMemberEntitlements } from '../queries/entitlements';
+import type { UpdateAppearanceDraft } from '@asc/validation';
 import { ForbiddenError } from '@asc/permissions';
 import type { AuthenticatedMember } from '@asc/types';
 
@@ -50,7 +52,7 @@ export async function updateProfileBioAction(
 
     // Entitlement guard for custom title
     if (validated.customTitle) {
-      const entitlements = resolveMemberEntitlements(member.roles);
+      const entitlements = await getResolvedMemberEntitlements(member, database);
       if (!entitlements.canCustomTitle) {
         throw new ForbiddenError(
           'Custom title requires supporter entitlement or community staff role.'
@@ -89,11 +91,7 @@ export async function updateProfileBioAction(
  * Server Action: Update Profile Appearance (Theme, Accent Color, Supporter Background URL)
  */
 export async function updateProfileAppearanceAction(
-  input: {
-    theme: 'canvas' | 'indigo' | 'onyx';
-    accentColor: string;
-    backgroundUrl?: string | null;
-  },
+  input: UpdateAppearanceDraft,
   database: ASCDatabase = db,
   memberOverride?: AuthenticatedMember
 ): Promise<ActionResponse> {
@@ -101,14 +99,16 @@ export async function updateProfileAppearanceAction(
     const member = memberOverride || (await requireAuthenticatedMember(database));
     const validated = updateAppearanceSchema.parse(input);
 
-    // Entitlement guard for custom background
-    if (validated.backgroundUrl) {
-      const entitlements = resolveMemberEntitlements(member.roles);
-      if (!entitlements.canCustomBackground) {
+    const entitlements = await getResolvedMemberEntitlements(member, database);
+    if (validated.backgroundUrl && !entitlements.canCustomBackground) {
         throw new ForbiddenError(
           'Custom background images require supporter entitlement or community staff role.'
         );
-      }
+    }
+
+    const premiumRequested = validated.supporterLayout !== undefined || validated.typography !== undefined || validated.avatarFrame !== undefined || validated.coverTreatment !== undefined || validated.coverPosition !== undefined || validated.motion !== undefined;
+    if (premiumRequested && !entitlements.canProfileStudio) {
+      throw new ForbiddenError('Profile studio choices require supporter entitlement or community staff role.');
     }
 
     await database
@@ -116,7 +116,16 @@ export async function updateProfileAppearanceAction(
       .set({
         theme: validated.theme,
         accentColor: validated.accentColor,
-        backgroundUrl: validated.backgroundUrl || null,
+        layout: validated.layout,
+        ...(validated.backgroundUrl !== undefined && entitlements.canCustomBackground ? { backgroundUrl: validated.backgroundUrl || null } : {}),
+        ...(entitlements.canProfileStudio ? {
+          ...(validated.supporterLayout !== undefined ? { supporterLayout: validated.supporterLayout } : {}),
+          ...(validated.typography !== undefined ? { typography: validated.typography } : {}),
+          ...(validated.avatarFrame !== undefined ? { avatarFrame: validated.avatarFrame } : {}),
+          ...(validated.coverTreatment !== undefined ? { coverTreatment: validated.coverTreatment } : {}),
+          ...(validated.coverPosition !== undefined ? { coverPosition: validated.coverPosition } : {}),
+          ...(validated.motion !== undefined ? { motion: validated.motion } : {}),
+        } : {}),
         updatedAt: new Date(),
       })
       .where(eq(profiles.userId, member.user.id));
