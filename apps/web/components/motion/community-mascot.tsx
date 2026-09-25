@@ -139,35 +139,65 @@ function MascotCompanion({ pathname }: { pathname: string }) {
     return () => window.clearTimeout(timer);
   }, [active, mood, reaction.count]);
 
-  // Pointer tracking schedules at most one DOM write per frame, without React renders.
+  // Pointer tracking schedules at most one DOM write per frame, without React renders or layout reflows.
   React.useEffect(() => {
     const runner = runnerRef.current;
     if (!runner) return;
     if (!active || mood === 'sleep' || mood === 'held') {
       runner.style.setProperty('--mascot-look', '0deg');
+      runner.style.setProperty('--mascot-look-y', '0px');
+      runner.dataset.near = 'false';
       return;
     }
     let frame = 0;
     let point: Point = { x: 0, y: 0 };
+    let prevLook = '0deg';
+    let prevLookY = '0px';
+    let prevNear = 'false';
+
     const track = (event: PointerEvent) => {
       if (event.pointerType !== 'mouse') return;
       point = { x: event.clientX, y: event.clientY };
       if (frame) return;
       frame = requestAnimationFrame(() => {
         frame = 0;
-        const rect = runner.getBoundingClientRect();
-        const dx = point.x - rect.left - rect.width / 2;
-        const dy = point.y - rect.top - rect.height / 3;
+        const currentPos = positionRef.current;
+        const width = runner.offsetWidth || 144;
+        const height = runner.offsetHeight || 164;
+        const dx = point.x - currentPos.x - width / 2;
+        const dy = point.y - currentPos.y - height / 3;
         const near = Math.hypot(dx, dy) < 320;
-        runner.style.setProperty('--mascot-look', `${near ? Math.max(-6, Math.min(6, dx / 42)) : 0}deg`);
-        runner.style.setProperty('--mascot-look-y', `${near ? Math.max(-8, Math.min(8, dy / 30)) : 0}px`);
-        runner.dataset.near = String(near);
+        const nextLook = `${near ? Math.max(-6, Math.min(6, dx / 42)) : 0}deg`;
+        const nextLookY = `${near ? Math.max(-8, Math.min(8, dy / 30)) : 0}px`;
+        const nextNear = String(near);
+
+        if (nextLook !== prevLook) {
+          runner.style.setProperty('--mascot-look', nextLook);
+          prevLook = nextLook;
+        }
+        if (nextLookY !== prevLookY) {
+          runner.style.setProperty('--mascot-look-y', nextLookY);
+          prevLookY = nextLookY;
+        }
+        if (nextNear !== prevNear) {
+          runner.dataset.near = nextNear;
+          prevNear = nextNear;
+        }
       });
     };
     const reset = () => {
-      runner.style.setProperty('--mascot-look', '0deg');
-      runner.style.setProperty('--mascot-look-y', '0px');
-      runner.dataset.near = 'false';
+      if (prevLook !== '0deg') {
+        runner.style.setProperty('--mascot-look', '0deg');
+        prevLook = '0deg';
+      }
+      if (prevLookY !== '0px') {
+        runner.style.setProperty('--mascot-look-y', '0px');
+        prevLookY = '0px';
+      }
+      if (prevNear !== 'false') {
+        runner.dataset.near = 'false';
+        prevNear = 'false';
+      }
     };
     window.addEventListener('pointermove', track, { passive: true });
     document.addEventListener('pointerleave', reset);
