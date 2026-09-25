@@ -62,21 +62,29 @@ ASC utilizes Next.js **Server Actions** for client mutations (form submissions, 
 ---
 
 ### 2.3 `updateProfileAppearanceAction`
-- **Purpose**: Updates accent color, theme, and external background URL.
+- **Purpose**: Updates curated profile appearance settings.
 - **Authentication**: Required (Clerk session cookie).
-- **Authorization**: Profile owner only. Custom background requires `'profile.background'` entitlement.
+- **Authorization**: Profile owner only. Background artwork requires the existing supporter/background rule; studio controls require supporter or staff status, or an active explicit `profile.studio` grant.
 - **Input**:
   ```typescript
   {
     theme: 'canvas' | 'indigo' | 'onyx';
     accentColor: string;
-    backgroundUrl?: string;
+    layout?: 'classic' | 'split';
+    supporterLayout?: 'arcade' | 'showcase' | null;
+    typography?: 'balanced' | 'bold' | 'playful';
+    avatarFrame?: 'none' | 'pixel' | 'neon' | 'crest';
+    coverTreatment?: 'solid' | 'artwork' | 'pattern';
+    coverPosition?: number; // integer 0–100
+    motion?: 'off' | 'subtle' | 'lively';
+    backgroundUrl?: string | null;
   }
   ```
 - **Validation**:
   - `theme`: One of approved theme enum values.
   - `accentColor`: Valid hex color matching `#([0-9a-fA-F]{3}){1,2}$`.
   - `backgroundUrl`: Optional valid HTTPS URL.
+  - Every choice is an enumerated value; focal position is bounded. Premium fields cannot be submitted without active access. Standard edits preserve saved premium fields.
 - **Output**:
   ```typescript
   { success: true }

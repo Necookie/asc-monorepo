@@ -1415,6 +1415,8 @@ Do not hide locked features completely if showing them helps communicate availab
 
 The preview should render the same profile components used by the real public profile whenever practical.
 
+The current studio uses `ProfileDisplay` for both surfaces. All members can choose a theme, hex accent, and `classic` or `split` layout. Supporters and staff can also choose `arcade` or `showcase`, typography, avatar frame, cover treatment and focal point, and motion level. These are curated options, never arbitrary CSS. Premium choices remain saved after entitlement loss and render again if access returns. A solid reading surface always sits under biography, tags, and links.
+
 Avoid maintaining a completely separate fake preview implementation.
 
 Desktop preview may be sticky.
