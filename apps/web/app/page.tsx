@@ -1,10 +1,9 @@
 import Link from 'next/link';
 import { getCommunityOverview } from '@/lib/queries/community';
 import { Button } from '@/components/ui/button';
-import { Avatar } from '@/components/ui/avatar';
 import { MemberWall } from '@/components/identity/member-wall';
-import { SupporterBadge } from '@/components/identity/supporter-badge';
-import { ArrowRight, CheckCircle2, Search, ShieldCheck, UserRound } from 'lucide-react';
+import { ArcadeStage } from '@/components/motion/arcade-stage';
+import { ArrowRight, Search, ShieldCheck, UserRound } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,8 +27,6 @@ const STEPS = [
 
 export default async function HomePage() {
   const overview = await getCommunityOverview();
-  const featuredMembers = overview.recentMembers.slice(0, 4);
-
   return (
     <div className="pb-24 sm:pb-32">
       <section className="asc-anime-ink arcade-hero border-b border-border">
@@ -66,53 +63,11 @@ export default async function HomePage() {
           </div>
 
           <div className="lg:col-span-6 lg:pl-6">
-            <div className="arcade-scoreboard border-y border-border">
-              <div className="flex items-center justify-between gap-4 py-4">
-                <div>
-                  <p className="font-[var(--font-display)] text-xl font-bold text-ink">In the clubroom</p>
-                  <p className="mt-0.5 text-sm text-ink-secondary">Real people, real profiles</p>
-                </div>
-                <Link href="/members" className="text-sm font-semibold text-primary-soft hover:text-ink">
-                  View all
-                </Link>
-              </div>
-
-              {featuredMembers.length > 0 ? (
-                <div className="divide-y divide-border border-t border-border">
-                  {featuredMembers.map((member) => (
-                    <Link
-                      key={member.id}
-                      href={`/${member.slug}`}
-                      className="group flex min-h-20 items-center gap-4 py-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                    >
-                      <Avatar src={member.avatar} alt={member.displayName} size={48} className="border-border-strong" />
-                      <div className="min-w-0 flex-1">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="truncate font-semibold text-ink group-hover:text-primary-soft">
-                            {member.displayName}
-                          </span>
-                          {member.isSupporter && <SupporterBadge size="sm" />}
-                        </div>
-                        <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted">
-                          <span>@{member.username}</span>
-                          {member.primaryRole && <span>{member.primaryRole.name}</span>}
-                        </div>
-                      </div>
-                      <ArrowRight className="h-4 w-4 shrink-0 text-muted transition-transform group-hover:translate-x-1 group-hover:text-primary-soft" />
-                    </Link>
-                  ))}
-                </div>
-              ) : (
-                <div className="border-t border-border py-10 text-sm text-muted">
-                  Member profiles will appear here as the community syncs.
-                </div>
-              )}
-            </div>
-
-            <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink-secondary">
+            <ArcadeStage />
+            <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 border-t border-border pt-4 text-sm text-ink-secondary">
               <span><strong className="font-semibold text-ink">{overview.totalMembers}</strong> members</span>
               <span><strong className="font-semibold text-ink">{overview.totalSupporters}</strong> supporters</span>
-              <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="h-4 w-4 text-green" /> Synced from Discord</span>
+              <span>Verified with Discord</span>
             </div>
           </div>
         </div>
