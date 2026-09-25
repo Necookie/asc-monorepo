@@ -472,7 +472,7 @@ export function ProfileCustomizer({
                   <legend className="text-sm font-bold text-ink">Layout for every member</legend>
                   <div className="grid gap-3 sm:grid-cols-2">
                     {([['classic', 'Classic', 'Identity beside the story'], ['split', 'Split', 'Even space for both sides']] as const).map(([value, name, detail]) => (
-                      <button key={value} type="button" aria-pressed={layout === value && !supporterLayout} onClick={() => { setLayout(value); setSupporterLayout(null); }} className={`appearance-choice ${layout === value && !supporterLayout ? 'appearance-choice--active' : ''}`}><strong>{name}</strong><span className="text-xs text-ink-secondary">{detail}</span></button>
+                      <button key={value} type="button" aria-pressed={layout === value && (!entitlements.canProfileStudio || !supporterLayout)} onClick={() => { setLayout(value); if (entitlements.canProfileStudio) setSupporterLayout(null); }} className={`appearance-choice ${layout === value && (!entitlements.canProfileStudio || !supporterLayout) ? 'appearance-choice--active' : ''}`}><strong>{name}</strong><span className="text-xs text-ink-secondary">{detail}</span></button>
                     ))}
                   </div>
                 </fieldset>
