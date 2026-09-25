@@ -28,6 +28,7 @@ export const communityRoles = sqliteTable(
   },
   (table) => [
     index('idx_community_roles_external_id').on(table.externalRoleId),
+    index('idx_community_roles_is_supporter').on(table.isSupporter),
   ]
 );
 

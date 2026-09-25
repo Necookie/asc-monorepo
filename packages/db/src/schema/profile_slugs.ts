@@ -22,6 +22,7 @@ export const profileSlugs = sqliteTable(
   (table) => [
     index('idx_profile_slugs_slug').on(table.slug),
     index('idx_profile_slugs_user_id').on(table.userId),
+    index('idx_profile_slugs_user_primary').on(table.userId, table.isPrimary),
   ]
 );
 
