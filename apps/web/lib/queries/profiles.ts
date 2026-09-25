@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { eq, and } from 'drizzle-orm';
 import { db, users, profileSlugs, profiles, type ASCDatabase } from '@asc/db';
 import { resolveMemberEntitlements, resolveVisibleAppearance } from '@asc/entitlements';
@@ -224,3 +225,9 @@ export async function getPublicProfileBySlug(
 
   return { profile: publicData };
 }
+
+export const getCachedPublicProfileBySlug = cache(
+  async (slug: string, database: ASCDatabase = db): Promise<PublicProfileResult> => {
+    return getPublicProfileBySlug(slug, database);
+  }
+);
