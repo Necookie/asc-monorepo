@@ -88,6 +88,16 @@ describe('Profile Customization Server Actions & Entitlement Enforcement', () =>
   }
 
   describe('1. Biography & Custom Title', () => {
+    it('keeps a saved supporter title when the member later edits their bio without access', async () => {
+      const [user] = await testDb.insert(users).values({ id: 'former_supporter', externalUserId: '100000000000000106', username: 'former_supporter', displayName: 'Former Supporter', firstJoinedAt: new Date(), lastSyncedAt: new Date() }).returning();
+      await testDb.insert(profiles).values({ userId: user.id, customTitle: 'Old supporter title' });
+      const member = createMember(user.id, user.externalUserId);
+      const response = await updateProfileBioAction({ bio: 'Updated bio' }, testDb, member);
+      expect(response.success).toBe(true);
+      const stored = await testDb.query.profiles.findFirst({ where: eq(profiles.userId, user.id) });
+      expect(stored?.bio).toBe('Updated bio');
+      expect(stored?.customTitle).toBe('Old supporter title');
+    });
     it('updates member biography successfully', async () => {
       const [user] = await testDb
         .insert(users)

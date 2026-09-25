@@ -50,9 +50,9 @@ export async function updateProfileBioAction(
     const member = memberOverride || (await requireAuthenticatedMember(database));
     const validated = updateBioSchema.parse(input);
 
+    const entitlements = await getResolvedMemberEntitlements(member, database);
     // Entitlement guard for custom title
     if (validated.customTitle) {
-      const entitlements = await getResolvedMemberEntitlements(member, database);
       if (!entitlements.canCustomTitle) {
         throw new ForbiddenError(
           'Custom title requires supporter entitlement or community staff role.'
@@ -64,7 +64,7 @@ export async function updateProfileBioAction(
       .update(profiles)
       .set({
         bio: validated.bio || null,
-        customTitle: validated.customTitle || null,
+        ...(entitlements.canCustomTitle ? { customTitle: validated.customTitle || null } : {}),
         updatedAt: new Date(),
       })
       .where(eq(profiles.userId, member.user.id));
@@ -78,7 +78,7 @@ export async function updateProfileBioAction(
       success: true,
       data: {
         bio: validated.bio || null,
-        customTitle: validated.customTitle || null,
+        customTitle: entitlements.canCustomTitle ? validated.customTitle || null : member.profile.customTitle,
       },
     };
   } catch (err) {

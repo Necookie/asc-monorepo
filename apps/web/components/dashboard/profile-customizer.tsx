@@ -125,7 +125,7 @@ export function ProfileCustomizer({
       if (activeTab === 'profile') {
         const res = await updateProfileBioAction({
           bio,
-          customTitle: customTitle.trim() ? customTitle.trim() : null,
+          customTitle: entitlements.canCustomTitle ? (customTitle.trim() ? customTitle.trim() : null) : undefined,
         });
         if (!res.success) throw new Error(res.error);
         setSaveMessage({ type: 'success', text: 'Biography and title saved successfully!' });
