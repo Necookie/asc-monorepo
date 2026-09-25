@@ -158,7 +158,7 @@ export default async function DashboardLayout({
               <Link
                 href={`/${member.primarySlug}`}
                 target="_blank"
-                className="text-[11px] font-semibold text-muted hover:text-ink px-2 py-1 rounded-md bg-surface-indigo border border-border"
+                className="text-sm font-semibold text-muted hover:text-ink px-2 py-1 rounded-md bg-surface-indigo border border-border"
               >
                 Profile
               </Link>
@@ -166,7 +166,7 @@ export default async function DashboardLayout({
             {member.isAdmin && (
               <Link
                 href="/admin"
-                className="text-[11px] font-semibold text-[#ec48bd] px-2 py-1 rounded-md bg-[#ec48bd]/10 border border-[#ec48bd]/25"
+                className="text-sm font-semibold text-[#ec48bd] px-2 py-1 rounded-md bg-[#ec48bd]/10 border border-[#ec48bd]/25"
               >
                 Admin
               </Link>

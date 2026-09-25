@@ -54,7 +54,7 @@ export default async function AdminMembersPage({
       <Card className="bg-surface-onyx/80 border-border overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-surface-indigo text-muted uppercase tracking-wider text-[10px] border-b border-border">
+            <thead className="bg-surface-indigo text-muted uppercase tracking-wider text-sm border-b border-border">
               <tr>
                 <th className="py-3 px-4">Member</th>
                 <th className="py-3 px-4">Discord Snowflake</th>
@@ -79,7 +79,7 @@ export default async function AdminMembersPage({
                         {member.displayName}
                         {member.roles.some((r) => r.isSupporter) && <SupporterBadge />}
                       </div>
-                      <div className="text-[11px] text-muted">@{member.username}</div>
+                      <div className="text-sm text-muted">@{member.username}</div>
                     </div>
                   </td>
 
@@ -89,7 +89,7 @@ export default async function AdminMembersPage({
 
                   <td className="py-3.5 px-4">
                     <span
-                      className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                      className={`inline-flex items-center px-2 py-0.5 rounded-full text-sm font-bold ${
                         member.membershipStatus === 'ACTIVE'
                           ? 'bg-[#35ed7e]/15 text-[#84f7b2] border border-[#35ed7e]/30'
                           : member.membershipStatus === 'LEFT'

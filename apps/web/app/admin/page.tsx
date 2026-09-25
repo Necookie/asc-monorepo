@@ -56,7 +56,7 @@ export default async function AdminOverviewPage() {
           <div className="mt-3 text-2xl sm:text-3xl font-extrabold text-ink font-[var(--font-display)]">
             {stats.totalMembers.toLocaleString()}
           </div>
-          <div className="text-[11px] text-muted mt-1">
+          <div className="text-sm text-muted mt-1">
             {stats.activeMembers} active · {stats.leftMembers} left
           </div>
         </Card>
@@ -69,7 +69,7 @@ export default async function AdminOverviewPage() {
           <div className="mt-3 text-2xl sm:text-3xl font-extrabold text-ink font-[var(--font-display)]">
             {stats.activeMembers.toLocaleString()}
           </div>
-          <div className="text-[11px] text-muted mt-1">
+          <div className="text-sm text-muted mt-1">
             Synchronized from Discord
           </div>
         </Card>
@@ -82,7 +82,7 @@ export default async function AdminOverviewPage() {
           <div className="mt-3 text-2xl sm:text-3xl font-extrabold text-ink font-[var(--font-display)]">
             {stats.totalTags.toLocaleString()}
           </div>
-          <div className="text-[11px] text-muted mt-1">
+          <div className="text-sm text-muted mt-1">
             Admin-curated skill badges
           </div>
         </Card>
@@ -95,7 +95,7 @@ export default async function AdminOverviewPage() {
           <div className="mt-3 text-2xl sm:text-3xl font-extrabold text-ink font-[var(--font-display)]">
             {stats.totalAuditLogs.toLocaleString()}
           </div>
-          <div className="text-[11px] text-muted mt-1">
+          <div className="text-sm text-muted mt-1">
             {stats.totalModerationActions} moderation actions
           </div>
         </Card>
@@ -184,7 +184,7 @@ export default async function AdminOverviewPage() {
                 className="flex items-center justify-between p-3 rounded-xl bg-surface-indigo border border-border text-xs"
               >
                 <div className="flex items-center gap-3">
-                  <span className="px-2 py-0.5 rounded font-mono text-[10px] font-bold bg-primary/20 text-muted border border-primary/30">
+                  <span className="px-2 py-0.5 rounded font-mono text-sm font-bold bg-primary/20 text-muted border border-primary/30">
                     {log.action}
                   </span>
                   <span className="text-ink font-medium">

@@ -43,6 +43,7 @@ export function MemberCard({
         )}
         {...props}
       >
+        {featured && <span className="member-ticket__index" aria-hidden="true">01</span>}
         <span className="mb-5 text-xs font-bold uppercase tracking-[0.18em] text-muted" aria-hidden="true">ASC / Member</span>
         {/* Supporter Pin */}
         {isSupporter && (
@@ -56,7 +57,7 @@ export function MemberCard({
           <Avatar
             src={avatar}
             alt={displayName}
-            size={featured ? 88 : 64}
+            size={featured ? 96 : 64}
             className="border-2 border-border-strong"
           />
         </div>

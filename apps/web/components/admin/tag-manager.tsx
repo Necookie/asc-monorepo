@@ -225,7 +225,7 @@ export function TagManager({ initialTags }: TagManagerProps) {
           <Card className="bg-surface-onyx/80 border-border overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-surface-indigo text-muted uppercase tracking-wider text-[10px] border-b border-border">
+                <thead className="bg-surface-indigo text-muted uppercase tracking-wider text-sm border-b border-border">
                   <tr>
                     <th className="py-3 px-4">Tag</th>
                     <th className="py-3 px-4">Slug</th>
@@ -253,7 +253,7 @@ export function TagManager({ initialTags }: TagManagerProps) {
 
                       <td className="py-3 px-4">
                         <span
-                          className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                          className={`inline-flex px-2 py-0.5 rounded-full text-sm font-bold ${
                             tag.isActive
                               ? 'bg-[#35ed7e]/15 text-[#84f7b2] border border-[#35ed7e]/30'
                               : 'bg-[#ed4245]/15 text-[#ff8f91] border border-[#ed4245]/30'
