@@ -24,12 +24,14 @@ export interface GetMembersOptions {
   search?: string;
   filter?: 'all' | 'supporters';
   database?: ASCDatabase;
+  limit?: number;
 }
 
 export async function getMembersDirectory({
   search = '',
   filter = 'all',
   database = db,
+  limit,
 }: GetMembersOptions = {}): Promise<MemberDirectoryItem[]> {
   const searchTerm = search.trim().toLowerCase();
 
@@ -90,7 +92,7 @@ export async function getMembersDirectory({
       },
     },
     orderBy: (users, { desc }) => [desc(users.lastSyncedAt)],
-    limit: 60,
+    limit: limit ?? 60,
   });
 
   const members: MemberDirectoryItem[] = [];

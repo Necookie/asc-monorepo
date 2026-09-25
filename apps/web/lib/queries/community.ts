@@ -34,12 +34,12 @@ export async function getCommunityOverview(
     totalSupporters = supporterRes?.val ?? 0;
   }
 
-  // Fetch recent members for showcase
-  const recentMembers = await getMembersDirectory({ database });
+  // Fetch recent members for showcase (homepage features top 8)
+  const recentMembers = await getMembersDirectory({ database, limit: 8 });
 
   return {
     totalMembers,
     totalSupporters,
-    recentMembers: recentMembers.slice(0, 8),
+    recentMembers,
   };
 }

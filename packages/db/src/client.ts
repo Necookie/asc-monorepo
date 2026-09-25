@@ -46,4 +46,9 @@ export function createDb(
   return db;
 }
 
-export const db = createDb();
+const globalForDb = globalThis as unknown as {
+  _ascDb?: ASCDatabase & { $client: Client };
+};
+
+export const db: ASCDatabase & { $client: Client } =
+  globalForDb._ascDb ?? (globalForDb._ascDb = createDb());

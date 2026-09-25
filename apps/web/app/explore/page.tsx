@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default async function ExplorePage() {
   const [members, allTags] = await Promise.all([
-    getMembersDirectory(),
+    getMembersDirectory({ limit: 8 }),
     db.query.tags.findMany({ limit: 20 }),
   ]);
 
