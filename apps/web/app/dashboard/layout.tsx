@@ -27,10 +27,11 @@ export default async function DashboardLayout({
   const member = await requireAuthenticatedMember();
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex flex-col lg:flex-row bg-canvas">
+    <div className="arcade-app-shell min-h-[calc(100vh-4rem)] flex flex-col lg:flex-row bg-canvas">
       {/* Desktop Sidebar (lg+) */}
       <aside className="hidden lg:flex flex-col w-72 border-r border-border bg-surface-onyx p-6 justify-between shrink-0">
         <div className="space-y-6">
+          <p className="arcade-kicker">Profile studio</p>
           {/* Member Card in Sidebar */}
           <div className="p-4 rounded-2xl bg-surface-indigo border border-border space-y-3">
             <div className="flex items-center gap-3">

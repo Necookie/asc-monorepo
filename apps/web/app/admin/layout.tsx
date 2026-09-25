@@ -24,7 +24,7 @@ export default async function AdminLayout({
   const admin = await requireAdminMember();
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-surface-black text-ink">
+    <div className="arcade-app-shell min-h-[calc(100vh-4rem)] bg-surface-black text-ink">
       {/* Top Admin Header Bar */}
       <div className="border-b border-border bg-surface-onyx sticky top-16 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-center justify-between gap-2 py-2.5 md:h-14 md:py-0">

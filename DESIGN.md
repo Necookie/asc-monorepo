@@ -19,6 +19,12 @@ The expressive layer may be playful, but it must still feel authored and people-
 
 The application layer must remain clear and usable while still visibly belonging to ASC.
 
+### Arcade expression
+
+ASC's public voice is a playful community arcade, drawn with confident ink, punchy labels, member portraits, and a few carefully placed magenta, cyan, and green signals. The arcade cue comes from composition and interaction rather than pixel fonts, noisy wallpaper, or constant motion. The gray-and-white cat in glasses and a navy jacket is the recognizable companion; its reactions are expressive but never block reading or navigation.
+
+The homepage may host one interactive 3D ASC-mark scene. Directory cards, profiles, and the appearance preview may use lighter perspective and layered depth. Application controls remain flat, familiar, and readable. Keep real member identity and content in HTML rather than inside a canvas. Reduced motion and unsupported graphics fall back to a still composition.
+
 ### Core Characteristics
 
 * Monochrome canvas (`{colors.canvas}`) with solid, legible surfaces.
@@ -37,6 +43,8 @@ The application layer must remain clear and usable while still visibly belonging
 * Dashboard surfaces should feel calmer and more structured.
 * Mobile behavior is a first-class requirement.
 * Accessibility and readability take priority over decorative effects.
+* Body copy stays at least 16px, and secondary labels at least 14px where space allows.
+* Keep prose to roughly 65–75 characters per line and readable on custom covers.
 
 ### Visual Restraint Rules
 
@@ -1202,6 +1210,9 @@ ASC MEMBERS
 
 [ All ] [ Staff ] [ Supporters ] [ Developer ]
 
+┌─────────────────────────┐ ┌────────────┐
+│   Featured member       │ │   Member   │
+└─────────────────────────┘ └────────────┘
 ┌────────────┐ ┌────────────┐ ┌────────────┐
 │   Member   │ │   Member   │ │   Member   │
 └────────────┘ └────────────┘ └────────────┘
@@ -1209,7 +1220,7 @@ ASC MEMBERS
 
 Desktop:
 
-3–4 columns.
+Three or four columns, with the first member occupying two columns. Keep source order and reading order identical.
 
 Tablet:
 

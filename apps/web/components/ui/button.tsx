@@ -23,7 +23,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const sizes = {
-      sm: 'h-9 px-3.5 text-xs rounded-xl min-h-[36px]',
+      sm: 'h-11 px-3.5 text-sm rounded-xl min-h-[44px]',
       md: 'h-11 px-5 text-sm rounded-xl min-h-[44px]',
       lg: 'h-13 px-7 text-base rounded-2xl min-h-[48px]',
       icon: 'h-10 w-10 rounded-xl min-h-[40px] min-w-[40px] p-0',

@@ -65,7 +65,7 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
         <div className="flex items-center gap-2 shrink-0">
           <Link
             href={`/members?filter=all${q ? `&q=${encodeURIComponent(q)}` : ''}`}
-            className={`px-4 py-2 text-xs font-bold rounded-xl transition-all ${
+            className={`inline-flex min-h-11 items-center rounded-xl px-4 py-2 text-sm font-bold transition-all ${
               !isSupportersOnly
                 ? 'bg-primary text-ink-dark shadow-sm'
                 : 'bg-surface-indigo text-ink-secondary hover:text-ink border border-border'
@@ -75,7 +75,7 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
           </Link>
           <Link
             href={`/members?filter=supporters${q ? `&q=${encodeURIComponent(q)}` : ''}`}
-            className={`px-4 py-2 text-xs font-bold rounded-xl inline-flex items-center gap-1.5 transition-all ${
+            className={`inline-flex min-h-11 items-center gap-1.5 rounded-xl px-4 py-2 text-sm font-bold transition-all ${
               isSupportersOnly
                 ? 'bg-[#ec48bd] text-ink shadow-sm'
                 : 'bg-surface-indigo text-ink-secondary hover:text-ink border border-border'
