@@ -1,6 +1,7 @@
 # Dependencies
 node_modules/
 node_modules*/
+old_nm/
 .pnpm-store/
 
 # Next.js
