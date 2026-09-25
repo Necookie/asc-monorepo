@@ -31,6 +31,7 @@ export const users = sqliteTable(
     index('idx_users_external_user_id').on(table.externalUserId),
     index('idx_users_clerk_user_id').on(table.clerkUserId),
     index('idx_users_username').on(table.username),
+    index('idx_users_status_synced').on(table.membershipStatus, table.lastSyncedAt),
   ]
 );
 
