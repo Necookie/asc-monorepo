@@ -1,6 +1,6 @@
 # Interactive ASC mascot
 
-The public-page companion reuses `cat-front-cutout.png`. SVG partitions articulate
+The public-page companion uses the redrawn `cat-arcade.png`. SVG partitions articulate
 its head, raised arm, and tail without downloading additional artwork or adding
 animation dependencies. An eyelid overlay supplies blinking and closed-eye
 expressions. Keep the partition coordinates aligned if the source art changes.
@@ -9,10 +9,10 @@ expressions. Keep the partition coordinates aligned if the source art changes.
 
 - Tap/click the mascot to wave and toggle its actions. The panel offers Wave,
   Pet, Celebrate, Nap/Wake, and a persistent animation pause preference.
-- Moving a mouse nearby turns its head. Stroking across it produces a purring
-  expression and heart. The Pet button provides the same action on touch devices
+- Moving a mouse nearby lifts and turns its head. Stroking across it produces a purring
+  expression, paw movement, tail swish, and heart. The Pet button provides the same action on touch devices
   and keyboards.
-- Drag with mouse, pen, or touch. Pickup and landing have distinct poses.
+- Drag with mouse, pen, or touch. Pickup leans with the drag; landing has a squash and settle.
   Positions are normalized in local storage and clamped on resize. The sticky
   navigation is reserved so the mascot cannot be trapped behind it.
 - Arrow keys move it 16px; Shift+Arrow moves it 40px. Enter/Space opens actions.
@@ -20,7 +20,7 @@ expressions. Keep the partition coordinates aligned if the source art changes.
   outside pointer input closes it without interfering with the page.
 - Breathing, tail movement, occasional head movement, and blinking animate idle
   behavior. After 30 seconds without a mascot interaction, it naps. Tap or Wake
-  wakes it. It never roams across the page on its own.
+  triggers a stretch. Celebration briefly tosses confetti. It never roams across the page on its own.
 
 ## Motion and lifecycle
 

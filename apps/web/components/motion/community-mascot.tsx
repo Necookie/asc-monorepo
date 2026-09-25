@@ -13,6 +13,7 @@ const MESSAGES: Record<MascotMood, string> = {
   happy: 'Prrr. You made my day.',
   celebrate: 'A little cheer for you!',
   sleep: 'Recharging for the next adventure.',
+  wake: 'Big stretch. Ready to explore!',
   held: 'Where are we going?',
   land: 'This looks like a good spot.',
 };
@@ -85,6 +86,7 @@ function MascotCompanion() {
   }, [bounds]);
 
   const react = (next: MascotMood) => setReaction((current) => ({ mood: next, count: current.count + 1 }));
+  const wakeOrReact = (next: MascotMood) => react(mood === 'sleep' ? 'wake' : next);
 
   React.useEffect(() => {
     // Listen directly: the installed Motion hook only reads the initial preference.
@@ -123,7 +125,7 @@ function MascotCompanion() {
     if (!active || mood === 'sleep' || mood === 'held') return;
     const timer = window.setTimeout(() => {
       setReaction((current) => ({ mood: mood === 'idle' ? 'sleep' : 'idle', count: current.count + 1 }));
-    }, mood === 'idle' ? 30000 : mood === 'land' ? 600 : 2200);
+    }, mood === 'idle' ? 30000 : mood === 'land' ? 600 : mood === 'wake' ? 1100 : 2200);
     return () => window.clearTimeout(timer);
   }, [active, mood, reaction.count]);
 
@@ -146,10 +148,17 @@ function MascotCompanion() {
         const rect = runner.getBoundingClientRect();
         const dx = point.x - rect.left - rect.width / 2;
         const dy = point.y - rect.top - rect.height / 3;
-        runner.style.setProperty('--mascot-look', `${Math.hypot(dx, dy) < 320 ? Math.max(-5, Math.min(5, dx / 45)) : 0}deg`);
+        const near = Math.hypot(dx, dy) < 320;
+        runner.style.setProperty('--mascot-look', `${near ? Math.max(-6, Math.min(6, dx / 42)) : 0}deg`);
+        runner.style.setProperty('--mascot-look-y', `${near ? Math.max(-8, Math.min(8, dy / 30)) : 0}px`);
+        runner.dataset.near = String(near);
       });
     };
-    const reset = () => runner.style.setProperty('--mascot-look', '0deg');
+    const reset = () => {
+      runner.style.setProperty('--mascot-look', '0deg');
+      runner.style.setProperty('--mascot-look-y', '0px');
+      runner.dataset.near = 'false';
+    };
     window.addEventListener('pointermove', track, { passive: true });
     document.addEventListener('pointerleave', reset);
     return () => {
@@ -208,6 +217,7 @@ function MascotCompanion() {
       react('held');
       setOpen(false);
     }
+    event.currentTarget.parentElement?.style.setProperty('--mascot-drag-lean', `${Math.max(-9, Math.min(9, dx / 18))}deg`);
     move({ x: drag.origin.x + dx, y: drag.origin.y + dy });
   };
 
@@ -215,6 +225,7 @@ function MascotCompanion() {
     const drag = dragRef.current;
     if (!drag || drag.id !== event.pointerId) return;
     dragRef.current = null;
+    event.currentTarget.parentElement?.style.setProperty('--mascot-drag-lean', '0deg');
     if (drag.moved) {
       savePosition();
       suppressClickRef.current = true;
@@ -258,7 +269,7 @@ function MascotCompanion() {
           onClick={(event) => {
             if (suppressClickRef.current && event.detail !== 0) { suppressClickRef.current = false; return; }
             suppressClickRef.current = false;
-            react(mood === 'sleep' ? 'happy' : 'wave');
+            wakeOrReact('wave');
             placePanel();
             setOpen((current) => !current);
           }}
@@ -266,18 +277,19 @@ function MascotCompanion() {
           <MascotCharacter mood={mood} reactionKey={reaction.count} />
         </button>
         <span className="mascot-emote" key={reaction.count} aria-hidden="true">
-          {mood === 'sleep' ? 'z z z' : mood === 'happy' ? '♥' : mood === 'celebrate' ? '✦ ✧ ✦' : mood === 'held' ? '!' : ''}
+          {mood === 'sleep' ? 'z z z' : mood === 'happy' ? '♥' : mood === 'held' ? '!' : ''}
         </span>
+        {mood === 'celebrate' && <span className="mascot-particles" key={`particles-${reaction.count}`} aria-hidden="true">{Array.from({ length: 8 }, (_, index) => <i key={index} />)}</span>}
       </m.div>
       {open && (
         <div ref={panelRef} id={panelId} className="community-mascot-panel" style={{ left: panelPosition.x, top: panelPosition.y }} role="region" aria-label="Mascot actions">
           <div className="mascot-panel-heading"><strong>Your ASC companion</strong><button type="button" aria-label="Close mascot actions" onClick={() => { setOpen(false); buttonRef.current?.focus(); }}>×</button></div>
           <p role="status" aria-live="polite">{MESSAGES[mood]}</p>
           <div className="mascot-actions">
-            <button type="button" onClick={() => react('wave')}>Wave</button>
-            <button type="button" onClick={() => react('happy')}>Pet</button>
-            <button type="button" onClick={() => react('celebrate')}>Celebrate</button>
-            <button type="button" onClick={() => react(mood === 'sleep' ? 'happy' : 'sleep')}>{mood === 'sleep' ? 'Wake up' : 'Nap'}</button>
+            <button type="button" onClick={() => wakeOrReact('wave')}>Wave</button>
+            <button type="button" onClick={() => wakeOrReact('happy')}>Pet</button>
+            <button type="button" onClick={() => wakeOrReact('celebrate')}>Celebrate</button>
+            <button type="button" onClick={() => react(mood === 'sleep' ? 'wake' : 'sleep')}>{mood === 'sleep' ? 'Wake up' : 'Nap'}</button>
           </div>
           <button type="button" className="mascot-pause" aria-pressed={paused} onClick={() => {
             const next = !paused;
