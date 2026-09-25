@@ -26,10 +26,10 @@ const topInset = () => Math.max(12, (document.querySelector('header')?.getBoundi
 export function CommunityMascot() {
   const pathname = usePathname();
   if (['/dashboard', '/admin', '/login', '/not-a-member'].some((route) => pathname?.startsWith(route))) return null;
-  return <MascotCompanion />;
+  return <MascotCompanion pathname={pathname} />;
 }
 
-function MascotCompanion() {
+function MascotCompanion({ pathname }: { pathname: string }) {
   const [reduceMotion, setReduceMotion] = React.useState(true);
   const runnerRef = React.useRef<HTMLDivElement>(null);
   const buttonRef = React.useRef<HTMLButtonElement>(null);
@@ -106,7 +106,17 @@ function MascotCompanion() {
     const restore = () => {
       const max = bounds();
       const saved = savedRatioRef.current;
-      move(saved ? { x: saved.x * max.x, y: saved.y * max.y } : { x: max.x - 12, y: max.y - 12 });
+      const fallback = { x: max.x - 12, y: max.y - 12 };
+      const candidate = saved ? { x: saved.x * max.x, y: saved.y * max.y } : fallback;
+      const width = runnerRef.current?.offsetWidth ?? 144;
+      const height = runnerRef.current?.offsetHeight ?? 164;
+      const coversIntro = Array.from(document.querySelectorAll('main h1, main .arcade-kicker')).some((element) => {
+        const rect = element.getBoundingClientRect();
+        return candidate.x < rect.right + 12 && candidate.x + width > rect.left - 12 &&
+          candidate.y < rect.bottom + 12 && candidate.y + height > rect.top - 12;
+      });
+      move(coversIntro ? fallback : candidate);
+      if (coversIntro) savePosition();
       placePanel();
     };
     const visibility = () => setVisible(!document.hidden);
@@ -119,7 +129,7 @@ function MascotCompanion() {
       window.removeEventListener('resize', restore);
       document.removeEventListener('visibilitychange', visibility);
     };
-  }, [bounds, move, placePanel]);
+  }, [bounds, move, placePanel, pathname, savePosition]);
 
   React.useEffect(() => {
     if (!active || mood === 'sleep' || mood === 'held') return;

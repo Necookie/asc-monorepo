@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Keep local dev assets intact when a production build runs in the same checkout.
+  distDir: process.env.NODE_ENV === 'development' ? '.next-dev' : '.next',
   transpilePackages: [
     '@asc/db',
     '@asc/types',
