@@ -5,10 +5,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Avatar } from '@/components/ui/avatar';
-import { RoleChip } from '@/components/identity/role-chip';
-import { TagChip } from '@/components/identity/tag-chip';
-import { SupporterBadge } from '@/components/identity/supporter-badge';
+import { ProfileDisplay } from '@/components/identity/profile-display';
+import { resolveVisibleAppearance } from '@asc/entitlements';
+import type { AppearanceSettings } from '@asc/types';
+import type { PublicProfileData } from '@/lib/queries/profiles';
 import {
   updateProfileBioAction,
   updateProfileAppearanceAction,
@@ -74,6 +74,13 @@ export function ProfileCustomizer({
   const [backgroundUrl, setBackgroundUrl] = React.useState(
     member.profile.backgroundUrl || ''
   );
+  const [layout, setLayout] = React.useState<AppearanceSettings['layout']>(member.profile.layout);
+  const [supporterLayout, setSupporterLayout] = React.useState<AppearanceSettings['supporterLayout']>(member.profile.supporterLayout);
+  const [typography, setTypography] = React.useState<AppearanceSettings['typography']>(member.profile.typography);
+  const [avatarFrame, setAvatarFrame] = React.useState<AppearanceSettings['avatarFrame']>(member.profile.avatarFrame);
+  const [coverTreatment, setCoverTreatment] = React.useState<AppearanceSettings['coverTreatment']>(member.profile.coverTreatment);
+  const [coverPosition, setCoverPosition] = React.useState(member.profile.coverPosition);
+  const [motion, setMotion] = React.useState<AppearanceSettings['motion']>(member.profile.motion);
 
   const [links, setLinks] = React.useState<
     Array<{ id: string; label: string; url: string; displayOrder: number }>
@@ -126,7 +133,9 @@ export function ProfileCustomizer({
         const res = await updateProfileAppearanceAction({
           theme,
           accentColor,
-          backgroundUrl: backgroundUrl.trim() ? backgroundUrl.trim() : null,
+          layout,
+          ...(entitlements.canCustomBackground ? { backgroundUrl: backgroundUrl.trim() ? backgroundUrl.trim() : null } : {}),
+          ...(entitlements.canProfileStudio ? { supporterLayout, typography, avatarFrame, coverTreatment, coverPosition, motion } : {}),
         });
         if (!res.success) throw new Error(res.error);
         setSaveMessage({ type: 'success', text: 'Appearance settings saved successfully!' });
@@ -217,6 +226,33 @@ export function ProfileCustomizer({
 
   // Resolved selected tags objects for live preview
   const previewTags = availableTags.filter((t) => selectedTagIds.includes(t.id));
+  const visibleAppearance = resolveVisibleAppearance({
+    theme, accentColor, backgroundUrl: backgroundUrl.trim() || null, layout, supporterLayout,
+    typography, avatarFrame, coverTreatment, coverPosition, motion,
+  }, entitlements);
+  const previewData: PublicProfileData = {
+    user: {
+      username: member.user.username,
+      displayName: member.user.displayName,
+      nickname: privacy.isPrivate ? null : member.user.nickname,
+      avatar: member.user.avatar,
+      membershipStatus: member.user.membershipStatus === 'LEFT' ? 'LEFT' : 'ACTIVE',
+      firstJoinedAt: privacy.isPrivate || !privacy.showMembershipDate ? null : member.user.firstJoinedAt,
+      slug: member.primarySlug || member.user.username,
+    },
+    profile: {
+      ...visibleAppearance,
+      bio: privacy.isPrivate ? null : bio,
+      customTitle: privacy.isPrivate || !entitlements.canCustomTitle ? null : customTitle,
+      backgroundUrl: privacy.isPrivate ? null : visibleAppearance.backgroundUrl,
+      isPrivate: privacy.isPrivate,
+    },
+    roles: privacy.isPrivate || !privacy.showRoles ? [] : member.roles.map((role) => ({ id: role.id, name: role.name, color: role.color, isAdmin: role.isAdmin, isSupporter: role.isSupporter })),
+    tags: privacy.isPrivate || !privacy.showTags ? [] : previewTags.map((tag) => ({ id: tag.id, name: tag.name })),
+    links: privacy.isPrivate || !privacy.showLinks ? [] : links.map((link) => ({ id: link.id, label: link.label, url: link.url })),
+    isSupporter: member.isSupporter,
+    entitlements,
+  };
 
   return (
     <div className="space-y-6">
@@ -406,114 +442,71 @@ export function ProfileCustomizer({
 
           {/* TAB 2: Appearance */}
           {activeTab === 'appearance' && (
-            <Card className="bg-surface-indigo/80 border-border p-6 space-y-6">
+            <Card className="space-y-7 border-border bg-surface-indigo/80 p-6">
               <CardHeader className="p-0">
-                <CardTitle className="text-lg font-bold text-ink">Theme & Appearance</CardTitle>
-                <CardDescription className="text-xs text-muted">
-                  Personalize the accent color and theme styling for your profile.
-                </CardDescription>
+                <CardTitle className="text-xl font-bold text-ink">Profile studio</CardTitle>
+                <CardDescription className="text-sm leading-6 text-ink-secondary">Choose a clear base look, then use the live preview to shape your member page.</CardDescription>
               </CardHeader>
-
-              <CardContent className="p-0 space-y-6">
-                {/* Theme Selection */}
-                <div className="space-y-3">
-                  <label className="text-sm font-semibold text-ink">Profile Theme</label>
-                  <div className="grid grid-cols-3 gap-3">
-                    {[
-                      { id: 'canvas', name: 'Deep Indigo', desc: 'Standard ASC atmosphere' },
-                      { id: 'indigo', name: 'Vibrant Mesh', desc: 'Rich multi-gradient glow' },
-                      { id: 'onyx', name: 'Onyx Dark', desc: 'Pure midnight aesthetic' },
-                    ].map((th) => (
-                      <button
-                        key={th.id}
-                        type="button"
-                        onClick={() => setTheme(th.id as any)}
-                        className={`p-3.5 rounded-xl border text-left transition-all ${
-                          theme === th.id
-                            ? 'bg-primary/20 border-primary ring-2 ring-primary/40 text-ink'
-                            : 'bg-surface-onyx border-border text-ink-secondary hover:border-border'
-                        }`}
-                      >
-                        <div className="font-semibold text-xs text-ink">{th.name}</div>
-                        <div className="text-[10px] text-muted mt-0.5">{th.desc}</div>
+              <CardContent className="space-y-7 p-0">
+                <fieldset className="space-y-3">
+                  <legend className="text-sm font-bold text-ink">Theme</legend>
+                  <div className="grid gap-3 sm:grid-cols-3">
+                    {([['canvas', 'Canvas'], ['indigo', 'Indigo'], ['onyx', 'Onyx']] as const).map(([value, name]) => (
+                      <button key={value} type="button" aria-pressed={theme === value} onClick={() => setTheme(value)} className={`appearance-choice ${theme === value ? 'appearance-choice--active' : ''}`}>
+                        <span className={`appearance-choice__swatch appearance-choice__swatch--${value}`} />
+                        <span>{name}</span>
                       </button>
                     ))}
                   </div>
-                </div>
-
-                {/* Accent Color Selection */}
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <label className="text-sm font-semibold text-ink">Accent Color</label>
-                    <div className="flex items-center gap-2">
-                      <div
-                        className="w-4 h-4 rounded-full border border-border-strong"
-                        style={{ backgroundColor: accentColor }}
-                      />
-                      <span className="text-xs font-mono text-muted">{accentColor}</span>
-                    </div>
+                </fieldset>
+                <fieldset className="space-y-3">
+                  <legend className="text-sm font-bold text-ink">Accent</legend>
+                  <div className="flex flex-wrap gap-3">
+                    {PRESET_ACCENTS.map((color) => <button key={color} type="button" title={color} aria-label={`Accent ${color}`} aria-pressed={accentColor.toLowerCase() === color.toLowerCase()} onClick={() => setAccentColor(color)} className="appearance-accent" style={{ backgroundColor: color }} />)}
                   </div>
-
-                  <div className="flex flex-wrap gap-2.5 items-center">
-                    {PRESET_ACCENTS.map((color) => (
-                      <button
-                        key={color}
-                        type="button"
-                        onClick={() => setAccentColor(color)}
-                        className={`w-9 h-9 rounded-xl transition-transform ${
-                          accentColor.toLowerCase() === color.toLowerCase()
-                            ? 'scale-110 ring-2 ring-white shadow-lg'
-                            : 'hover:scale-105 opacity-80 hover:opacity-100'
-                        }`}
-                        style={{ backgroundColor: color }}
-                        title={color}
-                      />
+                  <label className="block text-sm text-ink-secondary">Custom hex color
+                    <input type="text" value={accentColor} onChange={(event) => setAccentColor(event.target.value)} maxLength={7} className="appearance-input mt-2 w-32 font-mono" />
+                  </label>
+                </fieldset>
+                <fieldset className="space-y-3">
+                  <legend className="text-sm font-bold text-ink">Layout for every member</legend>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {([['classic', 'Classic', 'Identity beside the story'], ['split', 'Split', 'Even space for both sides']] as const).map(([value, name, detail]) => (
+                      <button key={value} type="button" aria-pressed={layout === value && !supporterLayout} onClick={() => { setLayout(value); setSupporterLayout(null); }} className={`appearance-choice ${layout === value && !supporterLayout ? 'appearance-choice--active' : ''}`}><strong>{name}</strong><span className="text-xs text-ink-secondary">{detail}</span></button>
                     ))}
-
-                    <div className="flex items-center gap-2 ml-2">
-                      <span className="text-xs text-muted">Custom:</span>
-                      <input
-                        type="text"
-                        value={accentColor}
-                        onChange={(e) => setAccentColor(e.target.value)}
-                        className="w-24 px-2 py-1 text-xs rounded-lg bg-surface-onyx border border-border text-ink font-mono focus:outline-none focus:ring-1 focus:ring-primary"
-                      />
-                    </div>
                   </div>
-                </div>
-
-                {/* Supporter Background URL */}
-                <div className="space-y-2 pt-2 border-t border-border">
-                  <div className="flex items-center justify-between">
-                    <label className="text-sm font-semibold text-ink flex items-center gap-1.5">
-                      Supporter Background Image
-                      {!entitlements.canCustomBackground && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-[#f59e0b]/15 text-[#f59e0b] border border-[#f59e0b]/30">
-                          <Lock className="w-3 h-3" /> Supporter Perk
-                        </span>
-                      )}
+                </fieldset>
+                <div className="space-y-4 border-t border-border pt-6">
+                  <div><h3 className="text-base font-bold text-ink">Supporter studio</h3><p className="mt-1 text-sm leading-6 text-ink-secondary">More ways to shape your profile. Saved choices return if your supporter access returns.</p></div>
+                  <fieldset disabled={!entitlements.canProfileStudio} className="grid gap-4 disabled:opacity-60 sm:grid-cols-2">
+                    <label className="appearance-label">Featured layout
+                      <select value={supporterLayout ?? ''} onChange={(event) => setSupporterLayout(event.target.value ? event.target.value as AppearanceSettings['supporterLayout'] : null)} className="appearance-input"><option value="">Use standard layout</option><option value="arcade">Arcade</option><option value="showcase">Showcase</option></select>
                     </label>
-                  </div>
-                  <input
-                    type="url"
-                    value={backgroundUrl}
-                    onChange={(e) => setBackgroundUrl(e.target.value)}
-                    disabled={!entitlements.canCustomBackground}
-                    placeholder={
-                      entitlements.canCustomBackground
-                        ? 'https://example.com/banner.png'
-                        : 'Unlock custom profile backgrounds with ASC supporter status'
-                    }
-                    className="w-full px-4 py-2.5 rounded-xl bg-surface-onyx border border-border text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 text-sm font-mono"
-                  />
-                  <p className="text-[11px] text-muted">
-                    External HTTPS URL only. Never proxies or stores binary data. Gracefully falls back if image fails.
-                  </p>
+                    <label className="appearance-label">Typography
+                      <select value={typography} onChange={(event) => setTypography(event.target.value as AppearanceSettings['typography'])} className="appearance-input"><option value="balanced">Balanced</option><option value="bold">Bold</option><option value="playful">Playful</option></select>
+                    </label>
+                    <label className="appearance-label">Avatar frame
+                      <select value={avatarFrame} onChange={(event) => setAvatarFrame(event.target.value as AppearanceSettings['avatarFrame'])} className="appearance-input"><option value="none">None</option><option value="pixel">Pixel</option><option value="neon">Neon</option><option value="crest">Crest</option></select>
+                    </label>
+                    <label className="appearance-label">Cover treatment
+                      <select value={coverTreatment} onChange={(event) => setCoverTreatment(event.target.value as AppearanceSettings['coverTreatment'])} className="appearance-input"><option value="solid">Solid</option><option value="artwork">Artwork</option><option value="pattern">Pattern</option></select>
+                    </label>
+                    <label className="appearance-label">Motion
+                      <select value={motion} onChange={(event) => setMotion(event.target.value as AppearanceSettings['motion'])} className="appearance-input"><option value="off">Off</option><option value="subtle">Subtle</option><option value="lively">Lively</option></select>
+                    </label>
+                    <label className="appearance-label">Artwork focal point · {coverPosition}%
+                      <input type="range" min={0} max={100} value={coverPosition} onChange={(event) => setCoverPosition(Number(event.target.value))} className="mt-3 w-full accent-primary" />
+                    </label>
+                  </fieldset>
+                  {!entitlements.canProfileStudio && <p className="text-sm text-ink-secondary"><Lock className="mr-1 inline h-4 w-4" />Supporter or staff access unlocks these controls.</p>}
                 </div>
+                <label className="appearance-label block border-t border-border pt-6">Background artwork URL
+                  <input type="url" value={backgroundUrl} onChange={(event) => setBackgroundUrl(event.target.value)} disabled={!entitlements.canCustomBackground} placeholder="https://example.com/artwork.jpg" className="appearance-input" />
+                  <span className="text-xs font-normal leading-5 text-ink-secondary">HTTPS image URLs only. Text stays on a readable surface. Artwork falls back gracefully if it cannot load.</span>
+                </label>
               </CardContent>
             </Card>
           )}
-
           {/* TAB 3: Community Tags */}
           {activeTab === 'tags' && (
             <Card className="bg-surface-indigo/80 border-border p-6 space-y-6">
@@ -723,122 +716,11 @@ export function ProfileCustomizer({
             </div>
             <span className="text-xs text-muted">Updates in real time</span>
           </div>
-
-          {/* Simulated Public Profile View */}
-          <div
-            className="rounded-3xl border border-border bg-surface-onyx shadow-2xl overflow-hidden transition-all"
-            style={{ borderColor: accentColor }}
-          >
-            {/* Header / Supporter Banner Preview */}
-            <div
-              className="relative h-28 w-full bg-surface-indigo bg-cover bg-center"
-              style={{
-                backgroundImage: backgroundUrl ? `url(${backgroundUrl})` : undefined,
-              }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-surface-onyx via-transparent to-black/20" />
-            </div>
-
-            {/* Content Body */}
-            <div className="p-6 -mt-12 relative z-10 space-y-5">
-              {/* Identity Row */}
-              <div className="flex items-start justify-between">
-                <Avatar
-                  src={member.user.avatar}
-                  alt={member.user.displayName}
-                  size={64}
-                  fallbackText={member.user.displayName.slice(0, 2).toUpperCase()}
-                  className="ring-4 ring-surface-onyx shadow-xl"
-                />
-                {member.isSupporter && <SupporterBadge />}
-              </div>
-
-              <div>
-                <div className="flex items-center gap-2">
-                  <h2 className="text-xl font-extrabold text-ink font-[var(--font-display)]">
-                    {member.user.displayName}
-                  </h2>
-                  {customTitle && (
-                    <span
-                      className="px-2 py-0.5 rounded text-[10px] font-bold text-ink shadow-sm"
-                      style={{ backgroundColor: accentColor }}
-                    >
-                      {customTitle}
-                    </span>
-                  )}
-                </div>
-                <div className="text-xs text-muted">@{member.user.username}</div>
-              </div>
-
-              {/* Roles */}
-              {privacy.showRoles && member.roles.length > 0 && (
-                <div className="flex flex-wrap gap-1.5">
-                  {member.roles.map((role) => (
-                    <RoleChip
-                      key={role.id}
-                      name={role.name}
-                      color={role.color}
-                      isAdmin={role.isAdmin}
-                    />
-                  ))}
-                </div>
-              )}
-
-              {/* Bio */}
-              {bio ? (
-                <div className="text-xs text-ink-secondary leading-relaxed whitespace-pre-wrap bg-surface-indigo/60 p-3 rounded-xl border border-border">
-                  {bio}
-                </div>
-              ) : (
-                <div className="text-sm text-muted italic bg-surface-indigo p-3 rounded-xl">
-                  No biography provided yet.
-                </div>
-              )}
-
-              {/* Tags */}
-              {privacy.showTags && previewTags.length > 0 && (
-                <div className="space-y-1.5">
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-muted">
-                    Tags
-                  </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {previewTags.map((t) => (
-                      <TagChip key={t.id} name={t.name} />
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Links */}
-              {privacy.showLinks && links.length > 0 && (
-                <div className="space-y-1.5 pt-1">
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-muted">
-                    Links
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {links.map((link) => (
-                      <span
-                        key={link.id}
-                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-surface-indigo border border-border text-xs text-ink-secondary"
-                      >
-                        <ExternalLink className="w-3 h-3 text-primary" />
-                        {link.label}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Privacy Warning in Preview */}
-              {privacy.isPrivate && (
-                <div className="p-3 rounded-xl bg-[#ed4245]/15 border border-[#ed4245]/30 text-[11px] text-[#ff8f91]">
-                  Private Profile enabled: Your profile is hidden from the public directory.
-                </div>
-              )}
-            </div>
-          </div>
+          <ProfileDisplay data={previewData} preview />
         </div>
       </div>
     </div>
   );
 }
+
+
