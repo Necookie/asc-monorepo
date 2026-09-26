@@ -4,6 +4,7 @@ import { SignOutButton } from '@clerk/nextjs';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ShieldAlert, Users, RefreshCw, LogOut, ArrowRight } from 'lucide-react';
+import { DISCORD_INVITE_URL } from '@/lib/community';
 
 export const dynamic = 'force-dynamic';
 
@@ -23,10 +24,10 @@ export default function NotAMemberPage() {
 
           <div className="space-y-2">
             <h1 className="text-2xl sm:text-3xl font-extrabold text-ink tracking-tight font-[var(--font-display)]">
-              Not a Community Member Yet
+              Let’s find your ASC profile
             </h1>
             <p className="text-sm text-ink-secondary leading-relaxed">
-              You’ve successfully authenticated with Discord, but we couldn’t find an active member record for your account in the ASC community server.
+              You’re signed in with Discord, but we couldn’t find an available ASC profile for this account. If you just joined, synchronization may still be catching up. You may also be using a different Discord account.
             </p>
           </div>
 
@@ -45,7 +46,7 @@ export default function NotAMemberPage() {
 
           <div className="flex flex-col gap-3 pt-2">
             <a
-              href="https://discord.gg"
+              href={DISCORD_INVITE_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full"

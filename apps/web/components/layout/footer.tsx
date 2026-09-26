@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Link from 'next/link';
+import { DISCORD_INVITE_URL } from '@/lib/community';
 import { AscLogo } from '@/components/ui/asc-logo';
 
 export function Footer() {
@@ -21,6 +22,7 @@ export function Footer() {
               Community
             </h4>
             <ul className="space-y-2 text-sm">
+              <li><a href={DISCORD_INVITE_URL} target="_blank" rel="noopener noreferrer" className="hover:text-ink transition-colors">Join our Discord<span className="sr-only"> (opens in a new tab)</span></a></li>
               <li>
                 <Link href="/members" className="hover:text-ink transition-colors">
                   Members Directory
