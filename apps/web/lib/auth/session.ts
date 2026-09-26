@@ -48,6 +48,8 @@ export const resolveCurrentSession = cache(async function resolveCurrentSession(
       clerkUserId: clerkUser.id,
       discordSnowflake,
       database,
+      // Private metadata comes from Clerk's authenticated Backend API, never browser input.
+      isClerkOwner: clerkUser.privateMetadata?.role === 'owner',
     });
   } catch (error) {
     unstable_rethrow(error);
@@ -99,5 +101,17 @@ export async function requireAdminMember(
     redirect('/dashboard');
   }
 
+  return member;
+}
+
+export async function requireModeratorMember(database: ASCDatabase = db): Promise<AuthenticatedMember> {
+  const member = await requireAuthenticatedMember(database);
+  if (!member.isAdmin && !member.isModerator) redirect('/dashboard');
+  return member;
+}
+
+export async function requireOwnerMember(database: ASCDatabase = db): Promise<AuthenticatedMember> {
+  const member = await requireAuthenticatedMember(database);
+  if (member.isOwner !== true) redirect('/dashboard');
   return member;
 }

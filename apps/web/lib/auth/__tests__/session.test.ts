@@ -5,7 +5,7 @@ vi.mock('@clerk/nextjs/server', () => ({ currentUser: mocks.currentUser }));
 vi.mock('../identity', () => ({ resolveMemberByIdentity: mocks.resolveMember }));
 vi.mock('next/navigation', () => ({ redirect: mocks.redirect, unstable_rethrow: vi.fn() }));
 
-import { resolveCurrentSession, requireAuthenticatedMember } from '../session';
+import { resolveCurrentSession, requireAuthenticatedMember, requireOwnerMember, requireModeratorMember } from '../session';
 
 describe('Member session recovery', () => {
   beforeEach(() => {
@@ -54,5 +54,23 @@ describe('Member session recovery', () => {
   it('redirects signed-out visitors to sign-in', async () => {
     mocks.currentUser.mockResolvedValue(null);
     await expect(requireAuthenticatedMember()).rejects.toThrow('redirect:/login');
+  });
+
+  it.each([
+    [{ privateMetadata: { role: 'owner' } }, true],
+    [{ publicMetadata: { role: 'owner' }, unsafeMetadata: { role: 'owner' } }, false],
+    [{ privateMetadata: { role: 'admin' } }, false],
+  ])('uses only Clerk private owner metadata to establish the root authority (%#)', async (metadata, expected) => {
+    mocks.currentUser.mockResolvedValue({ id: 'clerk-a', externalAccounts: [{ provider: 'oauth_discord', providerUserId: '123456789012345678' }], ...metadata });
+    mocks.resolveMember.mockResolvedValue({ status: 'RESOLVED', member: { isAdmin: true } });
+    await resolveCurrentSession();
+    expect(mocks.resolveMember).toHaveBeenCalledWith(expect.objectContaining({ isClerkOwner: expected }));
+  });
+
+  it('denies the owner page to an otherwise valid administrator', async () => {
+    mocks.currentUser.mockResolvedValue({ id: 'clerk-a', externalAccounts: [{ provider: 'oauth_discord', providerUserId: '123456789012345678' }] });
+    mocks.resolveMember.mockResolvedValue({ status: 'RESOLVED', member: { isAdmin: true, isModerator: true, isOwner: false } });
+    await expect(requireOwnerMember()).rejects.toThrow('redirect:/dashboard');
+    expect(await requireModeratorMember()).toMatchObject({ isModerator: true });
   });
 });
