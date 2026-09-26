@@ -413,7 +413,7 @@ export function ProfileCustomizer({
                     placeholder={
                       entitlements.canCustomTitle
                         ? 'e.g. Lead Core Contributor'
-                        : 'Unlock custom titles with community supporter status'
+                        : 'Server boosters and staff can add a custom title'
                     }
                     className="w-full px-4 py-2.5 rounded-xl bg-surface-onyx border border-border text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 text-sm"
                   />
@@ -477,7 +477,7 @@ export function ProfileCustomizer({
                   </div>
                 </fieldset>
                 <div className="space-y-4 border-t border-border pt-6">
-                  <div><h3 className="text-base font-bold text-ink">Supporter studio</h3><p className="mt-1 text-sm leading-6 text-ink-secondary">More ways to shape your profile. Saved choices return if your supporter access returns.</p></div>
+                  <div><h3 className="text-base font-bold text-ink">Booster & staff studio</h3><p className="mt-1 text-sm leading-6 text-ink-secondary">Extra layouts, typography, avatar frames, and artwork for server boosters and staff. Saved choices return when your access returns.</p></div>
                   <fieldset disabled={!entitlements.canProfileStudio} className="grid gap-4 disabled:opacity-60 sm:grid-cols-2">
                     <label className="appearance-label">Featured layout
                       <select value={supporterLayout ?? ''} onChange={(event) => setSupporterLayout(event.target.value ? event.target.value as AppearanceSettings['supporterLayout'] : null)} className="appearance-input"><option value="">Use standard layout</option><option value="arcade">Arcade</option><option value="showcase">Showcase</option></select>
@@ -498,7 +498,7 @@ export function ProfileCustomizer({
                       <input type="range" min={0} max={100} value={coverPosition} onChange={(event) => setCoverPosition(Number(event.target.value))} className="mt-3 w-full accent-primary" />
                     </label>
                   </fieldset>
-                  {!entitlements.canProfileStudio && <p className="text-sm text-ink-secondary"><Lock className="mr-1 inline h-4 w-4" />Supporter or staff access unlocks these controls.</p>}
+                  {!entitlements.canProfileStudio && <p className="text-sm text-ink-secondary"><Lock className="mr-1 inline h-4 w-4" />Boost this server or hold a staff role to unlock these controls.</p>}
                 </div>
                 <label className="appearance-label block border-t border-border pt-6">Background artwork URL
                   <input type="url" value={backgroundUrl} onChange={(event) => setBackgroundUrl(event.target.value)} disabled={!entitlements.canCustomBackground} placeholder="https://example.com/artwork.jpg" className="appearance-input" />
