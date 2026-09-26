@@ -14,7 +14,7 @@ export function MascotCharacter({ mood, reactionKey }: { mood: MascotMood; react
   return (
     <svg className="community-mascot-sprite" viewBox="-65 -55 1310 1450" aria-hidden="true" focusable="false" data-mood={mood}>
       <defs>
-        <image id={`${id}-art`} href="/mascot/cat-arcade.png" width="1177" height="1337" />
+        <image id={`${id}-art`} href="/mascot/cat-arcade-v2.webp" width="1177" height="1337" />
         <clipPath id={`${id}-head`}><path d={HEAD} /></clipPath>
         <clipPath id={`${id}-paw`}><path d={PAW} /></clipPath>
         <clipPath id={`${id}-tail`}><path d={TAIL} /></clipPath>

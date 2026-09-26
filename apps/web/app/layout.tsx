@@ -5,8 +5,7 @@ import './globals.css';
 import { NavBar } from '@/components/layout/nav-bar';
 import { Footer } from '@/components/layout/footer';
 import { AscMotionProvider } from '@/components/motion/motion-provider';
-import { CommunityMascot } from '@/components/motion/community-mascot';
-import { ThemeToggle } from '@/components/theme/theme-toggle';
+import { MascotLoader } from '@/components/motion/mascot-loader';
 import { resolveCurrentSession } from '@/lib/auth/session';
 import { getNavigationAccount } from '@/lib/auth/navigation';
 
@@ -102,7 +101,7 @@ export default async function RootLayout({
             <NavBar account={account} />
             <main className="flex-1">{children}</main>
             <Footer />
-            <CommunityMascot />
+            <MascotLoader />
           </AscMotionProvider>
         </body>
       </html>
