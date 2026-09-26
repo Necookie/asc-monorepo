@@ -25,16 +25,24 @@ const Scene = dynamic(() => import('./arcade-scene').then((module) => module.Arc
   loading: () => <StillStage />,
 });
 
+class SceneBoundary extends React.Component<{ children: React.ReactNode }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() { return { failed: true }; }
+  render() { return this.state.failed ? <StillStage /> : this.props.children; }
+}
+
 export function ArcadeStage() {
   const stageRef = React.useRef<HTMLDivElement>(null);
   const [inView, setInView] = React.useState(false);
   const [canAnimate, setCanAnimate] = React.useState(false);
   const [failed, setFailed] = React.useState(false);
+  const [ready, setReady] = React.useState(false);
   const fail = React.useCallback(() => setFailed(true), []);
+  const markReady = React.useCallback(() => setReady(true), []);
 
   React.useEffect(() => {
     const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const update = () => setCanAnimate(!preference.matches);
+    const update = () => { setCanAnimate(!preference.matches); setReady(false); };
     update();
     preference.addEventListener('change', update);
     return () => preference.removeEventListener('change', update);
@@ -49,19 +57,12 @@ export function ArcadeStage() {
     return () => observer.disconnect();
   }, []);
 
-  React.useEffect(() => {
-    if (!inView || !canAnimate || failed) return;
-    try {
-      if (!document.createElement('canvas').getContext('webgl2')) setFailed(true);
-    } catch { setFailed(true); }
-  }, [inView, canAnimate, failed]);
-
   return (
     <div ref={stageRef} className="arcade-stage" aria-label="ASC arcade showcase">
-      {inView && canAnimate && !failed ? <Scene onFailure={fail} /> : <StillStage />}
+      {inView && canAnimate && !failed ? <SceneBoundary><Scene onFailure={fail} onReady={markReady} /></SceneBoundary> : <StillStage />}
       <div className="arcade-stage__caption" aria-hidden="true">
         <span>ASC / 001</span>
-        <span>{canAnimate && !failed ? 'Drag to turn' : 'A place to belong'}</span>
+        <span>{inView && canAnimate && ready && !failed ? 'Drag or use arrow keys' : 'A place to belong'}</span>
       </div>
     </div>
   );
