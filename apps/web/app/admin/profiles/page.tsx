@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { requireAdminMember } from '@/lib/auth/session';
+import { requireModeratorMember } from '@/lib/auth/session';
 import { getAdminMembers } from '@/lib/queries/admin';
 import { ProfileModerationPanel } from '@/components/admin/profile-moderation-panel';
 
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminProfilesPage() {
-  await requireAdminMember();
+  const member = await requireModeratorMember();
   const members = await getAdminMembers();
 
   return (
@@ -21,11 +21,11 @@ export default async function AdminProfilesPage() {
           Profile Moderation
         </h1>
         <p className="text-sm text-muted mt-1">
-          Review community profiles, hide non-compliant pages, or reset offensive bios, titles, and links. All actions require a reason and are logged to the tamper-evident audit trail.
+          Hide or restore profiles with a recorded reason. Administrators can also reset inappropriate content. Every change is recorded in the audit history.
         </p>
       </div>
 
-      <ProfileModerationPanel members={members} />
+      <ProfileModerationPanel members={members} canResetContent={member.isAdmin} />
     </div>
   );
 }

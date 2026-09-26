@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { requireAdminMember } from '@/lib/auth/session';
+import { requireModeratorMember } from '@/lib/auth/session';
+import { redirect } from 'next/navigation';
 import { getAdminOverview } from '@/lib/queries/admin';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -24,7 +25,8 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminOverviewPage() {
-  await requireAdminMember();
+  const member = await requireModeratorMember();
+  if (!member.isAdmin) redirect('/admin/profiles');
   const { stats, recentAudit } = await getAdminOverview();
 
   return (

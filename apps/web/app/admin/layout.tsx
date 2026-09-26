@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Link from 'next/link';
-import { requireAdminMember } from '@/lib/auth/session';
+import { requireModeratorMember } from '@/lib/auth/session';
 import { Button } from '@/components/ui/button';
 import {
   ShieldAlert,
@@ -21,7 +21,7 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const admin = await requireAdminMember();
+  const admin = await requireModeratorMember();
 
   return (
     <div className="arcade-app-shell min-h-[calc(100vh-4rem)] bg-surface-black text-ink">
@@ -49,7 +49,7 @@ export default async function AdminLayout({
 
           {/* Nav Tabs */}
           <nav className="flex items-center gap-1 text-xs font-semibold overflow-x-auto scrollbar-none py-1">
-            <Link
+            {admin.isAdmin && <><Link
               href="/admin"
               className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
             >
@@ -61,13 +61,14 @@ export default async function AdminLayout({
             >
               Members
             </Link>
+            </>}
             <Link
               href="/admin/profiles"
               className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
             >
               Moderation
             </Link>
-            <Link
+            {admin.isAdmin && <><Link
               href="/admin/tags"
               className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
             >
@@ -85,6 +86,9 @@ export default async function AdminLayout({
             >
               Audit Log
             </Link>
+            <Link href="/admin/perks" className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0">Customization perks</Link>
+            </>}
+            {admin.isOwner && <Link href="/dashboard/permissions" className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0">Staff permissions</Link>}
           </nav>
 
           <div className="hidden md:flex items-center gap-3">
