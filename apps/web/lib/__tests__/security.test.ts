@@ -37,6 +37,12 @@ describe('ASC Security Hardening & Threat Mitigation', () => {
       expect(csp).toContain("object-src 'none'");
       expect(csp).toContain("base-uri 'self'");
       expect(csp).toContain('https://challenges.cloudflare.com');
+      // Clerk's bot protection uses a blob worker and isolated challenge frames.
+      expect(csp).toContain("worker-src 'self' blob:");
+      expect(csp).toContain("frame-src 'self' https://challenges.cloudflare.com https://*.protect.clerk.com");
+      expect(csp).toContain('https://*.protect.clerk.com:*');
+      const scriptPolicy = csp?.split('; ').find((directive: string) => directive.startsWith('script-src'));
+      expect(scriptPolicy).toContain('https://*.protect.clerk.com');
 
       // 2. MIME sniffing protection
       expect(headersMap.get('X-Content-Type-Options')).toBe('nosniff');
