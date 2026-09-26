@@ -2,6 +2,8 @@
 
 This document is the single authoritative checklist for MVP completion. Features are marked `[x]` only when implemented, integrated, and verified.
 
+The 26 September 2026 review corrected unsupported completion claims below. See [READINESS_REVIEW.md](READINESS_REVIEW.md) for current release blockers, delivered changes, verification limits, and customization recommendations.
+
 ---
 
 ## 1. Foundation & Infrastructure
@@ -15,7 +17,7 @@ This document is the single authoritative checklist for MVP completion. Features
   - [x] `packages/validation` (Zod validation schemas)
   - [x] `packages/permissions` (role bitmasks & server guards)
   - [x] `packages/entitlements` (entitlement resolver)
-- [x] **Environment Validation**: Zod schema validating required environment variables on startup
+- [ ] **Environment Validation**: Schemas exist; application startup must invoke them and reject invalid synchronization intervals
 - [x] **Automated Testing Suite**: Vitest configured for root, packages, and apps
 - [ ] **Containerization**: Multi-stage `apps/bot/Dockerfile` and root `compose.yaml`
 
@@ -73,8 +75,8 @@ This document is the single authoritative checklist for MVP completion. Features
   - [x] Primary conversion CTAs ("Meet ASC", "Explore Members", "Customize Profile")
 - [x] **Member Directory (`/members`)**:
   - [x] Responsive grid of `MemberCard`s
-  - [x] Live search by username, display name, and tags
-  - [x] Role filter (Staff, Supporters, All)
+  - [ ] Live search by username, display name, and tags (submitted search works; live search remains)
+  - [ ] Role filter (Staff, Supporters, All) (Supporters/All work; Staff remains)
   - [x] Supporter badge highlighting
   - [x] Empty search state
 
@@ -94,17 +96,17 @@ This document is the single authoritative checklist for MVP completion. Features
 ## 7. Administration & Moderation
 - [x] **Server-Side Authorization**: Administrative routes and mutations strictly gated by verified `is_admin` role
 - [x] **Admin Overview (`/admin`)**: Key community metrics and quick health overview
-- [x] **Member Management (`/admin/members`)**: Member inspection, status viewer, and role history
-- [x] **Profile Moderation (`/admin/profiles`)**: One-click profile hide/unhide and reset unsafe bio/links/background
+- [ ] **Member Management (`/admin/members`)**: Inspection/status work; role history and complete pagination remain
+- [ ] **Profile Moderation (`/admin/profiles`)**: Hide/reset controls work; moderation visibility must be independent of owner privacy
 - [x] **Tag Management (`/admin/tags`)**: Create, edit, and deactivate community tags
-- [x] **Site Settings (`/admin/settings`)**: Maintenance toggle and system announcement banner
-- [x] **Audit Logging (`/admin/audit`)**: Tamper-evident audit log recording actor, action, target, and timestamp
+- [ ] **Site Settings (`/admin/settings`)**: Values save; public maintenance/banner behavior remains
+- [ ] **Audit Logging (`/admin/audit`)**: Actor/action/target/time rows exist; tamper-evidence guarantee remains
 
 ---
 
 ## 8. Quality & Security Gates
-- [x] **Responsive Design**: Flawless presentation across mobile (375px), tablet (768px), and desktop (1280px+)
-- [x] **Accessibility (a11y)**: Semantic HTML, visible focus states, ≥44px touch targets, `prefers-reduced-motion` compliance
+- [ ] **Responsive Design**: Public landing checked at 375px, 768px and 1440px; complete authenticated app review remains
+- [ ] **Accessibility (a11y)**: Landing motion/keyboard checks pass; full focus/contrast review and remaining 40px controls need work
 - [x] **Input Sanitization & Validation**: Zod validation on every input boundary; strict regex rejecting dangerous URL schemes
 - [x] **Automated Test Coverage**:
   - [x] Unit tests for validation, permissions, and entitlements
@@ -112,6 +114,6 @@ This document is the single authoritative checklist for MVP completion. Features
   - [x] Synchronization lifecycle and idempotency tests
   - [x] Authentication ownership and authorization security tests
 - [x] **Typecheck**: Zero TypeScript errors across all monorepo workspaces (`pnpm typecheck`)
-- [x] **Lint**: Zero ESLint errors or warnings (`pnpm lint`)
+- [ ] **Lint**: Replace placeholder success scripts with actual lint analysis and CI enforcement
 - [x] **Production Build**: Successful Next.js production build (`pnpm build`)
 - [x] **Documentation**: Full set of engineering specifications, ADRs, and deployment manuals

@@ -1,5 +1,22 @@
 # ASC — Live Implementation Status Matrix
 
+## Current release assessment — 26 September 2026
+
+**MVP release readiness: incomplete.** Historical phase checks below describe implementation work, not a verified production release. [READINESS_REVIEW.md](READINESS_REVIEW.md) records the current blockers and corrects earlier completion claims.
+
+| Current work | Result | Verification |
+| --- | --- | --- |
+| Member sign-in, session recovery and ASC account menu | Merged through PRs #1–#2 | Session/identity/menu tests; signed-out browser redirect and embedded Discord button |
+| Discord invite and Clerk browser policy | Merged through PRs #3–#4 | Correct invite destinations; blocked worker errors resolved |
+| Sculpted landing emblem and accessible controls | Merged through PR #5 | Graphics tests; desktop/light/dark/tablet/mobile, drag/arrows/reset, reduced motion/WebGL/context-loss fallback |
+| Public action identity boundaries | Merged through PR #6 | Forged member/admin/database arguments rejected; expired-session redirects preserved |
+| Booster and moderator/admin customization | Merged through PR #7 | Verified role flags; former-member privileges revoked; saved appearance retained |
+| Directory privacy | Merged through PR #8 | Hidden profiles/roles/tags excluded from discovery, search and supporter filters |
+| Current local gates | 144 tests in 17 files; types and web build pass | Lint scripts remain placeholders; compiled bot startup fails on shared TypeScript package entrypoints |
+| Remaining production evidence | Pending | Real OAuth linking/saves, live Gateway lifecycle, Docker image boot, production role mappings and migrations |
+
+## Historical implementation phases
+
 | Subsystem | Status | Branch | Key Files | Tests | Blockers | Next Action |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Phase 0: Bootstrap** | `VERIFIED` | `main` (merged `chore/repository-bootstrap`) | `.gitignore`, `package.json`, `pnpm-workspace.yaml`, `README.md` | Initial workspace check | Remote GitHub push requires auth (`BLOCKED`) | Completed |
