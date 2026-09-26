@@ -7,6 +7,12 @@ vi.mock('next/navigation', () => ({ usePathname: () => '/' }));
 vi.mock('@clerk/nextjs', () => ({ SignOutButton: ({ children }: { children: React.ReactNode }) => children }));
 
 describe('ASC account navigation', () => {
+  it('does not assume an identity or expose account actions while streaming the session', () => {
+    const html = renderToString(<AccountMenu account={{ status: 'LOADING' }} />);
+    expect(html).toContain('aria-busy="true"');
+    expect(html).not.toContain('href=');
+    expect(html).not.toContain('Sign Out');
+  });
   it('links members to their own public profile and editing tools', () => {
     const html = renderToString(<AccountMenu account={{ status: 'MEMBER', username: 'alex', displayName: 'Alex', avatar: null, slug: 'alex-profile', isAdmin: false }} />);
     expect(html).toContain('href="/alex-profile"');

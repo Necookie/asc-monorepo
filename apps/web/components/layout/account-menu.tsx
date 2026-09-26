@@ -38,6 +38,10 @@ export function AccountMenu({ account }: { account: NavigationAccount }) {
     };
   }, []);
 
+  if (account.status === 'LOADING') {
+    return <span className="inline-flex min-h-11 w-24 items-center justify-center rounded-xl border border-border text-sm text-muted" aria-busy="true">Account…</span>;
+  }
+
   if (account.status === 'SIGNED_OUT') {
     return <Link href="/login" className="inline-flex min-h-11 items-center rounded-xl bg-primary px-4 text-sm font-semibold text-ink-dark hover:bg-primary-hover">Sign in</Link>;
   }

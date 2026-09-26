@@ -1,7 +1,7 @@
 import type { SessionResolution } from './session';
 
 export type NavigationAccount =
-  | { status: 'SIGNED_OUT' | 'UNAVAILABLE' | 'UNLINKED_DISCORD' | 'NOT_FOUND' }
+  | { status: 'LOADING' | 'SIGNED_OUT' | 'UNAVAILABLE' | 'UNLINKED_DISCORD' | 'NOT_FOUND' }
   | { status: 'MEMBER'; username: string; displayName: string; avatar: string | null; slug: string | null; isAdmin: boolean };
 
 export function getNavigationAccount(session: SessionResolution | null): NavigationAccount {
