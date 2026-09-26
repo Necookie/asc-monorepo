@@ -1,9 +1,10 @@
 import { currentUser } from '@clerk/nextjs/server';
-import { redirect } from 'next/navigation';
+import { redirect, unstable_rethrow } from 'next/navigation';
 import { extractDiscordSnowflake } from './claims';
 import { resolveMemberByIdentity } from './identity';
 import type { AuthenticatedMember, IdentityResolutionResult } from '@asc/types';
 import { db, type ASCDatabase } from '@asc/db';
+import { cache } from 'react';
 
 /**
  * Retrieves the currently authenticated community member from the active Clerk session.
@@ -26,7 +27,7 @@ export type SessionResolution = IdentityResolutionResult | { status: 'UNAVAILABL
  * Useful for login callback / error handling when a user needs guidance
  * (e.g. not a community member yet).
  */
-export async function resolveCurrentSession(
+export const resolveCurrentSession = cache(async function resolveCurrentSession(
   database: ASCDatabase = db
 ): Promise<SessionResolution | null> {
   try {
@@ -48,12 +49,13 @@ export async function resolveCurrentSession(
       discordSnowflake,
       database,
     });
-  } catch {
+  } catch (error) {
+    unstable_rethrow(error);
     // An outage is distinct from a signed-out session. Do not expose provider errors.
     console.error('[ASC auth] Unable to resolve the member session.');
     return { status: 'UNAVAILABLE' };
   }
-}
+});
 
 /**
  * Enforces that a request comes from an authenticated community member.

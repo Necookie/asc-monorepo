@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 const mocks = vi.hoisted(() => ({ currentUser: vi.fn(), resolveMember: vi.fn(), redirect: vi.fn() }));
 vi.mock('@clerk/nextjs/server', () => ({ currentUser: mocks.currentUser }));
 vi.mock('../identity', () => ({ resolveMemberByIdentity: mocks.resolveMember }));
-vi.mock('next/navigation', () => ({ redirect: mocks.redirect }));
+vi.mock('next/navigation', () => ({ redirect: mocks.redirect, unstable_rethrow: vi.fn() }));
 
 import { resolveCurrentSession, requireAuthenticatedMember } from '../session';
 
