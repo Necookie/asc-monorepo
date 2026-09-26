@@ -1,5 +1,5 @@
 import { currentUser } from '@clerk/nextjs/server';
-import { redirect } from 'next/navigation';
+import { redirect, unstable_rethrow } from 'next/navigation';
 import { extractDiscordSnowflake } from './claims';
 import { resolveMemberByIdentity } from './identity';
 import type { AuthenticatedMember, IdentityResolutionResult } from '@asc/types';
@@ -49,7 +49,8 @@ export const resolveCurrentSession = cache(async function resolveCurrentSession(
       discordSnowflake,
       database,
     });
-  } catch {
+  } catch (error) {
+    unstable_rethrow(error);
     // An outage is distinct from a signed-out session. Do not expose provider errors.
     console.error('[ASC auth] Unable to resolve the member session.');
     return { status: 'UNAVAILABLE' };
