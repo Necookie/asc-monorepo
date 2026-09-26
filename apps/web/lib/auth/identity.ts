@@ -115,7 +115,8 @@ export async function resolveMemberByIdentity({
   });
 
   // 5. Extract roles and compute permissions
-  const roles: CommunityRole[] = (userRecord.memberRoles || [])
+  // Saved role relations are historical after departure, not current privileges.
+  const roles: CommunityRole[] = (userRecord.membershipStatus === 'ACTIVE' ? userRecord.memberRoles || [] : [])
     .map((mr) => mr.role)
     .filter((r): r is NonNullable<typeof r> => Boolean(r))
     .map((r) => ({
