@@ -2,19 +2,13 @@
 
 import * as React from 'react';
 import dynamic from 'next/dynamic';
+import { AscSymbol } from '../ui/asc-symbol';
 
 function StillStage() {
   return (
     <div className="arcade-stage__still" aria-hidden="true">
-      <span className="arcade-stage__orbit arcade-stage__orbit--outer" />
-      <span className="arcade-stage__orbit arcade-stage__orbit--inner" />
       <span className="arcade-stage__mark">
-        <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
-          <path d="M9.5 52 28.5 13.5c1.4-2.9 5.6-2.9 7 0L54.5 52" stroke="currentColor" strokeWidth="7.5" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M19.5 40.5c7.5-4.4 17.5-4.4 25 0" stroke="currentColor" strokeWidth="5.5" strokeLinecap="round" />
-          <circle cx="19.5" cy="40.5" r="3.6" fill="currentColor" />
-          <circle cx="44.5" cy="40.5" r="3.6" fill="currentColor" />
-        </svg>
+        <AscSymbol color />
       </span>
     </div>
   );

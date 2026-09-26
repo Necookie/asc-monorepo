@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Link from 'next/link';
+import { AscSymbol } from './asc-symbol';
 
 export interface AscMarkProps {
   size?: number;
@@ -8,30 +9,13 @@ export interface AscMarkProps {
 
 export function AscMark({ size = 36, className = '' }: AscMarkProps) {
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 64 64"
-      fill="none"
-      className={`shrink-0 text-ink ${className}`}
+    <span
+      style={{ width: size, height: size }}
+      className={`inline-flex shrink-0 text-ink ${className}`}
       aria-hidden="true"
     >
-      <path
-        d="M9.5 52 28.5 13.5c1.4-2.9 5.6-2.9 7 0L54.5 52"
-        stroke="currentColor"
-        strokeWidth="7.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M19.5 40.5c7.5-4.4 17.5-4.4 25 0"
-        stroke="currentColor"
-        strokeWidth="5.5"
-        strokeLinecap="round"
-      />
-      <circle cx="19.5" cy="40.5" r="3.6" fill="currentColor" />
-      <circle cx="44.5" cy="40.5" r="3.6" fill="currentColor" />
-    </svg>
+      <AscSymbol />
+    </span>
   );
 }
 
