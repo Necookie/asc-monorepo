@@ -2,8 +2,8 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { SignOutButton } from '@clerk/nextjs';
+import { usePathname, useRouter } from 'next/navigation';
+import { SignOutButton, useAuth } from '@clerk/nextjs';
 import { ChevronDown, ExternalLink, LogOut, Palette, Shield, UserRound, Pencil } from 'lucide-react';
 import { Avatar } from '@/components/ui/avatar';
 import type { NavigationAccount } from '@/lib/auth/navigation';
@@ -12,7 +12,22 @@ const itemClass = 'flex min-h-11 items-center gap-3 rounded-xl px-3 py-2 text-sm
 
 export function AccountMenu({ account }: { account: NavigationAccount }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { isLoaded, isSignedIn, sessionId } = useAuth();
+  const lastSession = React.useRef<string | null | undefined>(undefined);
   const detailsRef = React.useRef<HTMLDetailsElement>(null);
+
+  React.useEffect(() => {
+    if (!isLoaded || account.status === 'LOADING' || account.status === 'UNAVAILABLE') return;
+    const currentSession = sessionId ?? null;
+    const serverSignedIn = account.status !== 'SIGNED_OUT';
+    const changed = lastSession.current !== undefined && lastSession.current !== currentSession;
+    const mismatch = serverSignedIn !== Boolean(isSignedIn);
+    // Persistent layouts can retain navigation fetched before OAuth completed.
+    // Refresh once per browser session, rather than creating a refresh loop.
+    if ((changed || mismatch) && lastSession.current !== currentSession) router.refresh();
+    lastSession.current = currentSession;
+  }, [account.status, isLoaded, isSignedIn, router, sessionId]);
 
   React.useEffect(() => {
     if (detailsRef.current) detailsRef.current.open = false;
@@ -43,7 +58,14 @@ export function AccountMenu({ account }: { account: NavigationAccount }) {
   }
 
   if (account.status === 'SIGNED_OUT') {
+    if (isLoaded && isSignedIn) {
+      return <Link href="/dashboard" prefetch={false} className="inline-flex min-h-11 items-center rounded-xl bg-primary px-4 text-sm font-semibold text-ink-dark hover:bg-primary-hover">Open my profile</Link>;
+    }
     return <Link href="/login" className="inline-flex min-h-11 items-center rounded-xl bg-primary px-4 text-sm font-semibold text-ink-dark hover:bg-primary-hover">Sign in</Link>;
+  }
+
+  if (isLoaded && !isSignedIn && account.status !== 'UNAVAILABLE') {
+    return <Link href="/login" prefetch={false} className="inline-flex min-h-11 items-center rounded-xl bg-primary px-4 text-sm font-semibold text-ink-dark hover:bg-primary-hover">Sign in</Link>;
   }
 
   if (account.status !== 'MEMBER') {
