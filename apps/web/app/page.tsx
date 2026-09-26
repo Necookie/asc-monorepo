@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { MemberWall } from '@/components/identity/member-wall';
 import { ArcadeStage } from '@/components/motion/arcade-stage';
 import { ArrowRight, Search, ShieldCheck, UserRound } from 'lucide-react';
+import { DISCORD_INVITE_URL } from '@/lib/community';
 
 export const dynamic = 'force-dynamic';
 
@@ -43,18 +44,18 @@ export default async function HomePage() {
             </p>
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Link href="/members">
-                <Button variant="primary" size="lg" className="w-full gap-2 sm:w-auto">
-                  Browse members
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
+              <a href={DISCORD_INVITE_URL} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-13 items-center justify-center gap-2 rounded-2xl bg-green px-7 py-3 text-base font-semibold text-[#111111] hover:bg-[#55f195] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary">
+                Join our Discord
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                <span className="sr-only"> (opens in a new tab)</span>
+              </a>
               <Link href="/dashboard">
                 <Button variant="outline" size="lg" className="w-full sm:w-auto">
-                  Claim my profile
+                  Edit my profile
                 </Button>
               </Link>
             </div>
+            <p className="mt-4 text-sm text-muted">Already part of the club? <Link href="/members" className="font-semibold text-ink underline underline-offset-4 hover:text-primary-soft">Browse our members</Link>.</p>
 
             <div className="mt-8 flex max-w-xl items-start gap-3 border-t border-border pt-6 text-base leading-7 text-ink-secondary">
               <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-primary-soft" />
