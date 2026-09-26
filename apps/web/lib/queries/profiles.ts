@@ -115,7 +115,7 @@ export async function getPublicProfileBySlug(
     },
   });
 
-  if (!user || user.membershipStatus === 'BANNED') {
+  if (!user || user.membershipStatus === 'BANNED' || user.profile?.isModerated) {
     return { notFound: true };
   }
 
@@ -130,7 +130,7 @@ export async function getPublicProfileBySlug(
   // Entitlement resolution
   const resolvedEntitlements = resolveMemberEntitlements(
     roles,
-    user.entitlements.map((e) => ({
+    user.entitlements.filter(e => e.source !== 'WEBSITE_ADMIN' || user.membershipStatus === 'ACTIVE').map((e) => ({
       id: e.id,
       userId: e.userId,
       key: e.key as import('@asc/types').EntitlementKey,

@@ -36,6 +36,7 @@ export interface AdminMemberItem {
   primarySlug: string;
   roles: { id: string; name: string; color: string; isAdmin: boolean; isSupporter: boolean }[];
   isPrivate: boolean;
+  isModerated: boolean;
 }
 
 export interface AdminTagItem {
@@ -142,6 +143,7 @@ export async function getAdminMembers(
       primarySlug: primary,
       roles,
       isPrivate: u.profile?.isPrivate || false,
+      isModerated: u.profile?.isModerated || false,
     };
   });
 }

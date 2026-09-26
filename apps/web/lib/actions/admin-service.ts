@@ -13,7 +13,7 @@ import {
   siteSettings,
   type ASCDatabase,
 } from '@asc/db';
-import { requireAdminMember, assertAdminMember } from '../auth';
+import { requireAdminMember, requireModeratorMember, assertAdminMember, assertModeratorMember } from '../auth';
 import {
   adminModerateProfileSchema,
   adminTagSchema,
@@ -40,7 +40,7 @@ export interface AdminActionResponse<T = unknown> {
 
 /**
  * Administrative Action: Moderate Member Profile
- * Gated strictly by server-side is_admin role verification.
+ * Moderators can hide/restore; destructive content resets require an admin.
  */
 export async function adminModerateProfileAction(
   input: AdminModerateProfileInput,
@@ -48,84 +48,92 @@ export async function adminModerateProfileAction(
   adminOverride?: AuthenticatedMember
 ): Promise<AdminActionResponse<{ actionId: string }>> {
   try {
-    const admin = adminOverride || (await requireAdminMember(database));
-    assertAdminMember(admin);
+    const admin = adminOverride || (await requireModeratorMember(database));
+    assertModeratorMember(admin);
 
     const validated = adminModerateProfileSchema.parse(input);
     const { targetUserId, action, reason } = validated;
 
-    // 1. Execute moderation mutation
-    switch (action) {
-      case 'HIDE_PROFILE':
-        await database
-          .update(profiles)
-          .set({ isPrivate: true, updatedAt: new Date() })
-          .where(eq(profiles.userId, targetUserId));
-        break;
+    if (action !== 'HIDE_PROFILE' && action !== 'UNHIDE_PROFILE') assertAdminMember(admin);
+    const actionId = await database.transaction(async tx => {
+      const targetProfile = await tx.query.profiles.findFirst({ where: eq(profiles.userId, targetUserId) });
+      if (!targetProfile) throw new Error('Member profile not found');
 
-      case 'UNHIDE_PROFILE':
-        await database
-          .update(profiles)
-          .set({ isPrivate: false, updatedAt: new Date() })
-          .where(eq(profiles.userId, targetUserId));
-        break;
+      // 1. Execute moderation mutation
+      switch (action) {
+        case 'HIDE_PROFILE':
+          await tx
+            .update(profiles)
+            .set({ isModerated: true, updatedAt: new Date() })
+            .where(eq(profiles.userId, targetUserId));
+          break;
 
-      case 'RESET_BIO':
-        await database
-          .update(profiles)
-          .set({ bio: null, customTitle: null, updatedAt: new Date() })
-          .where(eq(profiles.userId, targetUserId));
-        break;
+        case 'UNHIDE_PROFILE':
+          await tx
+            .update(profiles)
+            .set({ isModerated: false, updatedAt: new Date() })
+            .where(eq(profiles.userId, targetUserId));
+          break;
 
-      case 'RESET_BACKGROUND':
-        await database
-          .update(profiles)
-          .set({ backgroundUrl: null, updatedAt: new Date() })
-          .where(eq(profiles.userId, targetUserId));
-        break;
+        case 'RESET_BIO':
+          await tx
+            .update(profiles)
+            .set({ bio: null, customTitle: null, updatedAt: new Date() })
+            .where(eq(profiles.userId, targetUserId));
+          break;
 
-      case 'RESET_LINKS': {
-        const targetProfile = await database.query.profiles.findFirst({
-          where: eq(profiles.userId, targetUserId),
-        });
-        if (targetProfile) {
-          await database
-            .delete(profileLinks)
-            .where(eq(profileLinks.profileId, targetProfile.id));
+        case 'RESET_BACKGROUND':
+          await tx
+            .update(profiles)
+            .set({ backgroundUrl: null, updatedAt: new Date() })
+            .where(eq(profiles.userId, targetUserId));
+          break;
+
+        case 'RESET_LINKS': {
+          const targetProfile = await tx.query.profiles.findFirst({
+            where: eq(profiles.userId, targetUserId),
+          });
+          if (targetProfile) {
+            await tx
+              .delete(profileLinks)
+              .where(eq(profileLinks.profileId, targetProfile.id));
+          }
+          break;
         }
-        break;
       }
-    }
 
-    // 2. Append to moderation_actions table
-    const [actionRecord] = await database
-      .insert(moderationActions)
-      .values({
-        targetUserId,
-        actorUserId: admin.user.id,
-        actionType: action,
-        reason,
-        metadata: JSON.stringify({ actorUsername: admin.user.username }),
-      })
-      .returning();
+      // 2. Append to moderation_actions table
+      const [actionRecord] = await tx
+        .insert(moderationActions)
+        .values({
+          targetUserId,
+          actorUserId: admin.user.id,
+          actionType: action,
+          reason,
+          metadata: JSON.stringify({ actorUsername: admin.user.username }),
+        })
+        .returning();
 
-    // 3. Append to audit_logs table
-    await database.insert(auditLogs).values({
-      actorId: admin.user.id,
-      action: `MODERATE_PROFILE:${action}`,
-      targetType: 'USER',
-      targetId: targetUserId,
-      metadata: JSON.stringify({
-        reason,
-        moderationActionId: actionRecord?.id,
-      }),
+      // 3. Append to audit_logs table
+      await tx.insert(auditLogs).values({
+        actorId: admin.user.id,
+        action: `MODERATE_PROFILE:${action}`,
+        targetType: 'USER',
+        targetId: targetUserId,
+        metadata: JSON.stringify({
+          reason,
+          moderationActionId: actionRecord?.id,
+        }),
+      });
+      return actionRecord?.id || 'ok';
     });
 
     safeRevalidate('/admin');
     safeRevalidate('/admin/profiles');
     safeRevalidate('/admin/audit');
+    safeRevalidate('/', 'layout');
 
-    return { success: true, data: { actionId: actionRecord?.id || 'ok' } };
+    return { success: true, data: { actionId } };
   } catch (err) {
     unstable_rethrow(err);
     const message = err instanceof Error ? err.message : 'Moderation action failed';
