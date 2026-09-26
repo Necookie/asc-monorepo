@@ -1,7 +1,7 @@
-import { eq, and } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import {
   db,
-  users,
+  memberTags,
   profileLinks,
   tags,
   type ASCDatabase,
@@ -9,7 +9,6 @@ import {
 import { getResolvedMemberEntitlements } from './entitlements';
 import type {
   AuthenticatedMember,
-  CommunityRole,
   ProfileLink,
   Tag,
   ResolvedEntitlements,
@@ -27,11 +26,19 @@ export async function getDashboardData(
   member: AuthenticatedMember,
   database: ASCDatabase = db
 ): Promise<DashboardData> {
-  // 1. Fetch member's profile links
-  const linksRecords = await database.query.profileLinks.findMany({
+  // These reads share the verified member but do not depend on one another.
+  const [linksRecords, tagAssignments, allTagsRecords, entitlements] = await Promise.all([
+    database.query.profileLinks.findMany({
     where: eq(profileLinks.profileId, member.profile.id),
     orderBy: (links, { asc }) => [asc(links.displayOrder)],
-  });
+    }),
+    database.select({ tagId: memberTags.tagId }).from(memberTags).where(eq(memberTags.userId, member.user.id)),
+    database.query.tags.findMany({
+      where: eq(tags.isActive, true),
+      orderBy: (t, { asc }) => [asc(t.name)],
+    }),
+    getResolvedMemberEntitlements(member, database),
+  ]);
 
   const links: ProfileLink[] = linksRecords.map((l) => ({
     id: l.id,
@@ -42,21 +49,7 @@ export async function getDashboardData(
     createdAt: l.createdAt,
   }));
 
-  // 2. Fetch member's assigned tags
-  const memberWithTags = await database.query.users.findFirst({
-    where: eq(users.id, member.user.id),
-    with: {
-      memberTags: true,
-    },
-  });
-
-  const selectedTagIds = (memberWithTags?.memberTags || []).map((mt) => mt.tagId);
-
-  // 3. Fetch all active community tags
-  const allTagsRecords = await database.query.tags.findMany({
-    where: eq(tags.isActive, true),
-    orderBy: (t, { asc }) => [asc(t.name)],
-  });
+  const selectedTagIds = tagAssignments.map((assignment) => assignment.tagId);
 
   const availableTags: Tag[] = allTagsRecords.map((t) => ({
     id: t.id,
@@ -67,9 +60,6 @@ export async function getDashboardData(
     isActive: t.isActive,
     createdAt: t.createdAt,
   }));
-
-  // 4. Resolve entitlements
-  const entitlements = await getResolvedMemberEntitlements(member, database);
 
   return {
     member,
