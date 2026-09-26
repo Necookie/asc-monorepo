@@ -1,4 +1,4 @@
-import { eq, desc, sql, count, and } from 'drizzle-orm';
+import { eq, desc, sql, count, countDistinct, and, or, like } from 'drizzle-orm';
 import {
   db,
   users,
@@ -61,41 +61,18 @@ export interface AdminAuditItem {
 export async function getAdminOverview(
   database: ASCDatabase = db
 ): Promise<{ stats: AdminStats; recentAudit: AdminAuditItem[] }> {
-  // Counts
-  const allUsers = await database.select({ status: users.membershipStatus }).from(users);
-  const totalMembers = allUsers.length;
-  const activeMembers = allUsers.filter((u) => u.status === 'ACTIVE').length;
-  const leftMembers = allUsers.filter((u) => u.status === 'LEFT').length;
-  const bannedMembers = allUsers.filter((u) => u.status === 'BANNED').length;
-
-  const [tagsCount] = await database.select({ count: count() }).from(tags);
-  const [modActionsCount] = await database
-    .select({ count: count() })
-    .from(moderationActions);
-  const [auditLogsCount] = await database
-    .select({ count: count() })
-    .from(auditLogs);
-
-  // Supporters count
-  const supporterRoles = await database.query.communityRoles.findMany({
-    where: eq(communityRoles.isSupporter, true),
-  });
-  const supporterRoleIds = supporterRoles.map((r) => r.id);
-
-  let totalSupporters = 0;
-  if (supporterRoleIds.length > 0) {
-    const supporterMembers = await database
-      .select({ userId: memberRoles.userId })
-      .from(memberRoles)
-      .groupBy(memberRoles.userId);
-    totalSupporters = supporterMembers.length;
-  }
-
-  // Recent audit
-  const recentAuditRecords = await database.query.auditLogs.findMany({
-    orderBy: [desc(auditLogs.createdAt)],
-    limit: 10,
-  });
+  const [statusCounts, tagCounts, moderationCounts, auditCounts, supporterCounts, recentAuditRecords] = await Promise.all([
+    database.select({ status: users.membershipStatus, count: count() }).from(users).groupBy(users.membershipStatus),
+    database.select({ count: count() }).from(tags),
+    database.select({ count: count() }).from(moderationActions),
+    database.select({ count: count() }).from(auditLogs),
+    database.select({ count: countDistinct(memberRoles.userId) }).from(memberRoles)
+      .innerJoin(users, eq(memberRoles.userId, users.id))
+      .innerJoin(communityRoles, eq(memberRoles.roleId, communityRoles.id))
+      .where(and(eq(users.membershipStatus, 'ACTIVE'), eq(communityRoles.isSupporter, true))),
+    database.query.auditLogs.findMany({ orderBy: [desc(auditLogs.createdAt)], limit: 10 }),
+  ]);
+  const countStatus = (status: string) => statusCounts.find(row => row.status === status)?.count ?? 0;
 
   const recentAudit: AdminAuditItem[] = recentAuditRecords.map((a) => ({
     id: a.id,
@@ -109,14 +86,14 @@ export async function getAdminOverview(
 
   return {
     stats: {
-      totalMembers,
-      activeMembers,
-      leftMembers,
-      bannedMembers,
-      totalSupporters,
-      totalTags: tagsCount?.count || 0,
-      totalModerationActions: modActionsCount?.count || 0,
-      totalAuditLogs: auditLogsCount?.count || 0,
+      totalMembers: statusCounts.reduce((total, row) => total + row.count, 0),
+      activeMembers: countStatus('ACTIVE'),
+      leftMembers: countStatus('LEFT'),
+      bannedMembers: countStatus('BANNED'),
+      totalSupporters: supporterCounts[0]?.count ?? 0,
+      totalTags: tagCounts[0]?.count ?? 0,
+      totalModerationActions: moderationCounts[0]?.count ?? 0,
+      totalAuditLogs: auditCounts[0]?.count ?? 0,
     },
     recentAudit,
   };
@@ -127,6 +104,7 @@ export async function getAdminMembers(
   database: ASCDatabase = db
 ): Promise<AdminMemberItem[]> {
   const usersWithRelations = await database.query.users.findMany({
+    where: search?.trim() ? or(like(users.username, `%${search.trim()}%`), like(users.displayName, `%${search.trim()}%`), like(users.externalUserId, `%${search.trim()}%`)) : undefined,
     with: {
       profile: true,
       memberRoles: {
@@ -140,18 +118,7 @@ export async function getAdminMembers(
     limit: 100,
   });
 
-  let filtered = usersWithRelations;
-  if (search) {
-    const q = search.toLowerCase();
-    filtered = filtered.filter(
-      (u) =>
-        u.username.toLowerCase().includes(q) ||
-        u.displayName.toLowerCase().includes(q) ||
-        u.externalUserId.includes(q)
-    );
-  }
-
-  return filtered.map((u) => {
+  return usersWithRelations.map((u) => {
     const primary = u.slugs.find((s) => s.isPrimary)?.slug || u.username.toLowerCase();
     const roles = (u.memberRoles || [])
       .map((mr) => mr.role)

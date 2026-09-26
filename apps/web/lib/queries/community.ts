@@ -1,4 +1,4 @@
-import { and, eq, inArray, count, countDistinct } from 'drizzle-orm';
+import { and, eq, count, countDistinct } from 'drizzle-orm';
 import { db, users, communityRoles, memberRoles, type ASCDatabase } from '@asc/db';
 import { getMembersDirectory, type MemberDirectoryItem } from './members';
 
@@ -12,34 +12,23 @@ export async function getCommunityOverview(
   database: ASCDatabase = db
 ): Promise<CommunityOverview> {
   // The community total reflects the currently selected Discord guild.
-  const [totalRes] = await database
+  const [totalRows, supporterRows, recentMembers] = await Promise.all([
+    database
     .select({ val: count() })
     .from(users)
-    .where(eq(users.membershipStatus, 'ACTIVE'));
-  const totalMembers = totalRes?.val ?? 0;
-
-  // Count supporters
-  const supporterRoles = await database.query.communityRoles.findMany({
-    where: eq(communityRoles.isSupporter, true),
-  });
-  const supporterRoleIds = supporterRoles.map((r) => r.id);
-
-  let totalSupporters = 0;
-  if (supporterRoleIds.length > 0) {
-    const [supporterRes] = await database
+    .where(eq(users.membershipStatus, 'ACTIVE')),
+    database
       .select({ val: countDistinct(memberRoles.userId) })
       .from(memberRoles)
       .innerJoin(users, eq(memberRoles.userId, users.id))
-      .where(and(inArray(memberRoles.roleId, supporterRoleIds), eq(users.membershipStatus, 'ACTIVE')));
-    totalSupporters = supporterRes?.val ?? 0;
-  }
-
-  // Fetch recent members for showcase (homepage features top 8)
-  const recentMembers = await getMembersDirectory({ database, limit: 8 });
+      .innerJoin(communityRoles, eq(memberRoles.roleId, communityRoles.id))
+      .where(and(eq(communityRoles.isSupporter, true), eq(users.membershipStatus, 'ACTIVE'))),
+    getMembersDirectory({ database, limit: 8 }),
+  ]);
 
   return {
-    totalMembers,
-    totalSupporters,
+    totalMembers: totalRows[0]?.val ?? 0,
+    totalSupporters: supporterRows[0]?.val ?? 0,
     recentMembers,
   };
 }

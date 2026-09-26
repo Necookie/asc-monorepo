@@ -35,23 +35,8 @@ export async function getMembersDirectory({
 }: GetMembersOptions = {}): Promise<MemberDirectoryItem[]> {
   const searchTerm = search.trim().toLowerCase();
 
-  let matchedUserIds: string[] | null = null;
-
-  if (searchTerm) {
-    // 1. Direct user match by username or displayName
-    const directUsers = await database.query.users.findMany({
-      where: and(
-        eq(users.membershipStatus, 'ACTIVE'),
-        or(
-          like(users.username, `%${searchTerm}%`),
-          like(users.displayName, `%${searchTerm}%`)
-        )
-      ),
-      columns: { id: true },
-    });
-
-    // 2. Match by associated tag names
-    const tagMatches = await database
+  // Keep search inside SQL instead of downloading every matching identity first.
+  const tagMatches = database
       .select({ userId: memberTagsTable.userId })
       .from(memberTagsTable)
       .innerJoin(tagsTable, eq(memberTagsTable.tagId, tagsTable.id))
@@ -61,15 +46,6 @@ export async function getMembersDirectory({
         eq(tagsTable.isActive, true),
         or(isNull(profiles.userId), and(eq(profiles.isPrivate, false), eq(profiles.showTags, true)))
       ));
-
-    const tagUserIds = tagMatches.map((match) => match.userId);
-    const mergedUserIds = new Set([...directUsers.map((u) => u.id), ...tagUserIds]);
-
-    matchedUserIds = Array.from(mergedUserIds);
-    if (matchedUserIds.length === 0) {
-      return [];
-    }
-  }
 
   // Keep former members' profiles reachable by slug without listing them as current members.
   // Privacy and role filters must run before the limit (also used by the homepage).
@@ -82,25 +58,27 @@ export async function getMembersDirectory({
       .where(and(eq(communityRoles.isSupporter, true), or(isNull(profiles.userId), eq(profiles.showRoles, true))));
     whereConditions.push(inArray(users.id, visibleSupporters));
   }
-  if (matchedUserIds) {
-    whereConditions.push(inArray(users.id, matchedUserIds));
+  if (searchTerm) {
+    whereConditions.push(or(like(users.username, `%${searchTerm}%`), like(users.displayName, `%${searchTerm}%`), inArray(users.id, tagMatches))!);
   }
 
   const userRows = await database.query.users.findMany({
     where: and(...whereConditions),
+    columns: { id: true, externalUserId: true, username: true, displayName: true, avatar: true },
     with: {
-      profile: true,
+      profile: { columns: { showRoles: true, showTags: true } },
       slugs: {
         where: eq(profileSlugs.isPrimary, true),
+        columns: { slug: true },
       },
       memberRoles: {
         with: {
-          role: true,
+          role: { columns: { id: true, name: true, color: true, position: true, isSupporter: true } },
         },
       },
       memberTags: {
         with: {
-          tag: true,
+          tag: { columns: { id: true, name: true, isActive: true } },
         },
       },
     },
