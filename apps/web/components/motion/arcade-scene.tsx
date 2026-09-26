@@ -2,40 +2,14 @@
 
 import * as React from 'react';
 import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { createArcadeEmblem, disposeEmblem } from './arcade-emblem';
 
-function createMark() {
-  const outline = new THREE.Shape();
-  outline.moveTo(-1.16, -1.18);
-  outline.lineTo(-0.25, 1.05);
-  outline.quadraticCurveTo(-0.18, 1.21, 0, 1.21);
-  outline.quadraticCurveTo(0.18, 1.21, 0.25, 1.05);
-  outline.lineTo(1.16, -1.18);
-  outline.lineTo(0.69, -1.18);
-  outline.lineTo(0.44, -0.55);
-  outline.lineTo(-0.44, -0.55);
-  outline.lineTo(-0.69, -1.18);
-  outline.closePath();
-  const opening = new THREE.Path();
-  opening.moveTo(-0.31, -0.16);
-  opening.lineTo(0.31, -0.16);
-  opening.lineTo(0, 0.61);
-  opening.closePath();
-  outline.holes.push(opening);
-  const geometry = new THREE.ExtrudeGeometry(outline, {
-    depth: 0.42,
-    bevelEnabled: true,
-    bevelThickness: 0.065,
-    bevelSize: 0.045,
-    bevelSegments: 4,
-    curveSegments: 10,
-  });
-  geometry.center();
-  return geometry;
-}
+const restingPose = { x: -0.32, y: -0.12 };
 
-export function ArcadeScene({ onFailure }: { onFailure: () => void }) {
+export function ArcadeScene({ onFailure, onReady }: { onFailure: () => void; onReady: () => void }) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
-  const targetRef = React.useRef({ x: 0, y: 0 });
+  const targetRef = React.useRef({ ...restingPose });
   const dragRef = React.useRef<{ id: number; x: number; y: number; originX: number; originY: number } | null>(null);
   const rectRef = React.useRef<{ left: number; top: number; width: number; height: number } | null>(null);
   const requestRenderRef = React.useRef<() => void>(() => {});
@@ -49,52 +23,44 @@ export function ArcadeScene({ onFailure }: { onFailure: () => void }) {
     } catch { onFailure(); return; }
 
     const scene = new THREE.Scene();
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
     const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
-    camera.position.set(0, 0, 7.8);
-    const group = new THREE.Group();
+    camera.position.set(0, 0.12, 6.2);
+    const { group, ink, face, detail } = createArcadeEmblem();
+    group.rotation.set(restingPose.y, restingPose.x, -0.08);
+    group.position.y = 0.12;
     scene.add(group);
+    const environment = new RoomEnvironment();
+    const generator = new THREE.PMREMGenerator(renderer);
+    const environmentTarget = generator.fromScene(environment, 0.04);
+    scene.environment = environmentTarget.texture;
+    environment.dispose();
+    generator.dispose();
 
-    const front = new THREE.MeshStandardMaterial({ color: 0xf4f2ff, metalness: 0.35, roughness: 0.28 });
-    const side = new THREE.MeshStandardMaterial({ color: 0xec48bd, metalness: 0.55, roughness: 0.26 });
-    const mark = new THREE.Mesh(createMark(), [front, side]);
-    mark.position.z = 0.5;
-    group.add(mark);
-
-    const ticketGeometry = new THREE.BoxGeometry(1.17, 1.55, 0.12);
-    const ticketColors = [0x35ed7e, 0x00b0f4, 0xec48bd];
-    const tickets = ticketColors.map((color, index) => {
-      const mesh = new THREE.Mesh(ticketGeometry, new THREE.MeshStandardMaterial({ color, metalness: 0.2, roughness: 0.55 }));
-      mesh.position.set((index - 1) * 1.13, index === 1 ? 0.25 : -0.15, -0.55 - index * 0.18);
-      mesh.rotation.z = (index - 1) * -0.18;
-      group.add(mesh);
-      return mesh;
-    });
-    const ringGeometry = new THREE.TorusGeometry(1.72, 0.018, 8, 96);
-    const ringMaterial = new THREE.MeshBasicMaterial({ color: 0xec48bd, transparent: true, opacity: 0.55 });
-    const ring = new THREE.Mesh(ringGeometry, ringMaterial);
-    ring.position.z = -0.95;
-    ring.rotation.x = 0.18;
-    group.add(ring);
-
-    scene.add(new THREE.AmbientLight(0xffffff, 2.1));
-    const light = new THREE.DirectionalLight(0xffffff, 3.2);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+    const light = new THREE.DirectionalLight(0xffffff, 3);
     light.position.set(-2, 3, 5);
     scene.add(light);
-    const rim = new THREE.DirectionalLight(0xec48bd, 2.5);
+    const rim = new THREE.DirectionalLight(0xec48bd, 2);
     rim.position.set(3, -2, -1);
     scene.add(rim);
 
     let inView = true;
     let isLoopActive = false;
+    let previousFrame = performance.now();
 
     const render = () => {
+      const now = performance.now();
+      const easing = 1 - Math.exp(-Math.min(now - previousFrame, 100) / 120);
+      previousFrame = now;
       const dy = targetRef.current.x - group.rotation.y;
       const dx = targetRef.current.y - group.rotation.x;
       const isMoving = Math.abs(dy) > 0.0002 || Math.abs(dx) > 0.0002 || dragRef.current !== null;
 
       if (isMoving) {
-        group.rotation.y += dy * 0.065;
-        group.rotation.x += dx * 0.065;
+        group.rotation.y += dy * easing;
+        group.rotation.x += dx * easing;
         renderer.render(scene, camera);
       } else {
         group.rotation.y = targetRef.current.x;
@@ -107,6 +73,7 @@ export function ArcadeScene({ onFailure }: { onFailure: () => void }) {
 
     const startLoop = () => {
       if (!isLoopActive && inView && !document.hidden) {
+        previousFrame = performance.now();
         isLoopActive = true;
         renderer.setAnimationLoop(render);
       }
@@ -115,8 +82,10 @@ export function ArcadeScene({ onFailure }: { onFailure: () => void }) {
     requestRenderRef.current = startLoop;
 
     const syncTheme = () => {
-      front.color.set(document.documentElement.classList.contains('light') ? 0x1b1b23 : 0xf4f2ff);
-      ringMaterial.color.set(document.documentElement.classList.contains('light') ? 0xa92c7c : 0xec48bd);
+      const lightMode = document.documentElement.classList.contains('light');
+      ink.color.set(lightMode ? 0x18181d : 0xf7f7f7);
+      face.color.set(lightMode ? 0xe4e4e7 : 0x202024);
+      detail.color.set(lightMode ? 0x77777e : 0x93939d);
       startLoop();
     };
     syncTheme();
@@ -127,6 +96,8 @@ export function ArcadeScene({ onFailure }: { onFailure: () => void }) {
       const width = Math.max(canvas.clientWidth, 1);
       const height = Math.max(canvas.clientHeight, 1);
       camera.aspect = width / height;
+      // Keep the full token above the caption on narrow screens.
+      camera.position.z = camera.aspect < 1 ? 6.2 / camera.aspect : 6.2;
       camera.updateProjectionMatrix();
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, width < 500 ? 1.25 : 1.75));
       renderer.setSize(width, height, false);
@@ -155,6 +126,8 @@ export function ArcadeScene({ onFailure }: { onFailure: () => void }) {
     document.addEventListener('visibilitychange', syncLoop);
     const contextLost = (event: Event) => { event.preventDefault(); onFailure(); };
     canvas.addEventListener('webglcontextlost', contextLost);
+    renderer.render(scene, camera);
+    onReady();
     startLoop();
 
     return () => {
@@ -165,16 +138,11 @@ export function ArcadeScene({ onFailure }: { onFailure: () => void }) {
       intersection.disconnect();
       resizeObserver.disconnect();
       themeObserver.disconnect();
-      mark.geometry.dispose();
-      ticketGeometry.dispose();
-      tickets.forEach((mesh) => (mesh.material as THREE.Material).dispose());
-      ringGeometry.dispose();
-      ringMaterial.dispose();
-      front.dispose();
-      side.dispose();
+      disposeEmblem(group);
+      environmentTarget.dispose();
       renderer.dispose();
     };
-  }, [onFailure]);
+  }, [onFailure, onReady]);
 
   const updateRect = () => {
     const bcr = canvasRef.current?.getBoundingClientRect();
@@ -189,8 +157,8 @@ export function ArcadeScene({ onFailure }: { onFailure: () => void }) {
     }
     if (!rect || rect.width === 0 || rect.height === 0) return;
     targetRef.current = {
-      x: Math.max(-0.65, Math.min(0.65, ((clientX - rect.left) / rect.width - 0.5) * 1.1)),
-      y: Math.max(-0.38, Math.min(0.38, ((clientY - rect.top) / rect.height - 0.5) * 0.65)),
+      x: restingPose.x + ((clientX - rect.left) / rect.width - 0.5) * 0.7,
+      y: restingPose.y + ((clientY - rect.top) / rect.height - 0.5) * 0.4,
     };
     requestRenderRef.current();
   };
@@ -200,9 +168,10 @@ export function ArcadeScene({ onFailure }: { onFailure: () => void }) {
       className="arcade-scene"
       role="group"
       tabIndex={0}
-      aria-label="Interactive ASC mark. Drag or use arrow keys to turn it."
+      aria-label="Interactive ASC emblem. Drag or use arrow keys to turn it. Press Home to reset."
       onPointerEnter={updateRect}
       onPointerDown={(event) => {
+        if (event.button !== 0) return;
         updateRect();
         dragRef.current = { id: event.pointerId, x: event.clientX, y: event.clientY, originX: targetRef.current.x, originY: targetRef.current.y };
         event.currentTarget.setPointerCapture(event.pointerId);
@@ -227,9 +196,13 @@ export function ArcadeScene({ onFailure }: { onFailure: () => void }) {
         dragRef.current = null;
         requestRenderRef.current();
       }}
+      onLostPointerCapture={() => {
+        dragRef.current = null;
+        requestRenderRef.current();
+      }}
       onPointerLeave={() => {
         if (!dragRef.current) {
-          targetRef.current = { x: 0, y: 0 };
+          targetRef.current = { ...restingPose };
           requestRenderRef.current();
         }
       }}
@@ -239,6 +212,7 @@ export function ArcadeScene({ onFailure }: { onFailure: () => void }) {
         else if (event.key === 'ArrowRight') targetRef.current.x += delta;
         else if (event.key === 'ArrowUp') targetRef.current.y -= delta;
         else if (event.key === 'ArrowDown') targetRef.current.y += delta;
+        else if (event.key === 'Home') targetRef.current = { ...restingPose };
         else return;
         event.preventDefault();
         targetRef.current.x = Math.max(-0.9, Math.min(0.9, targetRef.current.x));
@@ -247,6 +221,16 @@ export function ArcadeScene({ onFailure }: { onFailure: () => void }) {
       }}
     >
       <canvas ref={canvasRef} aria-hidden="true" />
+      <button
+        type="button"
+        className="arcade-scene__reset"
+        aria-label="Reset the ASC emblem position"
+        onPointerDown={(event) => event.stopPropagation()}
+        onClick={() => {
+          targetRef.current = { ...restingPose };
+          requestRenderRef.current();
+        }}
+      >Reset view</button>
     </div>
   );
 }

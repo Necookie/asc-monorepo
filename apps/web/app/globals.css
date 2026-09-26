@@ -269,15 +269,31 @@ body {
   background: var(--asc-arcade-accent);
   z-index: 3;
 }
-.arcade-scene { position: absolute; inset: 0; outline-offset: -6px; touch-action: none; cursor: grab; }
+.arcade-scene { position: absolute; inset: 0; outline-offset: -6px; touch-action: pan-y; cursor: grab; }
 .arcade-scene:active { cursor: grabbing; }
 .arcade-scene:focus-visible { outline: 2px solid var(--asc-primary); }
 .arcade-scene canvas { display: block; width: 100%; height: 100%; }
+.arcade-scene__reset {
+  position: absolute;
+  top: 26px;
+  right: 26px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--asc-border);
+  border-radius: 12px;
+  background: var(--asc-surface-onyx);
+  color: var(--asc-ink-secondary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.arcade-scene__reset:hover { color: var(--asc-ink); border-color: var(--asc-border-strong); }
+.arcade-scene__reset:focus-visible { outline: 2px solid var(--asc-primary); outline-offset: 2px; }
 .arcade-stage__still { position: absolute; inset: 0; display: grid; place-items: center; }
-.arcade-stage__orbit { position: absolute; width: 54%; aspect-ratio: 1; border: 1px solid var(--asc-border-strong); border-radius: 50%; transform: rotateX(28deg); }
-.arcade-stage__orbit--outer { width: 72%; border-color: var(--asc-arcade-accent); opacity: 0.42; }
-.arcade-stage__mark { display: grid; width: 42%; aspect-ratio: 1; place-items: center; transform: rotate(-7deg); }
-.arcade-stage__mark svg { width: 100%; height: auto; filter: drop-shadow(12px 14px 0 var(--asc-arcade-accent)); }
+.arcade-stage__orbit { position: absolute; width: min(68%, 300px); aspect-ratio: 1; border: 1px solid var(--asc-border-strong); border-radius: 50%; transform: translateY(-8px) rotateY(-18deg) rotate(-5deg); }
+.arcade-stage__orbit--outer { width: min(76%, 330px); border: 8px solid var(--asc-arcade-accent); }
+.arcade-stage__mark { display: grid; width: min(55%, 240px); aspect-ratio: 1; place-items: center; transform: translateY(-8px) rotate(-5deg); }
+.arcade-stage__mark svg { width: 100%; height: auto; filter: drop-shadow(3px 5px 0 var(--asc-border-strong)); }
 .arcade-stage__caption {
   position: absolute;
   z-index: 3;
@@ -291,6 +307,9 @@ body {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   pointer-events: none;
+}
+@media (max-width: 480px) {
+  .arcade-stage__caption { inset: auto 28px 30px; font-size: 0.75rem; gap: 0.5rem; letter-spacing: 0.04em; }
 }
 .member-wall {
   display: grid;
