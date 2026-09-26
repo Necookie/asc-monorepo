@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { cn } from '@/lib/utils';
+import { getAvatarImageUrl } from '@/lib/avatar-image';
 
 export type AvatarSize = 24 | 32 | 40 | 48 | 64 | 96 | 128;
 
@@ -30,7 +31,7 @@ export function Avatar({
   className,
   ...props
 }: AvatarProps) {
-  const [hasError, setHasError] = React.useState(false);
+  const [failedSource, setFailedSource] = React.useState<string | null>(null);
 
   const fallback = (fallbackText || alt || '?').slice(0, 2).toUpperCase();
 
@@ -43,14 +44,16 @@ export function Avatar({
       )}
       {...props}
     >
-      {src && !hasError ? (
+      {src && failedSource !== src ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={src}
+          src={getAvatarImageUrl(src, size)}
           alt={alt}
+          width={size}
+          height={size}
           loading="lazy"
           decoding="async"
-          onError={() => setHasError(true)}
+          onError={() => setFailedSource(src)}
           className="h-full w-full object-cover"
         />
       ) : (
