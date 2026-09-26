@@ -120,7 +120,7 @@ export async function getPublicProfileBySlug(
   }
 
   // Map roles and resolve supporter state
-  const roles = user.memberRoles
+  const roles = (user.membershipStatus === 'ACTIVE' ? user.memberRoles : [])
     .map((mr) => mr.role)
     .filter((r): r is NonNullable<typeof r> => Boolean(r))
     .sort((a, b) => (b.position ?? 0) - (a.position ?? 0));

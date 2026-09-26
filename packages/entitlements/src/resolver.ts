@@ -10,10 +10,10 @@ export function resolveMemberEntitlements(
   explicitEntitlements: Entitlement[] = []
 ): ResolvedEntitlements {
   const isSupporter = roles.some((r) => r.isSupporter === true);
-  const isAdmin = roles.some((r) => r.isAdmin === true);
+  const isStaff = roles.some((r) => r.isAdmin === true || r.isModerator === true);
 
   // Start with standard baseline
-  const result: ResolvedEntitlements = isSupporter || isAdmin
+  const result: ResolvedEntitlements = isSupporter || isStaff
     ? { ...SUPPORTER_ENTITLEMENTS }
     : { ...STANDARD_ENTITLEMENTS };
 

@@ -218,6 +218,17 @@ describe('ASC Authentication, Identity Linkage & Zero-Trust Ownership', () => {
       expect(result.status).toBe('UNLINKED_DISCORD');
     });
 
+    it('retains a former member profile without granting stale staff or booster privileges', async () => {
+      const [former] = await testDb.insert(users).values({ externalUserId: '200000000000000099', username: 'former_staff', displayName: 'Former Staff', membershipStatus: 'LEFT', firstJoinedAt: new Date(), lastSyncedAt: new Date() }).returning();
+      await testDb.insert(profiles).values({ userId: former.id, bio: 'Keep my story', avatarFrame: 'crest' });
+      const [role] = await testDb.insert(communityRoles).values({ externalRoleId: 'stale-staff', name: 'Former Staff', isAdmin: true, isModerator: true, isSupporter: true }).returning();
+      await testDb.insert(memberRoles).values({ userId: former.id, roleId: role.id });
+      const result = await resolveMemberByIdentity({ clerkUserId: 'user_former', discordSnowflake: former.externalUserId, database: testDb });
+      expect(result.status).toBe('RESOLVED');
+      if (result.status !== 'RESOLVED') throw new Error('Expected former profile to be preserved');
+      expect(result.member).toMatchObject({ isAdmin: false, isModerator: false, isSupporter: false, roles: [], profile: { bio: 'Keep my story', avatarFrame: 'crest' } });
+    });
+
     it('automatically ensures default profile row exists if missing', async () => {
       const [user] = await testDb
         .insert(users)

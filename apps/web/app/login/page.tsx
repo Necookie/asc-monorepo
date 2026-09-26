@@ -53,7 +53,7 @@ export default async function LoginPage() {
               <div>
                 <span className="font-semibold text-ink">Discord Account Required</span>
                 <p className="mt-0.5 text-xs text-[#ffb0b2]">
-                  Your Clerk account must be connected with Discord to verify your community identity.
+                  Use the Discord account you use in our server so we can find your profile.
                 </p>
               </div>
             </div>
@@ -74,9 +74,9 @@ export default async function LoginPage() {
             <div className="flex items-start gap-3 p-3.5 rounded-xl bg-surface-indigo/60 border border-border">
               <ShieldCheck className="w-5 h-5 text-primary shrink-0 mt-0.5" />
               <div>
-                <div className="text-sm font-semibold text-ink">Zero-Trust Ownership</div>
+                <div className="text-sm font-semibold text-ink">Your profile, your account</div>
                 <div className="text-xs text-muted mt-0.5">
-                  Profile mutations are verified server-side against your immutable Discord Snowflake.
+                  We match your Discord account to your existing profile. Only you can edit it.
                 </div>
               </div>
             </div>
