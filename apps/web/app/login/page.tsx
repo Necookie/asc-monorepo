@@ -1,6 +1,9 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { SignIn } from '@clerk/nextjs';
+import { SignIn, SignOutButton } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
+import { resolveCurrentSession } from '@/lib/auth/session';
+import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Sparkles, ShieldCheck, UserCheck, ArrowLeft, AlertCircle } from 'lucide-react';
 
@@ -11,12 +14,12 @@ export const metadata: Metadata = {
   description: 'Sign in with Discord to access and customize your ASC community profile.',
 };
 
-export default async function LoginPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ error?: string }>;
-}) {
-  const { error } = await searchParams;
+export default async function LoginPage() {
+  const session = await resolveCurrentSession();
+  if (session?.status === 'RESOLVED') redirect('/dashboard');
+  if (session?.status === 'NOT_FOUND') redirect('/not-a-member');
+  const unavailable = session?.status === 'UNAVAILABLE';
+  const discordRequired = session?.status === 'UNLINKED_DISCORD';
 
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -37,14 +40,14 @@ export default async function LoginPage({
               Community Digital Identity
             </div>
             <h1 className="text-3xl sm:text-4xl font-extrabold text-ink tracking-tight font-[var(--font-display)]">
-              Claim & Customize Your ASC Profile
+              Welcome back to ASC
             </h1>
             <p className="mt-3 text-ink-secondary text-base leading-relaxed">
-              Every current member of the ASC Discord server already has a public profile. Authenticate with Discord to claim yours.
+              Your community profile is already here. Sign in with the Discord account you use in ASC to make it yours.
             </p>
           </div>
 
-          {error === 'discord_required' && (
+          {discordRequired && (
             <div className="p-4 rounded-xl bg-[#ed4245]/15 border border-[#ed4245]/30 text-sm text-[#ff8f91] flex items-start gap-3">
               <AlertCircle className="w-5 h-5 shrink-0 mt-0.5 text-[#ed4245]" />
               <div>
@@ -84,15 +87,20 @@ export default async function LoginPage({
         <div className="lg:col-span-6 flex justify-center">
           <Card className="w-full max-w-md bg-surface-indigo border-border p-6">
             <CardHeader className="text-center pb-4">
-              <CardTitle className="text-xl font-bold text-ink">Sign In</CardTitle>
+              <CardTitle className="text-xl font-bold text-ink">{unavailable ? 'We couldn’t open your profile' : discordRequired ? 'Use your Discord account' : 'Sign in with Discord'}</CardTitle>
               <CardDescription className="text-xs text-muted">
-                Connect your Discord account to continue
+                {unavailable ? 'There is a temporary problem checking your session or member profile. Your saved profile is safe.' : discordRequired ? 'This session has no linked Discord identity. Sign out, then continue with Discord.' : 'Continue to your existing ASC profile'}
               </CardDescription>
             </CardHeader>
             <CardContent className="flex justify-center">
-              <SignIn
+              {unavailable ? (
+                <Link href="/login" prefetch={false}><Button>Try again</Button></Link>
+              ) : discordRequired ? (
+                <SignOutButton redirectUrl="/login"><Button>Sign out and try Discord</Button></SignOutButton>
+              ) : <SignIn
                 routing="hash"
-                fallbackRedirectUrl="/dashboard"
+                forceRedirectUrl="/dashboard"
+                signUpForceRedirectUrl="/dashboard"
                 appearance={{
                   elements: {
                     rootBox: 'w-full',
@@ -108,7 +116,7 @@ export default async function LoginPage({
                     footerAction: 'hidden',
                   },
                 }}
-              />
+              />}
             </CardContent>
           </Card>
         </div>
