@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { Suspense } from 'react';
 import { Atkinson_Hyperlegible_Next, Bricolage_Grotesque } from 'next/font/google';
 import { ClerkProvider } from '@clerk/nextjs';
 import './globals.css';
@@ -51,12 +52,15 @@ export const viewport: Viewport = {
   maximumScale: 5,
 };
 
-export default async function RootLayout({
+async function MemberNavigation() {
+  return <NavBar account={getNavigationAccount(await resolveCurrentSession())} />;
+}
+
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const account = getNavigationAccount(await resolveCurrentSession());
   return (
     <ClerkProvider
       publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || 'pk_test_Y2xlcmsuZXhhbXBsZS5jb20k'}
@@ -98,7 +102,7 @@ export default async function RootLayout({
         </head>
         <body className="asc-mesh-bg text-ink min-h-screen flex flex-col antialiased selection:bg-primary selection:text-ink-dark">
           <AscMotionProvider>
-            <NavBar account={account} />
+            <Suspense fallback={<NavBar account={{ status: 'LOADING' }} />}><MemberNavigation /></Suspense>
             <main className="flex-1">{children}</main>
             <Footer />
             <MascotLoader />
