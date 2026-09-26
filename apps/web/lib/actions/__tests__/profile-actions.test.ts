@@ -21,7 +21,7 @@ import {
   updateProfileLinksAction,
   updateProfilePrivacyAction,
   updateMemberTagsAction,
-} from '../profile';
+} from '../profile-service';
 import type { AuthenticatedMember, CommunityRole } from '@asc/types';
 
 describe('Profile Customization Server Actions & Entitlement Enforcement', () => {

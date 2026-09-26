@@ -20,7 +20,7 @@ import {
   adminModerateProfileAction,
   adminManageTagAction,
   adminUpdateSiteSettingsAction,
-} from '../admin';
+} from '../admin-service';
 import {
   getAdminOverview,
   getAdminMembers,
