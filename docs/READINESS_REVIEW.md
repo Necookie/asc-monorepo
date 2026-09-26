@@ -35,7 +35,7 @@ Every change used a separate feature/fix branch and coherent Conventional Commit
 
 | Area | Current gap | Completion check |
 | --- | --- | --- |
-| Directory | Search submits a form; no live/debounced search, staff filter or pagination. Results default to 60; admin search filters an initial 100 rows. | Browse beyond the first page, search all members, and filter current staff without exposing hidden roles. |
+| Directory | Search submits a form; no live/debounced search, staff filter or pagination. Public results default to 60 and staff lists to 100. PR #11 moved staff search before that limit, so matching members outside the initial list can now be found. | Browse beyond the first page and filter current staff without exposing hidden roles. |
 | Site settings | Maintenance and announcement values can be saved in admin but public pages do not consume them. | A saved announcement appears; maintenance actually gates intended routes with admin recovery access. |
 | Moderation/audit | Role history UI is absent; audit rows are stored but not cryptographically tamper-evident. | State the intended guarantee, implement it, and verify actor/target/history behavior. |
 | Data integrity | Link/tag replacement and several sync/moderation operations span multiple statements. | Inject a mid-operation failure and confirm transactions preserve the previous complete state. |
@@ -72,7 +72,7 @@ Keep the useful identity/profile tools free. Put extra visual expression in the 
 
 ## Verification evidence and limits
 
-- **144 tests pass** across 17 test files. Coverage includes identity linking, forged action arguments, expired sessions, moderator/admin entitlements, former-member privileges, privacy-safe directory search and graphics resource disposal.
+- **150 tests pass** across 19 test files after the subsequent optimization pass. Coverage includes identity linking, forged action arguments, expired sessions, moderator/admin entitlements, former-member privileges, privacy-safe directory search, loading and aggregate regressions, and graphics resource disposal. [OPTIMIZATION_REVIEW.md](OPTIMIZATION_REVIEW.md) contains the latest browser and performance evidence.
 - Workspace type checking passes. Existing lint scripts exit successfully but are placeholders, as noted above.
 - Production web build passes. Bot TypeScript compilation passes; its plain-Node runtime check fails as described in the release blockers.
 - Chromium checked the landing at 1440px in both themes, 768px and 375px. Drag, keyboard rotation, Home/reset, layout overflow and invitation URLs passed. Reduced motion, unavailable WebGL and context loss all produced still artwork. No unexpected browser errors appeared in the normal landing/login checks.

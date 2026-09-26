@@ -12,7 +12,8 @@
 | Public action identity boundaries | Merged through PR #6 | Forged member/admin/database arguments rejected; expired-session redirects preserved |
 | Booster and moderator/admin customization | Merged through PR #7 | Verified role flags; former-member privileges revoked; saved appearance retained |
 | Directory privacy | Merged through PR #8 | Hidden profiles/roles/tags excluded from discovery, search and supporter filters |
-| Current local gates | 144 tests in 17 files; types and web build pass | Lint scripts remain placeholders; compiled bot startup fails on shared TypeScript package entrypoints |
+| Website optimization and expressive mascot | Merged through PRs #10–#14 | Smaller assets, parallel/private-safe queries, streaming account navigation, mobile 3D activation, GPU batching, companion controls; [optimization evidence](OPTIMIZATION_REVIEW.md) |
+| Current local gates | 150 tests in 19 files; types and web build pass | Lint scripts remain placeholders; compiled bot startup fails on shared TypeScript package entrypoints |
 | Remaining production evidence | Pending | Real OAuth linking/saves, live Gateway lifecycle, Docker image boot, production role mappings and migrations |
 
 ## Historical implementation phases
