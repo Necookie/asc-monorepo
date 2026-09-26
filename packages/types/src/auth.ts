@@ -9,6 +9,9 @@ export interface AuthenticatedMember {
   isAdmin: boolean;
   isModerator: boolean;
   isSupporter: boolean;
+  /** Resolved server-side from Clerk private metadata and ASC website grants. */
+  isOwner?: boolean;
+  staffRole?: 'OWNER' | 'ADMIN' | 'MODERATOR' | null;
   primarySlug: string | null;
 }
 

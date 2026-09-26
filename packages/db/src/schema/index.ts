@@ -12,3 +12,4 @@ export * from './site_settings';
 export * from './moderation_actions';
 export * from './audit_logs';
 export * from './relations';
+export * from './staff_access';

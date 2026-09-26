@@ -28,6 +28,7 @@ export const profiles = sqliteTable(
     isPrivate: integer('is_private', { mode: 'boolean' })
       .notNull()
       .default(false),
+    isModerated: integer('is_moderated', { mode: 'boolean' }).notNull().default(false),
     showRoles: integer('show_roles', { mode: 'boolean' })
       .notNull()
       .default(true),

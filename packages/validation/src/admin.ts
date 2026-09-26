@@ -56,3 +56,19 @@ export const siteSettingsSchema = z.object({
 export type AdminModerateProfileInput = z.infer<typeof adminModerateProfileSchema>;
 export type AdminTagInput = z.infer<typeof adminTagSchema>;
 export type SiteSettingsInput = z.infer<typeof siteSettingsSchema>;
+
+export const staffAccessSchema = z.object({
+  targetUserId: z.string().min(1).max(100),
+  role: z.enum(['ADMIN', 'MODERATOR', 'NONE']),
+  expectedRole: z.enum(['ADMIN', 'MODERATOR', 'NONE']),
+  reason: z.string().trim().min(3).max(255),
+}).strict();
+export type StaffAccessInput = z.infer<typeof staffAccessSchema>;
+
+export const adminPerksSchema = z.object({
+  targetUserId: z.string().min(1).max(100),
+  enabled: z.boolean(),
+  expectedEnabled: z.boolean(),
+  reason: z.string().trim().min(3).max(255),
+}).strict();
+export type AdminPerksInput = z.infer<typeof adminPerksSchema>;
