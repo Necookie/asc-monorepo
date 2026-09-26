@@ -9,13 +9,13 @@
 | Member sign-in, session recovery and ASC account menu | Merged through PRs #1–#2 | Session/identity/menu tests; signed-out browser redirect and embedded Discord button |
 | Local Discord OAuth routing and account recovery | Verified locally; see [auth review](LOCAL_AUTH_REVIEW.md) | Real Discord OAuth on port 3001, dashboard reload and landing account menu; original Chrome session not reproduced |
 | Discord invite and Clerk browser policy | Merged through PRs #3–#4 | Correct invite destinations; blocked worker errors resolved |
-| Sculpted landing emblem and accessible controls | Merged through PR #5 | Graphics tests; desktop/light/dark/tablet/mobile, drag/arrows/reset, reduced motion/WebGL/context-loss fallback |
+| Landing emblem fidelity | Original three-node ribbon and cyan/violet/magenta palette; shared 2D/3D silhouette | [Emblem review](EMBLEM_REVIEW.md): geometry/resource tests, light/dark desktop and mobile, drag/arrows/reset; existing fallbacks retained |
 | Public action identity boundaries | Merged through PR #6 | Forged member/admin/database arguments rejected; expired-session redirects preserved |
 | Booster and moderator/admin customization | Merged through PR #7 | Verified role flags; former-member privileges revoked; saved appearance retained |
 | Directory privacy | Merged through PR #8 | Hidden profiles/roles/tags excluded from discovery, search and supporter filters |
 | Website optimization and expressive mascot | Merged through PRs #10–#14 | Smaller assets, parallel/private-safe queries, streaming account navigation, mobile 3D activation, GPU batching, companion controls; [optimization evidence](OPTIMIZATION_REVIEW.md) |
 | Owner-managed administration | Clerk private owner flag; delegated website Admin/Moderator; independent moderation and website perk grants | Permission, privacy, stale edit, and audit rollback tests; isolated desktop/mobile form review; database migration applied; owner setup deferred |
-| Current local gates | 192 tests in 23 files; types and web build pass | Lint scripts remain placeholders; compiled bot startup fails on shared TypeScript package entrypoints |
+| Current local gates | 193 tests in 23 files; types and web build pass | Lint scripts remain placeholders; compiled bot startup fails on shared TypeScript package entrypoints |
 | Remaining production evidence | Pending | Real OAuth linking/saves, live Gateway lifecycle, Docker image boot, production role mappings and migrations |
 
 ## Historical implementation phases

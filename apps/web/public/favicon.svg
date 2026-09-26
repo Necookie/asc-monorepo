@@ -1,11 +1,1 @@
-<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <style>
-    .ink { stroke: #111111; fill: #111111; }
-    path.ink { fill: none; }
-    @media (prefers-color-scheme: dark) { .ink { stroke: #f7f7f7; fill: #f7f7f7; } }
-  </style>
-  <path d="M9.5 52 28.5 13.5c1.4-2.9 5.6-2.9 7 0L54.5 52" class="ink" fill="none" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M19.5 40.5c7.5-4.4 17.5-4.4 25 0" class="ink" fill="none" stroke-width="5.5" stroke-linecap="round" />
-  <circle cx="19.5" cy="40.5" r="3.6" class="ink" stroke="none" />
-  <circle cx="44.5" cy="40.5" r="3.6" class="ink" stroke="none" />
-</svg>
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><style>.ink{fill:#111111}@media(prefers-color-scheme:dark){.ink{fill:#f7f7f7}}</style><g class="ink"><path d="M 8 47 L 25.3 16.3 C 28.3 10.4 35.7 10.4 38.7 16.3 L 56 47 L 46.5 52.5 L 32 23.5 L 17.5 52.5 Z"/><path d="M 12.5 48.4 C 20 43.7 26.2 41.5 32 41.5 C 37.8 41.5 44 43.7 51.5 48.4 L 51.5 51.3 C 44 46.9 37.8 44.5 32 44.5 C 26.2 44.5 20 46.9 12.5 51.3 Z"/><circle cx="12.5" cy="50" r="6.8"/><circle cx="32" cy="43" r="5.5"/><circle cx="51.5" cy="50" r="6.8"/></g></svg>

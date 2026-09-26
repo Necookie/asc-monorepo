@@ -1,61 +1,76 @@
 import * as THREE from 'three';
+import { ASC_ARCH, ASC_BRIDGE, ASC_NODES, type MarkCommand } from '../../lib/asc-mark';
 
-/** A physical version of the rounded ASC arch and curved smile in the site mark. */
-export function createArcadeEmblem() {
-  const group = new THREE.Group();
-  const ink = new THREE.MeshPhysicalMaterial({ color: 0xf7f7f7, metalness: 0.45, roughness: 0.22, clearcoat: 0.7 });
-  const accent = new THREE.MeshStandardMaterial({ color: 0xec48bd, metalness: 0.55, roughness: 0.3 });
-  const face = new THREE.MeshStandardMaterial({ color: 0x202024, metalness: 0.15, roughness: 0.6 });
-  const detail = new THREE.MeshStandardMaterial({ color: 0x75757e, metalness: 0.6, roughness: 0.3 });
+const toX = (value: number) => (value - 32) / 16;
+const toY = (value: number) => (32 - value) / 16;
 
-  const badge = new THREE.Mesh(new THREE.CylinderGeometry(1.57, 1.57, 0.22, 96), face);
-  badge.rotation.x = Math.PI / 2;
-  badge.position.z = -0.15;
-  group.add(badge);
-  const rim = new THREE.Mesh(new THREE.TorusGeometry(1.56, 0.075, 12, 96), accent);
-  rim.position.z = -0.03;
-  group.add(rim);
-  const inset = new THREE.Mesh(new THREE.TorusGeometry(1.4, 0.009, 6, 96), detail);
-  inset.position.z = -0.027;
-  group.add(inset);
-
-  // Quadratic crown keeps the recognizable soft tip instead of a generic letter A.
-  const arch = new THREE.CurvePath<THREE.Vector3>();
-  arch.add(new THREE.LineCurve3(new THREE.Vector3(-1.04, -0.94, 0.27), new THREE.Vector3(-0.16, 0.9, 0.27)));
-  arch.add(new THREE.QuadraticBezierCurve3(new THREE.Vector3(-0.16, 0.9, 0.27), new THREE.Vector3(0, 1.23, 0.27), new THREE.Vector3(0.16, 0.9, 0.27)));
-  arch.add(new THREE.LineCurve3(new THREE.Vector3(0.16, 0.9, 0.27), new THREE.Vector3(1.04, -0.94, 0.27)));
-  const smile = new THREE.QuadraticBezierCurve3(new THREE.Vector3(-0.59, -0.39, 0.3), new THREE.Vector3(0, 0.01, 0.3), new THREE.Vector3(0.59, -0.39, 0.3));
-  group.add(new THREE.Mesh(new THREE.TubeGeometry(arch, 72, 0.17, 12, false), ink));
-  group.add(new THREE.Mesh(new THREE.TubeGeometry(smile, 32, 0.125, 12, false), ink));
-  const capGeometry = new THREE.SphereGeometry(0.17, 16, 12);
-  for (const x of [-1.04, 1.04]) {
-    const cap = new THREE.Mesh(capGeometry, ink);
-    cap.position.set(x, -0.94, 0.27);
-    group.add(cap);
+function ribbonShape(commands: MarkCommand[]) {
+  const shape = new THREE.Shape();
+  for (const command of commands) {
+    if (command[0] === 'M') shape.moveTo(toX(command[1]), toY(command[2]));
+    else if (command[0] === 'L') shape.lineTo(toX(command[1]), toY(command[2]));
+    else if (command[0] === 'C') shape.bezierCurveTo(toX(command[1]), toY(command[2]), toX(command[3]), toY(command[4]), toX(command[5]), toY(command[6]));
   }
-  const smileCapGeometry = new THREE.SphereGeometry(0.15, 16, 12);
-  for (const x of [-0.59, 0.59]) {
-    const cap = new THREE.Mesh(smileCapGeometry, ink);
-    cap.position.set(x, -0.39, 0.3);
-    group.add(cap);
-  }
-  // Small engraved ticks make the backing feel like a collectible club token.
-  const tickGeometry = new THREE.BoxGeometry(0.015, 0.055, 0.015);
-  const ticks = new THREE.InstancedMesh(tickGeometry, detail, 32);
-  const tick = new THREE.Object3D();
-  for (let i = 0; i < 32; i++) {
-    const angle = (i / 32) * Math.PI * 2;
-    tick.position.set(Math.sin(angle) * 1.48, Math.cos(angle) * 1.48, -0.025);
-    tick.rotation.z = -angle;
-    tick.updateMatrix();
-    ticks.setMatrixAt(i, tick.matrix);
-  }
-  ticks.instanceMatrix.needsUpdate = true;
-  group.add(ticks);
-  return { group, ink, face, detail, accent };
+  shape.closePath();
+  return shape;
 }
 
-/** Shared geometries/materials are freed once, including caps and engraved ticks. */
+/** Vertex colors keep the source logo's cyan crown, violet left and magenta right. */
+function colorSculpture(geometry: THREE.BufferGeometry) {
+  const positions = geometry.getAttribute('position');
+  const colors = new Float32Array(positions.count * 3);
+  const cyan = new THREE.Color('#30d5f4');
+  const violet = new THREE.Color('#6348f5');
+  const magenta = new THREE.Color('#ee35d2');
+  const color = new THREE.Color();
+  for (let index = 0; index < positions.count; index++) {
+    const x = positions.getX(index);
+    const y = positions.getY(index);
+    const across = THREE.MathUtils.smoothstep(x, -1.1, 1.25);
+    const crown = THREE.MathUtils.smoothstep(y, -0.1, 1.2);
+    color.copy(violet).lerp(magenta, across).lerp(cyan, crown);
+    color.toArray(colors, index * 3);
+  }
+  geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  return geometry;
+}
+
+/** A satin ribbon sculpture of ASC's original three-node icon, without a backing coin. */
+export function createArcadeEmblem() {
+  const group = new THREE.Group();
+  const material = new THREE.MeshPhysicalMaterial({
+    vertexColors: true, metalness: 0.05, roughness: 0.42, specularIntensity: 0.3,
+    clearcoat: 0.1, clearcoatRoughness: 0.4, envMapIntensity: 0.3,
+  });
+
+  for (const [name, commands, depth] of [
+    ['asc-ribbon', ASC_ARCH, 0.22],
+    ['asc-bridge', ASC_BRIDGE, 0.16],
+  ] as const) {
+    const geometry = new THREE.ExtrudeGeometry(ribbonShape(commands), {
+      depth, steps: 1, curveSegments: 32,
+      bevelEnabled: true, bevelThickness: 0.075, bevelSize: 0.055, bevelSegments: 5,
+    });
+    geometry.translate(0, 0, -depth / 2);
+    const mesh = new THREE.Mesh(colorSculpture(geometry), material);
+    mesh.name = name;
+    group.add(mesh);
+  }
+
+  for (const node of ASC_NODES) {
+    const radius = node.radius / 16;
+    // Soft, flattened nodes stay connected to the ribbon while catching a broad highlight.
+    const geometry = new THREE.SphereGeometry(radius, 32, 20);
+    geometry.scale(1, 1, 0.68);
+    geometry.translate(toX(node.x), toY(node.y), 0.075);
+    const mesh = new THREE.Mesh(colorSculpture(geometry), material);
+    mesh.name = `asc-node-${node.name}`;
+    group.add(mesh);
+  }
+  return { group, material };
+}
+
+/** Shared geometries/materials are freed once when the scene leaves the page. */
 export function disposeEmblem(group: THREE.Group) {
   const geometries = new Set<THREE.BufferGeometry>();
   const materials = new Set<THREE.Material>();
