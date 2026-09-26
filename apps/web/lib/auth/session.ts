@@ -15,33 +15,11 @@ import { db, type ASCDatabase } from '@asc/db';
 export async function getAuthenticatedMember(
   database: ASCDatabase = db
 ): Promise<AuthenticatedMember | null> {
-  try {
-    const clerkUser = await currentUser();
-    if (!clerkUser) {
-      return null;
-    }
-
-    const discordSnowflake = extractDiscordSnowflake(clerkUser);
-    if (!discordSnowflake) {
-      return null;
-    }
-
-    const result = await resolveMemberByIdentity({
-      clerkUserId: clerkUser.id,
-      discordSnowflake,
-      database,
-    });
-
-    if (result.status === 'RESOLVED') {
-      return result.member;
-    }
-
-    return null;
-  } catch {
-    // If Clerk is not configured or an error occurs, gracefully return null
-    return null;
-  }
+  const result = await resolveCurrentSession(database);
+  return result?.status === 'RESOLVED' ? result.member : null;
 }
+
+export type SessionResolution = IdentityResolutionResult | { status: 'UNAVAILABLE' };
 
 /**
  * Detailed identity resolution for the current session.
@@ -50,7 +28,7 @@ export async function getAuthenticatedMember(
  */
 export async function resolveCurrentSession(
   database: ASCDatabase = db
-): Promise<IdentityResolutionResult | null> {
+): Promise<SessionResolution | null> {
   try {
     const clerkUser = await currentUser();
     if (!clerkUser) {
@@ -71,7 +49,9 @@ export async function resolveCurrentSession(
       database,
     });
   } catch {
-    return null;
+    // An outage is distinct from a signed-out session. Do not expose provider errors.
+    console.error('[ASC auth] Unable to resolve the member session.');
+    return { status: 'UNAVAILABLE' };
   }
 }
 
@@ -87,6 +67,10 @@ export async function requireAuthenticatedMember(
 
   if (!sessionResult) {
     redirect('/login');
+  }
+
+  if (sessionResult.status === 'UNAVAILABLE') {
+    redirect('/login?error=service_unavailable');
   }
 
   if (sessionResult.status === 'UNLINKED_DISCORD') {
