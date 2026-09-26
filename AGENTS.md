@@ -71,8 +71,8 @@ Immutable External ID (Identity)
 ## 4. Source-of-Truth Boundaries
 
 1. **Community Platform (Discord)**: Authoritative for immutable member ID, username, display name, avatar, membership status, community roles, and supporter tier.
-2. **Clerk**: Authoritative for browser authentication, OAuth handshake, and active sessions.
-3. **Turso / libSQL**: Authoritative for ASC application data: users, Clerk linkage, profiles, slugs, membership periods, tags, links, privacy flags, entitlements, moderation actions, and audit logs.
+2. **Clerk**: Authoritative for browser authentication, OAuth handshake, active sessions, and owner authority via private metadata role owner.
+3. **Turso / libSQL**: Authoritative for ASC application data: users, Clerk linkage, profiles, slugs, membership periods, tags, links, privacy flags, entitlements, moderation actions, delegated website staff access, and audit logs.
 4. **Next.js (Web)**: Responsible for server-side rendering, public routes, dashboard mutations, and server-side authorization enforcement.
 5. **Sync Bot**: Independent Gateway service responsible for real-time member synchronization and reconciliation.
 

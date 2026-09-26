@@ -14,7 +14,8 @@
 | Booster and moderator/admin customization | Merged through PR #7 | Verified role flags; former-member privileges revoked; saved appearance retained |
 | Directory privacy | Merged through PR #8 | Hidden profiles/roles/tags excluded from discovery, search and supporter filters |
 | Website optimization and expressive mascot | Merged through PRs #10–#14 | Smaller assets, parallel/private-safe queries, streaming account navigation, mobile 3D activation, GPU batching, companion controls; [optimization evidence](OPTIMIZATION_REVIEW.md) |
-| Current local gates | 161 tests in 20 files; types and web build pass | Lint scripts remain placeholders; compiled bot startup fails on shared TypeScript package entrypoints |
+| Owner-managed administration | Clerk private owner flag; delegated website Admin/Moderator; independent moderation and website perk grants | Permission, privacy, stale edit, and audit rollback tests; isolated desktop/mobile form review; database migration applied; owner setup deferred |
+| Current local gates | 192 tests in 23 files; types and web build pass | Lint scripts remain placeholders; compiled bot startup fails on shared TypeScript package entrypoints |
 | Remaining production evidence | Pending | Real OAuth linking/saves, live Gateway lifecycle, Docker image boot, production role mappings and migrations |
 
 ## Historical implementation phases

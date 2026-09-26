@@ -94,10 +94,10 @@ The 26 September 2026 review corrected unsupported completion claims below. See 
 ---
 
 ## 7. Administration & Moderation
-- [x] **Server-Side Authorization**: Administrative routes and mutations strictly gated by verified `is_admin` role
+- [x] **Server-Side Authorization**: Owner from Clerk private metadata; Admin/Moderator grants in ASC; server guards on routes and mutations
 - [x] **Admin Overview (`/admin`)**: Key community metrics and quick health overview
 - [ ] **Member Management (`/admin/members`)**: Inspection/status work; role history and complete pagination remain
-- [ ] **Profile Moderation (`/admin/profiles`)**: Hide/reset controls work; moderation visibility must be independent of owner privacy
+- [x] **Profile Moderation (`/admin/profiles`)**: Separate server-owned visibility; member privacy cannot undo hides; resets require Admin
 - [x] **Tag Management (`/admin/tags`)**: Create, edit, and deactivate community tags
 - [ ] **Site Settings (`/admin/settings`)**: Values save; public maintenance/banner behavior remains
 - [ ] **Audit Logging (`/admin/audit`)**: Actor/action/target/time rows exist; tamper-evidence guarantee remains
