@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { createArcadeEmblem, disposeEmblem } from './arcade-emblem';
 
-const restingPose = { x: -0.32, y: -0.12 };
+const restingPose = { x: -0.28, y: 0.08 };
 
 export function ArcadeScene({ onFailure, onReady }: { onFailure: () => void; onReady: () => void }) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
@@ -24,27 +24,27 @@ export function ArcadeScene({ onFailure, onReady }: { onFailure: () => void; onR
 
     const scene = new THREE.Scene();
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.15;
+    renderer.toneMappingExposure = 0.68;
     const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
     camera.position.set(0, 0.12, 6.2);
-    const { group, ink, face, detail } = createArcadeEmblem();
-    group.rotation.set(restingPose.y, restingPose.x, -0.08);
-    group.position.y = 0.12;
+    const { group } = createArcadeEmblem();
+    group.rotation.set(restingPose.y, restingPose.x, -0.045);
+    group.position.y = 0.2;
     scene.add(group);
     const environment = new RoomEnvironment();
     const generator = new THREE.PMREMGenerator(renderer);
-    // The small, rounded token does not need the default 256px reflection map.
+    // Broad satin reflections do not need the default 256px environment map.
     const environmentTarget = generator.fromScene(environment, 0.04, 0.1, 100, { size: 64 });
     scene.environment = environmentTarget.texture;
     environment.dispose();
     generator.dispose();
 
-    scene.add(new THREE.AmbientLight(0xffffff, 0.7));
-    const light = new THREE.DirectionalLight(0xffffff, 3);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+    const light = new THREE.DirectionalLight(0xffffff, 1.4);
     light.position.set(-2, 3, 5);
     scene.add(light);
-    const rim = new THREE.DirectionalLight(0xec48bd, 2);
-    rim.position.set(3, -2, -1);
+    const rim = new THREE.DirectionalLight(0xb6eaff, 1.8);
+    rim.position.set(3, 1, -2);
     scene.add(rim);
 
     let inView = true;
@@ -84,22 +84,11 @@ export function ArcadeScene({ onFailure, onReady }: { onFailure: () => void; onR
 
     requestRenderRef.current = startLoop;
 
-    const syncTheme = () => {
-      const lightMode = document.documentElement.classList.contains('light');
-      ink.color.set(lightMode ? 0x18181d : 0xf7f7f7);
-      face.color.set(lightMode ? 0xe4e4e7 : 0x202024);
-      detail.color.set(lightMode ? 0x77777e : 0x93939d);
-      startLoop();
-    };
-    syncTheme();
-    const themeObserver = new MutationObserver(syncTheme);
-    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-
     const resize = () => {
       const width = Math.max(canvas.clientWidth, 1);
       const height = Math.max(canvas.clientHeight, 1);
       camera.aspect = width / height;
-      // Keep the full token above the caption on narrow screens.
+      // Keep all three nodes above the caption on narrow screens.
       camera.position.z = camera.aspect < 1 ? 6.2 / camera.aspect : 6.2;
       camera.updateProjectionMatrix();
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, width < 500 ? 1.25 : 1.75));
@@ -146,7 +135,6 @@ export function ArcadeScene({ onFailure, onReady }: { onFailure: () => void; onR
       canvas.removeEventListener('webglcontextlost', contextLost);
       intersection.disconnect();
       resizeObserver.disconnect();
-      themeObserver.disconnect();
       disposeEmblem(group);
       environmentTarget.dispose();
       renderer.dispose();
@@ -180,7 +168,7 @@ export function ArcadeScene({ onFailure, onReady }: { onFailure: () => void; onR
       aria-label="Interactive ASC emblem. Drag or use arrow keys to turn it. Press Home to reset."
       onPointerEnter={updateRect}
       onPointerDown={(event) => {
-        if (event.button !== 0) return;
+        if (event.button !== 0 || !event.isPrimary) return;
         updateRect();
         dragRef.current = { id: event.pointerId, x: event.clientX, y: event.clientY, originX: targetRef.current.x, originY: targetRef.current.y };
         event.currentTarget.setPointerCapture(event.pointerId);
@@ -197,15 +185,18 @@ export function ArcadeScene({ onFailure, onReady }: { onFailure: () => void; onR
         } else if (event.pointerType === 'mouse') pointRotation(event.clientX, event.clientY);
       }}
       onPointerUp={(event) => {
+        if (dragRef.current?.id !== event.pointerId) return;
         dragRef.current = null;
         if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
         requestRenderRef.current();
       }}
-      onPointerCancel={() => {
+      onPointerCancel={(event) => {
+        if (dragRef.current?.id !== event.pointerId) return;
         dragRef.current = null;
         requestRenderRef.current();
       }}
-      onLostPointerCapture={() => {
+      onLostPointerCapture={(event) => {
+        if (dragRef.current?.id !== event.pointerId) return;
         dragRef.current = null;
         requestRenderRef.current();
       }}
