@@ -7,6 +7,8 @@ import { Footer } from '@/components/layout/footer';
 import { AscMotionProvider } from '@/components/motion/motion-provider';
 import { CommunityMascot } from '@/components/motion/community-mascot';
 import { ThemeToggle } from '@/components/theme/theme-toggle';
+import { resolveCurrentSession } from '@/lib/auth/session';
+import { getNavigationAccount } from '@/lib/auth/navigation';
 
 const atkinson = Atkinson_Hyperlegible_Next({
   subsets: ['latin'],
@@ -50,11 +52,12 @@ export const viewport: Viewport = {
   maximumScale: 5,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const account = getNavigationAccount(await resolveCurrentSession());
   return (
     <ClerkProvider
       publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || 'pk_test_Y2xlcmsuZXhhbXBsZS5jb20k'}
@@ -96,7 +99,7 @@ export default function RootLayout({
         </head>
         <body className="asc-mesh-bg text-ink min-h-screen flex flex-col antialiased selection:bg-primary selection:text-ink-dark">
           <AscMotionProvider>
-            <NavBar />
+            <NavBar account={account} />
             <main className="flex-1">{children}</main>
             <Footer />
             <CommunityMascot />

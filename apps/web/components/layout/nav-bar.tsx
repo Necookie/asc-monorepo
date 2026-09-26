@@ -3,12 +3,12 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { AnimatePresence, m, useReducedMotion } from 'motion/react';
-import { Button } from '@/components/ui/button';
-import { Compass, Users, Home, User, Menu, X } from 'lucide-react';
+import { Compass, Users, Home, Menu, X } from 'lucide-react';
 import { AscLogo } from '@/components/ui/asc-logo';
 import { ThemeToggle } from '@/components/theme/theme-toggle';
+import { AccountMenu } from './account-menu';
+import type { NavigationAccount } from '@/lib/auth/navigation';
 
 const EASE_OUT_EXPO = [0.16, 1, 0.3, 1] as const;
 
@@ -19,16 +19,10 @@ const NAV_ITEMS = [
 ] as const;
 
 export interface NavBarProps {
-  user?: {
-    id: string;
-    username: string;
-    displayName: string;
-    avatar?: string | null;
-    slug?: string;
-  } | null;
+  account: NavigationAccount;
 }
 
-export function NavBar({ user }: NavBarProps) {
+export function NavBar({ account }: NavBarProps) {
   const pathname = usePathname();
   const reduceMotion = useReducedMotion();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -94,54 +88,7 @@ export function NavBar({ user }: NavBarProps) {
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
 
-          {user !== undefined ? (
-            user ? (
-              <div className="flex items-center gap-2.5">
-                <Link href="/dashboard">
-                  <Button variant="ghost" size="sm" className="hidden sm:inline-flex gap-2">
-                    <User className="w-4 h-4" />
-                    Dashboard
-                  </Button>
-                </Link>
-                {user.slug && (
-                  <Link href={`/${user.slug}`}>
-                    <Button variant="primary" size="sm" className="hidden min-[420px]:inline-flex">
-                      My Profile
-                    </Button>
-                  </Link>
-                )}
-              </div>
-            ) : (
-              <Link href="/login">
-                <Button variant="primary" size="sm">Sign In</Button>
-              </Link>
-            )
-          ) : (
-            <div className="flex items-center gap-3">
-              <SignedOut>
-                <Link href="/login">
-                  <Button variant="primary" size="sm">Sign In</Button>
-                </Link>
-              </SignedOut>
-              <SignedIn>
-                <div className="flex items-center gap-2.5">
-                  <Link href="/dashboard">
-                    <Button variant="ghost" size="sm" className="hidden sm:inline-flex gap-2">
-                      <User className="w-4 h-4" />
-                      Dashboard
-                    </Button>
-                  </Link>
-                  <UserButton
-                    appearance={{
-                      elements: {
-                        avatarBox: 'w-8 h-8 ring-2 ring-border-strong',
-                      },
-                    }}
-                  />
-                </div>
-              </SignedIn>
-            </div>
-          )}
+          <AccountMenu account={account} />
         </div>
       </div>
 
