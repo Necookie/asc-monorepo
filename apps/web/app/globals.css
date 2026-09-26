@@ -287,7 +287,7 @@ body {
   font-weight: 600;
   cursor: pointer;
 }
-.arcade-scene__reset:hover { color: var(--asc-ink-primary); border-color: var(--asc-border-strong); }
+.arcade-scene__reset:hover { color: var(--asc-ink); border-color: var(--asc-border-strong); }
 .arcade-scene__reset:focus-visible { outline: 2px solid var(--asc-primary); outline-offset: 2px; }
 .arcade-stage__still { position: absolute; inset: 0; display: grid; place-items: center; }
 .arcade-stage__orbit { position: absolute; width: min(68%, 300px); aspect-ratio: 1; border: 1px solid var(--asc-border-strong); border-radius: 50%; transform: translateY(-8px) rotateY(-18deg) rotate(-5deg); }

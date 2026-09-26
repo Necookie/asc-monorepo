@@ -48,15 +48,19 @@ export function ArcadeScene({ onFailure, onReady }: { onFailure: () => void; onR
 
     let inView = true;
     let isLoopActive = false;
+    let previousFrame = performance.now();
 
     const render = () => {
+      const now = performance.now();
+      const easing = 1 - Math.exp(-Math.min(now - previousFrame, 100) / 120);
+      previousFrame = now;
       const dy = targetRef.current.x - group.rotation.y;
       const dx = targetRef.current.y - group.rotation.x;
       const isMoving = Math.abs(dy) > 0.0002 || Math.abs(dx) > 0.0002 || dragRef.current !== null;
 
       if (isMoving) {
-        group.rotation.y += dy * 0.065;
-        group.rotation.x += dx * 0.065;
+        group.rotation.y += dy * easing;
+        group.rotation.x += dx * easing;
         renderer.render(scene, camera);
       } else {
         group.rotation.y = targetRef.current.x;
@@ -69,6 +73,7 @@ export function ArcadeScene({ onFailure, onReady }: { onFailure: () => void; onR
 
     const startLoop = () => {
       if (!isLoopActive && inView && !document.hidden) {
+        previousFrame = performance.now();
         isLoopActive = true;
         renderer.setAnimationLoop(render);
       }
