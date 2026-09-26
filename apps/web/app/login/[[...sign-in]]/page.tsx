@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { SignIn, SignOutButton } from '@clerk/nextjs';
@@ -14,8 +15,11 @@ export const metadata: Metadata = {
   description: 'Sign in with Discord to access and customize your ASC community profile.',
 };
 
-export default async function LoginPage() {
-  const session = await resolveCurrentSession();
+export default async function LoginPage({ params }: { params: Promise<{ 'sign-in'?: string[] }> }) {
+  const steps = (await params)['sign-in'];
+  // Let Clerk finish OAuth and first-visit steps before ASC checks membership.
+  // Nested auth routes must also survive a reload without becoming a 404.
+  const session = steps?.length ? null : await resolveCurrentSession();
   if (session?.status === 'RESOLVED') redirect('/dashboard');
   if (session?.status === 'NOT_FOUND') redirect('/not-a-member');
   const unavailable = session?.status === 'UNAVAILABLE';
@@ -98,7 +102,10 @@ export default async function LoginPage() {
               ) : discordRequired ? (
                 <SignOutButton redirectUrl="/login"><Button>Sign out and try Discord</Button></SignOutButton>
               ) : <SignIn
-                routing="hash"
+                routing="path"
+                path="/login"
+                oauthFlow="redirect"
+                withSignUp
                 forceRedirectUrl="/dashboard"
                 signUpForceRedirectUrl="/dashboard"
                 appearance={{
