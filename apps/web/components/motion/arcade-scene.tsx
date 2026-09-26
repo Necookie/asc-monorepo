@@ -33,7 +33,8 @@ export function ArcadeScene({ onFailure, onReady }: { onFailure: () => void; onR
     scene.add(group);
     const environment = new RoomEnvironment();
     const generator = new THREE.PMREMGenerator(renderer);
-    const environmentTarget = generator.fromScene(environment, 0.04);
+    // The small, rounded token does not need the default 256px reflection map.
+    const environmentTarget = generator.fromScene(environment, 0.04, 0.1, 100, { size: 64 });
     scene.environment = environmentTarget.texture;
     environment.dispose();
     generator.dispose();
@@ -47,6 +48,8 @@ export function ArcadeScene({ onFailure, onReady }: { onFailure: () => void; onR
     scene.add(rim);
 
     let inView = true;
+    let compiled = false;
+    let disposed = false;
     let isLoopActive = false;
     let previousFrame = performance.now();
 
@@ -72,7 +75,7 @@ export function ArcadeScene({ onFailure, onReady }: { onFailure: () => void; onR
     };
 
     const startLoop = () => {
-      if (!isLoopActive && inView && !document.hidden) {
+      if (compiled && !isLoopActive && inView && !document.hidden) {
         previousFrame = performance.now();
         isLoopActive = true;
         renderer.setAnimationLoop(render);
@@ -126,11 +129,17 @@ export function ArcadeScene({ onFailure, onReady }: { onFailure: () => void; onR
     document.addEventListener('visibilitychange', syncLoop);
     const contextLost = (event: Event) => { event.preventDefault(); onFailure(); };
     canvas.addEventListener('webglcontextlost', contextLost);
-    renderer.render(scene, camera);
-    onReady();
-    startLoop();
+    // Wait for parallel shader compilation where the GPU supports it.
+    void renderer.compileAsync(scene, camera).then(() => {
+      if (disposed) return;
+      compiled = true;
+      renderer.render(scene, camera);
+      onReady();
+      startLoop();
+    }).catch(() => { if (!disposed) onFailure(); });
 
     return () => {
+      disposed = true;
       requestRenderRef.current = () => {};
       renderer.setAnimationLoop(null);
       document.removeEventListener('visibilitychange', syncLoop);

@@ -20,6 +20,9 @@ describe('ASC emblem graphics resources', () => {
 
   it('disposes shared GPU geometry and materials exactly once', () => {
     const { group } = createArcadeEmblem();
+    const ticks = group.children.find(object => object instanceof THREE.InstancedMesh);
+    if (!(ticks instanceof THREE.InstancedMesh)) throw new Error('The engraved ticks must share one draw call');
+    const releaseInstances = vi.spyOn(ticks, 'dispose');
     const resources = new Set<THREE.BufferGeometry | THREE.Material>();
     group.traverse((object) => {
       if (object instanceof THREE.Mesh) {
@@ -34,5 +37,6 @@ describe('ASC emblem graphics resources', () => {
     });
     disposeEmblem(group);
     for (const listener of listeners) expect(listener).toHaveBeenCalledTimes(1);
+    expect(releaseInstances).toHaveBeenCalledTimes(1);
   });
 });
