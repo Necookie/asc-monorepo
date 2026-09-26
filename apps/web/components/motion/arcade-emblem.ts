@@ -41,13 +41,17 @@ export function createArcadeEmblem() {
   }
   // Small engraved ticks make the backing feel like a collectible club token.
   const tickGeometry = new THREE.BoxGeometry(0.015, 0.055, 0.015);
+  const ticks = new THREE.InstancedMesh(tickGeometry, detail, 32);
+  const tick = new THREE.Object3D();
   for (let i = 0; i < 32; i++) {
     const angle = (i / 32) * Math.PI * 2;
-    const tick = new THREE.Mesh(tickGeometry, detail);
     tick.position.set(Math.sin(angle) * 1.48, Math.cos(angle) * 1.48, -0.025);
     tick.rotation.z = -angle;
-    group.add(tick);
+    tick.updateMatrix();
+    ticks.setMatrixAt(i, tick.matrix);
   }
+  ticks.instanceMatrix.needsUpdate = true;
+  group.add(ticks);
   return { group, ink, face, detail, accent };
 }
 
@@ -57,6 +61,7 @@ export function disposeEmblem(group: THREE.Group) {
   const materials = new Set<THREE.Material>();
   group.traverse((object) => {
     if (object instanceof THREE.Mesh) {
+      if (object instanceof THREE.InstancedMesh) object.dispose();
       geometries.add(object.geometry);
       for (const material of Array.isArray(object.material) ? object.material : [object.material]) materials.add(material);
     }
