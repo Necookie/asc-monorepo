@@ -1,0 +1,131 @@
+[
+  {
+    "name": "desktop",
+    "status": 200,
+    "lcp": 4144,
+    "cls": 0.0001076370804398148,
+    "longTaskExcess": 2160,
+    "ttfb": 1193.0999999940395,
+    "domContentLoaded": 1986.5,
+    "fcp": 1932,
+    "firstPartyBytes": 597200,
+    "firstPartyJsBytes": 352770,
+    "images": [
+      {
+        "url": "/asc-anime-ink-v2.webp",
+        "bytes": 99046,
+        "duration": 2624.7000000029802
+      },
+      {
+        "url": "/embed/avatars/2.png",
+        "bytes": 0,
+        "duration": 314.70000000298023
+      },
+      {
+        "url": "/embed/avatars/1.png",
+        "bytes": 0,
+        "duration": 298.3999999910593
+      },
+      {
+        "url": "/embed/avatars/0.png",
+        "bytes": 0,
+        "duration": 329.29999999701977
+      },
+      {
+        "url": "/mascot/cat-arcade-v2.webp",
+        "bytes": 54414,
+        "duration": 613.6000000089407
+      }
+    ],
+    "canvasCount": 1,
+    "mainOpacity": "1",
+    "mascot": true,
+    "errors": []
+  },
+  {
+    "name": "mobile",
+    "status": 200,
+    "lcp": 3564,
+    "cls": 0.011435656121842315,
+    "longTaskExcess": 900,
+    "ttfb": 745.5,
+    "domContentLoaded": 1636.8999999910593,
+    "fcp": 1320,
+    "firstPartyBytes": 452723,
+    "firstPartyJsBytes": 208845,
+    "images": [
+      {
+        "url": "/asc-anime-ink-v2.webp",
+        "bytes": 99046,
+        "duration": 2454.5
+      },
+      {
+        "url": "/embed/avatars/2.png",
+        "bytes": 0,
+        "duration": 352.90000000596046
+      },
+      {
+        "url": "/embed/avatars/1.png",
+        "bytes": 0,
+        "duration": 368
+      },
+      {
+        "url": "/embed/avatars/0.png",
+        "bytes": 0,
+        "duration": 368.1000000089407
+      },
+      {
+        "url": "/mascot/cat-arcade-v2.webp",
+        "bytes": 54414,
+        "duration": 357.90000000596046
+      }
+    ],
+    "canvasCount": 0,
+    "mainOpacity": "1",
+    "mascot": true,
+    "errors": []
+  },
+  {
+    "name": "reduced-motion",
+    "status": 200,
+    "lcp": 3524,
+    "cls": 0,
+    "longTaskExcess": 1266,
+    "ttfb": 743.2000000029802,
+    "domContentLoaded": 1841.7000000029802,
+    "fcp": 1780,
+    "firstPartyBytes": 452723,
+    "firstPartyJsBytes": 208845,
+    "images": [
+      {
+        "url": "/asc-anime-ink-v2.webp",
+        "bytes": 99046,
+        "duration": 2446.9000000059605
+      },
+      {
+        "url": "/embed/avatars/2.png",
+        "bytes": 0,
+        "duration": 321.20000000298023
+      },
+      {
+        "url": "/embed/avatars/1.png",
+        "bytes": 0,
+        "duration": 319.6000000089407
+      },
+      {
+        "url": "/embed/avatars/0.png",
+        "bytes": 0,
+        "duration": 348.70000000298023
+      },
+      {
+        "url": "/mascot/cat-arcade-v2.webp",
+        "bytes": 54414,
+        "duration": 351.70000000298023
+      }
+    ],
+    "canvasCount": 0,
+    "mainOpacity": "1",
+    "mascot": true,
+    "errors": []
+  }
+]
