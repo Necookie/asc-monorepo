@@ -22,7 +22,7 @@ function StillStage() {
 
 const Scene = dynamic(() => import('./arcade-scene').then((module) => module.ArcadeScene), {
   ssr: false,
-  loading: () => <StillStage />,
+  loading: () => null,
 });
 
 class SceneBoundary extends React.Component<{ children: React.ReactNode; onFailure: () => void }, { failed: boolean }> {
@@ -94,7 +94,8 @@ export function ArcadeStage() {
 
   return (
     <div ref={stageRef} className="arcade-stage" aria-label="ASC arcade showcase">
-      {showScene ? <SceneBoundary onFailure={fail}><Scene onFailure={fail} onReady={markReady} /></SceneBoundary> : <StillStage />}
+      {showScene && <SceneBoundary onFailure={fail}><Scene onFailure={fail} onReady={markReady} /></SceneBoundary>}
+      {(!showScene || !ready) && <StillStage />}
       {canAnimate && !failed && !ready && <button type="button" className="arcade-stage__activate" disabled={requested} onClick={() => { requestedRef.current = true; setRequested(true); }}>{requested ? 'Loading 3D…' : 'Explore in 3D'}</button>}
       <div className="arcade-stage__caption" aria-hidden="true">
         <span>ASC / 001</span>
