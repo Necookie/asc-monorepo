@@ -398,6 +398,9 @@ describe('Public Website Queries & Privacy Enforcement', () => {
       });
       const formerProfile = await getPublicProfileBySlug('former_member', testDb);
       expect(formerProfile.profile?.user.membershipStatus).toBe('LEFT');
+      expect(formerProfile.profile?.roles).toEqual([]);
+      expect(formerProfile.profile?.isSupporter).toBe(false);
+      expect(formerProfile.profile?.entitlements.canProfileStudio).toBe(false);
     });
 
     it('computes real community overview statistics', async () => {

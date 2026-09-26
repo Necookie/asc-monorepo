@@ -62,6 +62,15 @@ describe('Entitlements Engine', () => {
     expect(entitlements.maxLinks).toBe(20);
   });
 
+  it.each(['isAdmin', 'isModerator'] as const)('grants the full studio to verified staff with %s', (flag) => {
+    const result = resolveMemberEntitlements([{ ...standardRole, [flag]: true }]);
+    expect(result).toMatchObject({ canCustomBackground: true, canCustomTitle: true, canProfileStudio: true, maxLinks: 10, maxTags: 10 });
+  });
+
+  it('does not grant studio access from a staff-like role name alone', () => {
+    expect(resolveMemberEntitlements([{ ...standardRole, name: 'Administrator Booster' }]).canProfileStudio).toBe(false);
+  });
+
   it('ignores expired explicit entitlements', () => {
     const expiredGrant: Entitlement = {
       id: 'ent-2',
