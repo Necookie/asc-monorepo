@@ -120,14 +120,11 @@ body {
   position: absolute;
   inset: -2%;
   z-index: 0;
-  background: url('/asc-anime-ink.png') right center / cover no-repeat;
+  background: url('/asc-anime-ink-v2.webp') right center / cover no-repeat;
   filter: invert(1);
   opacity: var(--asc-ink-art-opacity);
   pointer-events: none;
   transform-origin: right center;
-  animation: asc-ink-drift 22s var(--ease-out-expo) infinite alternate;
-  will-change: transform;
-  transform: translateZ(0);
 }
 
 :root.light .asc-anime-ink::before {
@@ -326,8 +323,8 @@ body {
   .member-wall__slot:nth-child(4n + 4) { animation-delay: 195ms; }
 }
 @keyframes arcade-arrive {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { transform: translateY(14px); }
+  to { transform: translateY(0); }
 }
 .member-ticket { min-height: 250px; }
 .member-ticket::before {

@@ -22,7 +22,7 @@ describe('ASC Security Hardening & Threat Mitigation', () => {
       }
 
       const headersConfig = await nextConfig.headers();
-      expect(headersConfig).toHaveLength(1);
+      expect(headersConfig).toHaveLength(3);
 
       const rootRoute = headersConfig[0];
       expect(rootRoute.source).toBe('/:path*');

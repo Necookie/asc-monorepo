@@ -72,6 +72,10 @@ const nextConfig = {
         },
       ],
     },
+    ...['/mascot/cat-arcade-v2.webp', '/asc-anime-ink-v2.webp'].map((source) => ({
+      source,
+      headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+    })),
   ],
 };
 
