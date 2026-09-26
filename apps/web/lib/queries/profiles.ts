@@ -209,7 +209,7 @@ export async function getPublicProfileBySlug(
         ? []
         : user.memberTags
             .map((mt) => mt.tag)
-            .filter((t): t is NonNullable<typeof t> => Boolean(t))
+            .filter((t): t is NonNullable<typeof t> => Boolean(t && t.isActive))
             .map((t) => ({ id: t.id, name: t.name })),
     links:
       isPrivate || !profile.showLinks
@@ -219,7 +219,7 @@ export async function getPublicProfileBySlug(
             label: l.label,
             url: l.url,
           })),
-    isSupporter,
+    isSupporter: !isPrivate && profile.showRoles ? isSupporter : false,
     entitlements: resolvedEntitlements,
   };
 

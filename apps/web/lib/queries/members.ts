@@ -1,5 +1,5 @@
-import { eq, or, like, and, inArray } from 'drizzle-orm';
-import { db, users, profileSlugs, tags as tagsTable, memberTags as memberTagsTable, type ASCDatabase } from '@asc/db';
+import { eq, or, like, and, inArray, notInArray, isNull } from 'drizzle-orm';
+import { db, users, profiles, profileSlugs, communityRoles, memberRoles, tags as tagsTable, memberTags as memberTagsTable, type ASCDatabase } from '@asc/db';
 
 export interface MemberDirectoryItem {
   id: string;
@@ -51,14 +51,18 @@ export async function getMembersDirectory({
     });
 
     // 2. Match by associated tag names
-    const matchingTags = await database.query.tags.findMany({
-      where: like(tagsTable.name, `%${searchTerm}%`),
-      with: {
-        memberTags: true,
-      },
-    });
+    const tagMatches = await database
+      .select({ userId: memberTagsTable.userId })
+      .from(memberTagsTable)
+      .innerJoin(tagsTable, eq(memberTagsTable.tagId, tagsTable.id))
+      .leftJoin(profiles, eq(memberTagsTable.userId, profiles.userId))
+      .where(and(
+        like(tagsTable.name, `%${searchTerm}%`),
+        eq(tagsTable.isActive, true),
+        or(isNull(profiles.userId), and(eq(profiles.isPrivate, false), eq(profiles.showTags, true)))
+      ));
 
-    const tagUserIds = matchingTags.flatMap((t) => t.memberTags.map((mt) => mt.userId));
+    const tagUserIds = tagMatches.map((match) => match.userId);
     const mergedUserIds = new Set([...directUsers.map((u) => u.id), ...tagUserIds]);
 
     matchedUserIds = Array.from(mergedUserIds);
@@ -68,7 +72,16 @@ export async function getMembersDirectory({
   }
 
   // Keep former members' profiles reachable by slug without listing them as current members.
-  const whereConditions = [eq(users.membershipStatus, 'ACTIVE')];
+  // Privacy and role filters must run before the limit (also used by the homepage).
+  const privateProfiles = database.select({ userId: profiles.userId }).from(profiles).where(eq(profiles.isPrivate, true));
+  const whereConditions = [eq(users.membershipStatus, 'ACTIVE'), notInArray(users.id, privateProfiles)];
+  if (filter === 'supporters') {
+    const visibleSupporters = database.select({ userId: memberRoles.userId }).from(memberRoles)
+      .innerJoin(communityRoles, eq(memberRoles.roleId, communityRoles.id))
+      .leftJoin(profiles, eq(memberRoles.userId, profiles.userId))
+      .where(and(eq(communityRoles.isSupporter, true), or(isNull(profiles.userId), eq(profiles.showRoles, true))));
+    whereConditions.push(inArray(users.id, visibleSupporters));
+  }
   if (matchedUserIds) {
     whereConditions.push(inArray(users.id, matchedUserIds));
   }
@@ -103,18 +116,18 @@ export async function getMembersDirectory({
       .filter((r): r is NonNullable<typeof r> => Boolean(r))
       .sort((a, b) => (b.position ?? 0) - (a.position ?? 0));
 
-    const isSupporter = roles.some((r) => r.isSupporter === true);
+    const isSupporter = user.profile?.showRoles !== false && roles.some((r) => r.isSupporter === true);
 
     if (filter === 'supporters' && !isSupporter) {
       continue;
     }
 
-    const tags = user.memberTags
+    const tags = (user.profile?.showTags !== false ? user.memberTags : [])
       .map((mt) => mt.tag)
-      .filter((t): t is NonNullable<typeof t> => Boolean(t))
+      .filter((t): t is NonNullable<typeof t> => Boolean(t && t.isActive))
       .map((t) => ({ id: t.id, name: t.name }));
 
-    const primaryRole = roles[0]
+    const primaryRole = user.profile?.showRoles !== false && roles[0]
       ? {
           id: roles[0].id,
           name: roles[0].name,
