@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import path from 'path';
 import fs from 'fs';
+import os from 'node:os';
 import { migrate } from 'drizzle-orm/libsql/migrator';
 import { eq } from 'drizzle-orm';
 import {
@@ -33,9 +34,12 @@ import type { AuthenticatedMember, CommunityRole } from '@asc/types';
 
 describe('Administration & Moderation Subsystem', () => {
   let testDb: ASCDatabase & { $client: any };
+  let testFile: string;
 
   beforeEach(async () => {
-    testDb = createDb(':memory:');
+    // libSQL transactions hand off the connection; :memory: cannot persist across that handoff.
+    testFile = path.join(os.tmpdir(), `asc-admin-test-${crypto.randomUUID()}.db`);
+    testDb = createDb(`file:${testFile.replaceAll('\\', '/')}`);
     const migrationsFolder = path.resolve(__dirname, '../../../../../packages/db/drizzle');
     await migrate(testDb, { migrationsFolder });
   });
@@ -43,6 +47,7 @@ describe('Administration & Moderation Subsystem', () => {
   afterEach(() => {
     try {
       testDb.$client.close();
+      fs.rmSync(testFile, { force: true });
     } catch {}
   });
 
@@ -181,7 +186,8 @@ describe('Administration & Moderation Subsystem', () => {
       const updatedProfile = await testDb.query.profiles.findFirst({
         where: eq(profiles.userId, target.id),
       });
-      expect(updatedProfile?.isPrivate).toBe(true);
+      expect(updatedProfile?.isModerated).toBe(true);
+      expect(updatedProfile?.isPrivate).toBe(false);
 
       // Verify moderation action record
       const modRecord = await testDb.query.moderationActions.findFirst({
@@ -301,7 +307,7 @@ describe('Administration & Moderation Subsystem', () => {
       );
 
       expect(res.success).toBe(false);
-      expect(res.error).toContain('Administrative permissions required');
+      expect(res.error).toContain('Moderation permissions required');
     });
 
     it('rejects moderation when reason is too short (<3 characters)', async () => {

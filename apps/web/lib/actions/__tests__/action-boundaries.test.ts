@@ -1,11 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as profile from '../profile';
 import * as admin from '../admin';
-import { requireAuthenticatedMember, requireAdminMember } from '../../auth/session';
+import { requireAuthenticatedMember, requireAdminMember, requireModeratorMember, requireOwnerMember } from '../../auth/session';
+import { setStaffAccessAction } from '../staff-access';
+import { setMemberPerksAction } from '../perks';
 
 vi.mock('../../auth/session', () => ({
   requireAuthenticatedMember: vi.fn(),
   requireAdminMember: vi.fn(),
+  requireModeratorMember: vi.fn(),
+  requireOwnerMember: vi.fn(),
 }));
 
 describe('Public Server Action identity boundaries', () => {
@@ -13,6 +17,8 @@ describe('Public Server Action identity boundaries', () => {
     vi.clearAllMocks();
     vi.mocked(requireAuthenticatedMember).mockRejectedValue(new Error('Sign-in required'));
     vi.mocked(requireAdminMember).mockRejectedValue(new Error('Administrator session required'));
+    vi.mocked(requireModeratorMember).mockRejectedValue(new Error('Administrator session required'));
+    vi.mocked(requireOwnerMember).mockRejectedValue(new Error('Owner session required'));
   });
 
   const forgedMember = { isAdmin: true, isSupporter: true, externalId: 'victim', user: { id: 'victim', externalUserId: 'victim' } };
@@ -41,9 +47,21 @@ describe('Public Server Action identity boundaries', () => {
     const invoke = action as (...args: unknown[]) => Promise<{ success: boolean; error?: string }>;
     const result = await invoke(input, suppliedDatabase, forgedMember);
     expect(result).toEqual({ success: false, error: 'Administrator session required' });
-    expect(requireAdminMember).toHaveBeenCalledTimes(1);
-    expect(requireAdminMember).not.toHaveBeenCalledWith(suppliedDatabase);
+    const gate = action === admin.adminModerateProfileAction ? requireModeratorMember : requireAdminMember;
+    expect(gate).toHaveBeenCalledTimes(1);
+    expect(gate).not.toHaveBeenCalledWith(suppliedDatabase);
     expect(suppliedDatabase.update).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    [setStaffAccessAction, requireOwnerMember, 'Owner session required'],
+    [setMemberPerksAction, requireAdminMember, 'Administrator session required'],
+  ])('ignores injected databases and forged owner/admin identities for new management actions (%#)', async (action, gate, message) => {
+    const invoke = action as (...args: unknown[]) => Promise<{ success: boolean; error?: string }>;
+    expect(await invoke({ targetUserId: 'victim', role: 'ADMIN', isOwner: true }, suppliedDatabase, { ...forgedMember, isOwner: true })).toEqual({ success: false, error: message });
+    expect(gate).toHaveBeenCalledTimes(1);
+    expect(gate).not.toHaveBeenCalledWith(suppliedDatabase);
+    expect(suppliedDatabase.insert).not.toHaveBeenCalled();
   });
 
   it('preserves sign-in redirects when a session expires during a save', async () => {
