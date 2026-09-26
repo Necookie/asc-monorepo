@@ -204,3 +204,12 @@ ASC utilizes Next.js **Server Actions** for client mutations (form submissions, 
 ### 4.2 `POST /api/webhooks/clerk`
 - **Purpose**: Ingests Clerk user events (e.g. `user.created`, `user.deleted`) if configured.
 - **Authentication**: Verified Svix webhook signature.
+
+## Owner permissions and website perks
+
+- `setStaffAccessAction({ targetUserId, role, expectedRole, reason })`: owner-only; role and expectedRole are ADMIN, MODERATOR, or NONE. Reasons are trimmed to 3–255 characters. Strict validation rejects extra fields. Refuses current owner changes, inactive grants, and stale role edits. Writes grant/revocation and audit record atomically.
+- `setMemberPerksAction({ targetUserId, enabled, expectedEnabled, reason })`: Admin/Owner only; strict validation, active grants, stale state check, atomic audit, source-specific revocation.
+- These public Server Actions accept input alone; injected actors/databases exist only in internal testable services.
+- `/dashboard/permissions` and its member query are owner-only. `/admin/perks` requires Admin. Moderators may access only moderation routes and hide/restore actions; content resets require Admin.
+
+See [ADMIN_ACCESS.md](ADMIN_ACCESS.md) for the complete permission matrix.

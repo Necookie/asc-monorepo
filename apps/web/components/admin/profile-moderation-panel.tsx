@@ -20,9 +20,10 @@ import {
 
 export interface ProfileModerationPanelProps {
   members: AdminMemberItem[];
+  canResetContent?: boolean;
 }
 
-export function ProfileModerationPanel({ members }: ProfileModerationPanelProps) {
+export function ProfileModerationPanel({ members, canResetContent = false }: ProfileModerationPanelProps) {
   const router = useRouter();
   const [selectedUserId, setSelectedUserId] = React.useState<string>(
     members[0]?.id || ''
@@ -160,12 +161,12 @@ export function ProfileModerationPanel({ members }: ProfileModerationPanelProps)
 
                 <span
                   className={`text-sm font-bold px-2 py-0.5 rounded-full ${
-                    selectedMember.isPrivate
+                    selectedMember.isModerated
                       ? 'bg-[#ed4245]/15 text-[#ff8f91] border border-[#ed4245]/30'
                       : 'bg-[#35ed7e]/15 text-[#84f7b2] border border-[#35ed7e]/30'
                   }`}
                 >
-                  {selectedMember.isPrivate ? 'Hidden (Private)' : 'Public Profile'}
+                  {selectedMember.isModerated ? 'Hidden by moderation' : selectedMember.isPrivate ? 'Member chose private' : 'Public Profile'}
                 </span>
               </CardHeader>
 
@@ -191,7 +192,7 @@ export function ProfileModerationPanel({ members }: ProfileModerationPanelProps)
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {selectedMember.isPrivate ? (
+                  {selectedMember.isModerated ? (
                     <Button
                       variant="outline"
                       size="sm"
@@ -211,11 +212,11 @@ export function ProfileModerationPanel({ members }: ProfileModerationPanelProps)
                       className="gap-2 text-xs border-[#ed4245]/40 text-[#ff8f91] hover:bg-[#ed4245]/10 justify-start"
                     >
                       <EyeOff className="w-4 h-4 text-[#ed4245]" />
-                      Hide Profile (Make Private)
+                      Hide Profile
                     </Button>
                   )}
 
-                  <Button
+                  {canResetContent && <><Button
                     variant="outline"
                     size="sm"
                     onClick={() => handleModerate('RESET_BIO')}
@@ -247,6 +248,7 @@ export function ProfileModerationPanel({ members }: ProfileModerationPanelProps)
                     <LinkIcon className="w-4 h-4 text-[#06b6d4]" />
                     Reset Outbound Links
                   </Button>
+                  </>}
                 </div>
               </div>
             </Card>

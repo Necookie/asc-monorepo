@@ -49,7 +49,7 @@ export async function getMembersDirectory({
 
   // Keep former members' profiles reachable by slug without listing them as current members.
   // Privacy and role filters must run before the limit (also used by the homepage).
-  const privateProfiles = database.select({ userId: profiles.userId }).from(profiles).where(eq(profiles.isPrivate, true));
+  const privateProfiles = database.select({ userId: profiles.userId }).from(profiles).where(or(eq(profiles.isPrivate, true), eq(profiles.isModerated, true)));
   const whereConditions = [eq(users.membershipStatus, 'ACTIVE'), notInArray(users.id, privateProfiles)];
   if (filter === 'supporters') {
     const visibleSupporters = database.select({ userId: memberRoles.userId }).from(memberRoles)

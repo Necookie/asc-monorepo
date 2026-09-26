@@ -418,8 +418,9 @@ describe('ASC Authentication, Identity Linkage & Zero-Trust Ownership', () => {
 
       expect(result.status).toBe('RESOLVED');
       if (result.status === 'RESOLVED') {
-        expect(result.member.isAdmin).toBe(true);
-        expect(result.member.isModerator).toBe(true);
+        // Discord presentation roles no longer grant website management access.
+        expect(result.member.isAdmin).toBe(false);
+        expect(result.member.isModerator).toBe(false);
         expect(result.member.isSupporter).toBe(true);
         expect(result.member.roles.length).toBe(1);
         expect(result.member.roles[0].name).toBe('Administrator');

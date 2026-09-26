@@ -17,19 +17,21 @@ Reviewed 26 September 2026. **The approved member experience changes are impleme
 
 Every change used a separate feature/fix branch and coherent Conventional Commits, followed by a non-squash merge into `main` through an actual GitHub pull request.
 
+## Resolved after this review
+
+Owner-managed website staff access now separates Clerk owners from delegated Admin/Moderator grants. Moderation uses a server-owned flag that members cannot undo through privacy settings. See [ADMIN_ACCESS.md](ADMIN_ACCESS.md); production owner setup and an actual owner grant remain pending.
+
 ## Release blockers, in order
 
 1. **Bot production packaging.** `pnpm --filter @asc/bot build` succeeds, but the compiled entrypoint fails under local Node 24.19.0 with `ERR_UNSUPPORTED_NODE_MODULES_TYPE_STRIPPING` when it loads `@asc/db/src/index.ts` through `node_modules`. Shared packages export TypeScript source while the bot runner starts plain Node. Compile/bundle shared runtime dependencies or deliberately provide a supported TypeScript runtime; then verify the actual Node 22 Docker image starts and performs reconciliation. Relevant files: `apps/bot/package.json`, `apps/bot/Dockerfile`, shared package manifests.
 
-2. **Moderation can be undone by the member.** `admin-service.ts` uses `profiles.isPrivate` for HIDE_PROFILE/UNHIDE_PROFILE, and `profile-service.ts` lets the owner change the same field. Give moderation a separate server-owned visibility state and enforce it in public routes, directory and homepage queries. Unhiding should preserve the member's own privacy choice. Test a member trying to unhide a moderated profile.
+2. **Docker build context protection.** `.dockerignore` excludes `.env.local` but does not exclude ordinary `.env`, other environment files or local database files. The Dockerfile copies the whole repository into its build and runner stages. Exclude credentials, local databases, development output and other private artifacts before building a release image; verify the image contents.
 
-3. **Docker build context protection.** `.dockerignore` excludes `.env.local` but does not exclude ordinary `.env`, other environment files or local database files. The Dockerfile copies the whole repository into its build and runner stages. Exclude credentials, local databases, development output and other private artifacts before building a release image; verify the image contents.
+3. **Startup configuration validation is not wired in.** `webEnvSchema` and `botEnvSchema` exist but applications do not call them. Validate the correct environment at application startup, including a positive finite synchronization interval. Fail with a clear list of missing variable names, without printing values.
 
-4. **Startup configuration validation is not wired in.** `webEnvSchema` and `botEnvSchema` exist but applications do not call them. Validate the correct environment at application startup, including a positive finite synchronization interval. Fail with a clear list of missing variable names, without printing values.
+4. **Production identity and sync verification.** Browser testing confirmed the development Clerk Discord button loads and protected dashboard access sends signed-out visitors to `/login`. A real Discord OAuth callback, new Clerk account linking, production keys/domain configuration, production database migrations, live Gateway events and booster/staff role mappings were not exercised. Test with a standard member, booster, moderator, administrator and non-member before public release. Use the Discord server's actual booster role; owning Nitro by itself should not grant perks.
 
-5. **Production identity and sync verification.** Browser testing confirmed the development Clerk Discord button loads and protected dashboard access sends signed-out visitors to `/login`. A real Discord OAuth callback, new Clerk account linking, production keys/domain configuration, production database migrations, live Gateway events and booster/staff role mappings were not exercised. Test with a standard member, booster, moderator, administrator and non-member before public release. Use the Discord server's actual booster role; owning Nitro by itself should not grant perks.
-
-6. **Real lint and CI gates.** Workspace `lint` scripts currently print success messages rather than analyze code. Configure an actual linter and CI checks for tests, types, lint, web build and bot runtime/image startup. `pnpm lint` passing currently supplies no static-analysis assurance.
+5. **Real lint and CI gates.** Workspace `lint` scripts currently print success messages rather than analyze code. Configure an actual linter and CI checks for tests, types, lint, web build and bot runtime/image startup. `pnpm lint` passing currently supplies no static-analysis assurance.
 
 ## Missing or incomplete MVP behavior
 

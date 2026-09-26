@@ -163,12 +163,12 @@ export default async function DashboardLayout({
                 Profile
               </Link>
             )}
-            {member.isAdmin && (
+            {(member.isAdmin || member.isModerator) && (
               <Link
                 href="/admin"
                 className="text-sm font-semibold text-[#ec48bd] px-2 py-1 rounded-md bg-[#ec48bd]/10 border border-[#ec48bd]/25"
               >
-                Admin
+                Staff panel
               </Link>
             )}
           </div>
@@ -205,6 +205,7 @@ export default async function DashboardLayout({
           >
             Privacy
           </Link>
+          {member.isOwner && <Link href="/dashboard/permissions" className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0">Staff permissions</Link>}
         </nav>
       </div>
 

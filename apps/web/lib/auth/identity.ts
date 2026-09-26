@@ -1,12 +1,13 @@
 import { eq, and } from 'drizzle-orm';
-import { db, users, profiles, profileSlugs, type ASCDatabase } from '@asc/db';
-import { hasAdminPermission, hasModeratorPermission, hasSupporterStatus } from '@asc/permissions';
+import { db, users, profiles, profileSlugs, staffAccess, type ASCDatabase } from '@asc/db';
+import { hasSupporterStatus } from '@asc/permissions';
 import type { AuthenticatedMember, IdentityResolutionResult, CommunityRole } from '@asc/types';
 
 export interface ResolveIdentityOptions {
   clerkUserId: string;
   discordSnowflake: string;
   database?: ASCDatabase;
+  isClerkOwner?: boolean;
 }
 
 /**
@@ -40,6 +41,7 @@ export async function resolveMemberByIdentity({
   clerkUserId,
   discordSnowflake,
   database = db,
+  isClerkOwner = false,
 }: ResolveIdentityOptions): Promise<IdentityResolutionResult> {
   if (!discordSnowflake) {
     return {
@@ -95,6 +97,7 @@ export async function resolveMemberByIdentity({
       coverPosition: 50,
       motion: 'subtle' as const,
       isPrivate: false,
+      isModerated: false,
       showRoles: true,
       showMembershipDate: true,
       showTags: true,
@@ -132,8 +135,12 @@ export async function resolveMemberByIdentity({
       updatedAt: r.updatedAt,
     }));
 
-  const isAdmin = hasAdminPermission(roles);
-  const isModerator = hasModeratorPermission(roles);
+  const access = await database.query.staffAccess.findFirst({ where: eq(staffAccess.userId, userRecord.id) });
+  const active = userRecord.membershipStatus === 'ACTIVE';
+  const isOwner = active && isClerkOwner === true;
+  const staffRole = !active ? null : isOwner ? 'OWNER' : access?.role ?? null;
+  const isAdmin = staffRole === 'OWNER' || staffRole === 'ADMIN';
+  const isModerator = isAdmin || staffRole === 'MODERATOR';
   const isSupporter = hasSupporterStatus(roles);
 
   const member: AuthenticatedMember = {
@@ -179,6 +186,8 @@ export async function resolveMemberByIdentity({
     isAdmin,
     isModerator,
     isSupporter,
+    isOwner,
+    staffRole,
     primarySlug: primarySlugRecord?.slug || userRecord.username.toLowerCase(),
   };
 

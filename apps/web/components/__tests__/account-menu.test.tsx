@@ -68,6 +68,13 @@ describe('ASC account navigation', () => {
     expect(html).not.toContain('href="/admin"');
   });
 
+  it('shows staff permissions only for the owner and moderation for moderators', () => {
+    const base = { status: 'MEMBER' as const, username: 'alex', displayName: 'Alex', avatar: null, slug: 'alex', isAdmin: false };
+    expect(renderToString(<AccountMenu account={{ ...base, isModerator: true }} />)).toContain('href="/admin/profiles"');
+    expect(renderToString(<AccountMenu account={{ ...base, isAdmin: true }} />)).not.toContain('href="/dashboard/permissions"');
+    expect(renderToString(<AccountMenu account={{ ...base, isAdmin: true, isOwner: true }} />)).toContain('href="/dashboard/permissions"');
+  });
+
   it('provides membership recovery instead of another person’s profile', () => {
     const html = renderToString(<AccountMenu account={{ status: 'NOT_FOUND' }} />);
     expect(html).toContain('href="/not-a-member"');

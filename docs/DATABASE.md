@@ -300,3 +300,11 @@ Flexible capability grants for special features.
 - `site_settings`: `key` (PK), `value`, `updated_at`, `updated_by`.
 - `moderation_actions`: `id` (PK), `target_user_id` (FK), `actor_user_id`, `action_type`, `reason`, `metadata`, `created_at`.
 - `audit_logs`: `id` (PK), `actor_id`, `action`, `target_type`, `target_id`, `metadata`, `created_at`.
+
+## Website staff and moderation (migration 0003)
+
+- `staff_access`: `user_id` primary key / users FK, `role` restricted by CHECK to ADMIN or MODERATOR, `granted_by` users FK, `updated_at` timestamp. OWNER is never stored here.
+- `profiles.is_moderated`: non-null boolean, default false, independent of member-owned `is_private`. Backfilled from latest HIDE_PROFILE/UNHIDE_PROFILE moderation action, with row order breaking equal timestamps.
+- Website studio grants use entitlement source `WEBSITE_ADMIN`; revocation removes only this source.
+
+See [ADMIN_ACCESS.md](ADMIN_ACCESS.md) for authority, membership suspension, migration behavior, and operator setup.

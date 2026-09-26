@@ -41,17 +41,13 @@ ASC is a community-first public identity platform. The key attack vectors includ
 ### 2.4 Server-Side Privacy Enforcement
 - **Data Stripping at Query / Serialization**: When `is_private` or `show_*` flags are disabled, the corresponding fields are stripped on the server before serialization. Private data is never sent to the client and hidden with CSS.
 
-### 2.5 Server-Side Admin Authorization
-- Administrative mutations inspect the authenticated user's assigned `community_roles` in Turso:
-  ```typescript
-  export async function assertAdmin(userId: string) {
-    const isAdmin = await checkUserIsAdmin(userId);
-    if (!isAdmin) {
-      throw new AuthorizationError('Forbidden: Admin access required');
-    }
-  }
-  ```
-- Client-provided role claims or cookies are ignored.
+### 2.5 Server-Side Staff Authorization
+- Owner authority is read only from authenticated Clerk private metadata role owner, with active verified community membership.
+- Admin/Moderator grants are resolved from ASC staff_access on each server request. Discord community flags do not confer website management access.
+- Owner-only assignment queries and mutations cannot be accessed by delegated staff. Public Server Actions accept input alone; client actor/database arguments are ignored.
+- Grant changes, moderation changes, and their audit records commit atomically. Expected previous values reject stale access/perk writes.
+- Server-owned moderation visibility is independent of member privacy; member edits cannot restore a hidden public profile.
+- See [ADMIN_ACCESS.md](ADMIN_ACCESS.md) for the permission matrix and setup.
 
 ### 2.6 Content Security Policy (CSP)
 Next.js security headers in `apps/web/next.config.js`:

@@ -57,3 +57,10 @@ export function assertModeratorMember(
     throw new ForbiddenError('Moderation permissions required to perform this action');
   }
 }
+
+export function assertOwnerMember(member: AuthenticatedMember | null | undefined): void {
+  if (!member) throw new UnauthorizedError('Authentication required');
+  if (member.isOwner !== true || member.user.membershipStatus !== 'ACTIVE') {
+    throw new ForbiddenError('Only the owner can manage staff permissions');
+  }
+}

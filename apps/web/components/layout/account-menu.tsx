@@ -92,6 +92,8 @@ export function AccountMenu({ account }: { account: NavigationAccount }) {
         <Link href="/dashboard/appearance" className={itemClass}><Palette className="h-4 w-4" />Appearance</Link>
         <Link href="/dashboard/privacy" className={itemClass}><Shield className="h-4 w-4" />Privacy</Link>
         {account.isAdmin && <Link href="/admin" className={itemClass}><Shield className="h-4 w-4" />Administration</Link>}
+        {!account.isAdmin && account.isModerator && <Link href="/admin/profiles" className={itemClass}><Shield className="h-4 w-4" />Moderation</Link>}
+        {account.isOwner && <Link href="/dashboard/permissions" className={itemClass}><Shield className="h-4 w-4" />Staff permissions</Link>}
       </nav>
       <div className="mt-2 border-t border-border pt-2"><SignOutButton redirectUrl="/"><button type="button" className={`${itemClass} w-full`}><LogOut className="h-4 w-4" />Sign Out</button></SignOutButton></div>
     </div>

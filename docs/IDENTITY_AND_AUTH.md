@@ -122,4 +122,8 @@ sequenceDiagram
 
 ### 5.4 Authorization Failures
 - **401 Unauthorized**: Request lacks a valid Clerk session cookie. Redirects to `/login`.
-- **403 Forbidden**: Authenticated user attempts to modify another user's profile, or a non-admin attempts to access `/admin`. Logged to security alerts.
+- **Forbidden**: Mutations reject unauthorized ownership or staff access. Unauthorized staff pages redirect to `/dashboard`; signed-out visitors go to `/login`.
+
+## Website staff authorization
+
+Owner authority comes only from the authenticated Clerk user's exact private metadata role `owner`. Delegated Admin/Moderator access comes from ASC `staff_access`, not Discord flags. Both require active verified membership. Discord roles continue to describe the community and cosmetic benefits. Every protected request resolves current access on the server. See [ADMIN_ACCESS.md](ADMIN_ACCESS.md).

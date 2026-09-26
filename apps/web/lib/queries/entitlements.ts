@@ -5,5 +5,5 @@ import type { AuthenticatedMember, EntitlementKey } from '@asc/types';
 
 export async function getResolvedMemberEntitlements(member: AuthenticatedMember, database: ASCDatabase = db) {
   const grants = await database.query.entitlements.findMany({ where: eq(entitlements.userId, member.user.id) });
-  return resolveMemberEntitlements(member.roles, grants.map((grant) => ({ ...grant, key: grant.key as EntitlementKey })));
+  return resolveMemberEntitlements(member.roles, grants.filter(grant => grant.source !== 'WEBSITE_ADMIN' || member.user.membershipStatus === 'ACTIVE').map((grant) => ({ ...grant, key: grant.key as EntitlementKey })));
 }
