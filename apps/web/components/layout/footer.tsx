@@ -12,7 +12,7 @@ export function Footer() {
           <div className="space-y-4 md:col-span-1">
             <AscLogo size="md" href="/" />
             <p className="text-sm text-muted leading-relaxed">
-              Community-first digital identity, member discovery, and expressive profile customization.
+              Community-first digital identity, member discovery, and expressive profile customization. Currently in public beta.
             </p>
           </div>
 
@@ -82,9 +82,10 @@ export function Footer() {
 
         {/* Bottom copyright & decorative watermark */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-sm text-muted gap-4">
-          <p>© {new Date().getFullYear()} ASC. All rights reserved.</p>
-          <div className="font-semibold tracking-widest text-muted/40 text-xl font-[var(--font-display)] select-none">
-            ASC
+          <p>© {new Date().getFullYear()} ASC (Beta). All rights reserved.</p>
+          <div className="flex items-center gap-2 font-semibold tracking-widest text-muted/40 text-xl font-[var(--font-display)] select-none">
+            <span>ASC</span>
+            <span className="text-[10px] tracking-widest font-sans border border-border rounded-full px-2 py-0.5 text-muted/60 uppercase">Beta</span>
           </div>
         </div>
       </div>
