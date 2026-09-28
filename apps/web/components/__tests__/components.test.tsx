@@ -14,6 +14,8 @@ import { ProfileDisplay } from '../identity/profile-display';
 import { resolveMemberEntitlements, resolveVisibleAppearance } from '@asc/entitlements';
 import type { PublicProfileData } from '@/lib/queries/profiles';
 import { LoadingState, EmptyState, ErrorState, LockedState } from '../ui/states';
+import { BetaBadge } from '../ui/beta-badge';
+import { AscLogo } from '../ui/asc-logo';
 
 describe('ASC Design System UI Components', () => {
   it('uses identical profile content and layout in preview and public rendering', () => {
@@ -134,5 +136,27 @@ describe('ASC Design System UI Components', () => {
 
     const locked = renderToString(<LockedState perkName="Custom Background" />);
     expect(locked).toContain('Custom Background');
+  });
+
+  it('renders BetaBadge with subtle and pill variants', () => {
+    const subtle = renderToString(<BetaBadge />);
+    expect(subtle).toContain('Beta');
+    expect(subtle).toContain('rounded-full');
+    expect(subtle).toContain('title="ASC is currently in Public Beta"');
+
+    const pill = renderToString(<BetaBadge variant="pill" size="sm" />);
+    expect(pill).toContain('Beta');
+    expect(pill).toContain('text-xs');
+  });
+
+  it('renders AscLogo with beta indicator by default and allows disabling it', () => {
+    const defaultLogo = renderToString(<AscLogo href="/" />);
+    expect(defaultLogo).toContain('ASC');
+    expect(defaultLogo).toContain('Beta');
+    expect(defaultLogo).toContain('href="/"');
+
+    const noBetaLogo = renderToString(<AscLogo showBeta={false} />);
+    expect(noBetaLogo).toContain('ASC');
+    expect(noBetaLogo).not.toContain('Beta');
   });
 });

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getCommunityOverview } from '@/lib/queries/community';
 import { Button } from '@/components/ui/button';
+import { BetaBadge } from '@/components/ui/beta-badge';
 import { MemberWall } from '@/components/identity/member-wall';
 import { ArcadeStage } from '@/components/motion/arcade-stage';
 import { ArrowRight, Search, ShieldCheck, UserRound } from 'lucide-react';
@@ -33,7 +34,10 @@ export default async function HomePage() {
       <section className="asc-anime-ink arcade-hero border-b border-border">
         <div className="mx-auto grid max-w-7xl gap-14 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-12 lg:items-center lg:gap-16 lg:px-8 lg:py-28">
           <div className="lg:col-span-6">
-            <p className="arcade-kicker mb-6">Your community, beyond the chat</p>
+            <div className="mb-6 flex items-center gap-3">
+              <BetaBadge size="xs" variant="pill" />
+              <p className="arcade-kicker">Your community, beyond the chat</p>
+            </div>
 
             <h1 className="max-w-3xl font-[var(--font-display)] text-5xl font-bold leading-[0.98] tracking-[-0.045em] text-ink sm:text-6xl lg:text-7xl">
               Your people have a place here.

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { AscSymbol } from './asc-symbol';
+import { BetaBadge } from './beta-badge';
 
 export interface AscMarkProps {
   size?: number;
@@ -23,25 +24,33 @@ export interface AscLogoProps {
   size?: 'sm' | 'md' | 'lg';
   href?: string;
   showText?: boolean;
+  showBeta?: boolean;
   className?: string;
 }
 
-export function AscLogo({ size = 'md', href, showText = true, className = '' }: AscLogoProps) {
+export function AscLogo({
+  size = 'md',
+  href,
+  showText = true,
+  showBeta = true,
+  className = '',
+}: AscLogoProps) {
   const sizes = {
-    sm: { mark: 26, text: 'text-xl' },
-    md: { mark: 34, text: 'text-2xl' },
-    lg: { mark: 46, text: 'text-3xl' },
+    sm: { mark: 26, text: 'text-xl', betaSize: 'xs' as const },
+    md: { mark: 34, text: 'text-2xl', betaSize: 'xs' as const },
+    lg: { mark: 46, text: 'text-3xl', betaSize: 'sm' as const },
   };
-  const { mark, text } = sizes[size];
+  const { mark, text, betaSize } = sizes[size];
 
   const content = (
-    <span className={`inline-flex select-none items-center gap-2.5 ${className}`}>
+    <span className={`inline-flex select-none items-center gap-2 sm:gap-2.5 ${className}`}>
       <AscMark size={mark} />
       {showText ? (
         <span className={`font-[var(--font-display)] font-extrabold text-ink ${text}`}>ASC</span>
       ) : (
         <span className="sr-only">ASC</span>
       )}
+      {showBeta && <BetaBadge size={betaSize} />}
     </span>
   );
 

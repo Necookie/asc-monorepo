@@ -26,10 +26,10 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://asc.necookie.dev'),
   title: {
     template: '%s | ASC',
-    default: 'ASC — Community Identity & Member Discovery',
+    default: 'ASC (Beta) — Community Identity & Member Discovery',
   },
   description:
-    'A community-first digital identity, member discovery, and profile customization platform.',
+    'A community-first digital identity, member discovery, and profile customization platform. Currently in public beta.',
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
@@ -38,9 +38,9 @@ export const metadata: Metadata = {
     apple: '/asc-mark-v2.png',
   },
   openGraph: {
-    title: 'ASC — Community Identity & Member Discovery',
+    title: 'ASC (Beta) — Community Identity & Member Discovery',
     description:
-      'A community-first digital identity, member discovery, and profile customization platform.',
+      'A community-first digital identity, member discovery, and profile customization platform. Currently in public beta.',
     images: [{ url: '/asc-banner.png', width: 1200, height: 630, alt: 'ASC' }],
   },
 };
