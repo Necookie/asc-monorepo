@@ -37,11 +37,11 @@ Owner-managed website staff access now separates Clerk owners from delegated Adm
 
 | Area | Current gap | Completion check |
 | --- | --- | --- |
-| Directory | Search submits a form; no live/debounced search, staff filter or pagination. Public results default to 60 and staff lists to 100. PR #11 moved staff search before that limit, so matching members outside the initial list can now be found. | Browse beyond the first page and filter current staff without exposing hidden roles. |
+| Directory | Public results now have search, supporter filtering, and 20-member pages. No live/debounced search or staff filter; staff lists still default to 100. PR #11 moved staff search before that limit. | Filter current staff without exposing hidden roles. |
 | Site settings | Maintenance and announcement values can be saved in admin but public pages do not consume them. | A saved announcement appears; maintenance actually gates intended routes with admin recovery access. |
 | Moderation/audit | Role history UI is absent; audit rows are stored but not cryptographically tamper-evident. | State the intended guarantee, implement it, and verify actor/target/history behavior. |
 | Data integrity | Link/tag replacement and several sync/moderation operations span multiple statements. | Inject a mid-operation failure and confirm transactions preserve the previous complete state. |
-| Information pages | Footer `/privacy` and `/terms` links have no implemented pages. | Add accurate, owner-approved content and remove broken navigation. |
+| Information pages | `/privacy` and `/terms` have no implemented pages; their dead footer links were removed. | Add accurate, owner-approved content before restoring the links. |
 | Accessibility | Landing keyboard and reduced-motion paths are checked, but some existing header controls are 40px, and the complete app has no full accessibility audit. | Verify all required 44px controls, contrast, focus, errors and keyboard flows on authenticated pages. |
 | Perks | `canGradientAccent` is an entitlement flag without a corresponding editor/rendering feature. | Implement a constrained branded treatment or remove it from promised perks; follow `DESIGN.md` restrictions. |
 

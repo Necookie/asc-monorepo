@@ -3,7 +3,10 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const state = vi.hoisted(() => ({ owner: false, admin: false, moderator: false, staffQuery: vi.fn() }));
-vi.mock('next/navigation', () => ({ useRouter: () => ({ refresh: vi.fn() }) }));
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ refresh: vi.fn() }),
+  usePathname: () => '/admin/profiles',
+}));
 vi.mock('@/lib/auth/session', () => ({
   requireOwnerMember: async () => { if (!state.owner) throw new Error('Owner required'); },
   requireModeratorMember: async () => ({ user: { username: 'alex' }, isOwner: state.owner, isAdmin: state.admin, isModerator: state.moderator }),
@@ -45,6 +48,7 @@ describe('Staff dashboard boundaries and controls', () => {
     state.moderator = true;
     const html = renderToStaticMarkup(await AdminLayout({ children: <p>Staff content</p> }));
     expect(html).toContain('href="/admin/profiles"');
+    expect(html).toContain('aria-current="page"');
     for (const route of ['members', 'tags', 'settings', 'audit', 'perks']) expect(html).not.toContain(`href="/admin/${route}"`);
     expect(html).not.toContain('href="/dashboard/permissions"');
   });

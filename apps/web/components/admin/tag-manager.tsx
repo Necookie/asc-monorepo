@@ -88,7 +88,8 @@ export function TagManager({ initialTags }: TagManagerProps) {
     <div className="space-y-6">
       {statusMsg && (
         <div
-          className={`p-4 rounded-xl text-xs flex items-center gap-3 animate-in fade-in duration-200 ${
+          role={statusMsg.type === 'error' ? 'alert' : 'status'}
+          className={`p-4 rounded-xl text-sm flex items-center gap-3 animate-in fade-in duration-200 ${
             statusMsg.type === 'success'
               ? 'bg-[#35ed7e]/15 border border-[#35ed7e]/30 text-success-ink'
               : 'bg-[#ed4245]/15 border border-[#ed4245]/30 text-danger-ink'
@@ -119,8 +120,9 @@ export function TagManager({ initialTags }: TagManagerProps) {
 
             <form onSubmit={handleSubmit} className="space-y-4 pt-2">
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-ink">Tag Name</label>
+                <label htmlFor="tag-name" className="text-sm font-semibold text-ink">Tag Name</label>
                 <input
+                  id="tag-name"
                   type="text"
                   required
                   value={name}
@@ -136,58 +138,61 @@ export function TagManager({ initialTags }: TagManagerProps) {
                     }
                   }}
                   placeholder="e.g. Full-Stack Developer"
-                  className="w-full px-3 py-2 rounded-xl bg-surface-indigo border border-border text-xs text-ink focus:outline-none focus:ring-2 focus:ring-[#ec48bd]"
+                  className="w-full min-h-11 px-3 py-2 rounded-xl bg-surface-indigo border border-border text-sm text-ink focus:outline-none focus:ring-2 focus:ring-[#ec48bd]"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-ink">Slug (URL Safe)</label>
+                <label htmlFor="tag-slug" className="text-sm font-semibold text-ink">Slug (URL Safe)</label>
                 <input
+                  id="tag-slug"
                   type="text"
                   required
                   value={slug}
                   onChange={(e) => setSlug(e.target.value.toLowerCase())}
                   placeholder="e.g. full-stack-developer"
-                  className="w-full px-3 py-2 rounded-xl bg-surface-indigo border border-border text-xs text-ink font-mono focus:outline-none focus:ring-2 focus:ring-[#ec48bd]"
+                  className="w-full min-h-11 px-3 py-2 rounded-xl bg-surface-indigo border border-border text-sm text-ink font-mono focus:outline-none focus:ring-2 focus:ring-[#ec48bd]"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-ink">Description (Optional)</label>
+                <label htmlFor="tag-description" className="text-sm font-semibold text-ink">Description (Optional)</label>
                 <input
+                  id="tag-description"
                   type="text"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Short explanation of this tag..."
-                  className="w-full px-3 py-2 rounded-xl bg-surface-indigo border border-border text-xs text-ink focus:outline-none focus:ring-2 focus:ring-[#ec48bd]"
+                  className="w-full min-h-11 px-3 py-2 rounded-xl bg-surface-indigo border border-border text-sm text-ink focus:outline-none focus:ring-2 focus:ring-[#ec48bd]"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-ink">Badge Color</label>
+                  <label htmlFor="tag-color" className="text-sm font-semibold text-ink">Badge Color</label>
                   <div className="flex items-center gap-2">
                     <input
+                      id="tag-color"
                       type="color"
                       value={color}
                       onChange={(e) => setColor(e.target.value)}
-                      className="w-8 h-8 rounded-lg cursor-pointer bg-transparent border-none"
+                      className="w-11 h-11 rounded-lg cursor-pointer bg-transparent border-none"
                     />
                     <span className="text-xs font-mono text-muted">{color}</span>
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-ink">Active Status</label>
+                  <div className="text-sm font-semibold text-ink">Active Status</div>
                   <div className="flex items-center gap-2 pt-1.5">
                     <input
                       type="checkbox"
                       id="isActive"
                       checked={isActive}
                       onChange={(e) => setIsActive(e.target.checked)}
-                      className="rounded text-[#ec48bd] focus:ring-[#ec48bd]"
+                      className="h-5 w-5 rounded text-[#ec48bd] focus:ring-[#ec48bd]"
                     />
-                    <label htmlFor="isActive" className="text-xs text-ink-secondary cursor-pointer">
+                    <label htmlFor="isActive" className="inline-flex min-h-11 items-center text-sm text-ink-secondary cursor-pointer">
                       Enabled
                     </label>
                   </div>

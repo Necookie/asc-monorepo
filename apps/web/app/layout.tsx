@@ -105,9 +105,12 @@ export default function RootLayout({
           />
         </head>
         <body className="asc-mesh-bg text-ink min-h-screen flex flex-col antialiased selection:bg-primary selection:text-ink-dark">
+          <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-xl focus:bg-primary focus:px-4 focus:py-3 focus:text-sm focus:font-bold focus:text-ink-dark">
+            Skip to main content
+          </a>
           <AscMotionProvider>
             <Suspense fallback={<NavBar account={{ status: 'LOADING' }} />}><MemberNavigation /></Suspense>
-            <main className="flex-1">{children}</main>
+            <main id="main-content" tabIndex={-1} className="flex-1 scroll-mt-20">{children}</main>
             <Footer />
             <MascotLoader />
           </AscMotionProvider>

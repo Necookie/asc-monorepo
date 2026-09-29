@@ -61,7 +61,8 @@ export function SiteSettingsPanel({ initialSettings }: SiteSettingsPanelProps) {
     <form onSubmit={handleSave} className="space-y-6 max-w-3xl">
       {statusMsg && (
         <div
-          className={`p-4 rounded-xl text-xs flex items-center gap-3 animate-in fade-in duration-200 ${
+          role={statusMsg.type === 'error' ? 'alert' : 'status'}
+          className={`p-4 rounded-xl text-sm flex items-center gap-3 animate-in fade-in duration-200 ${
             statusMsg.type === 'success'
               ? 'bg-[#35ed7e]/15 border border-[#35ed7e]/30 text-success-ink'
               : 'bg-[#ed4245]/15 border border-[#ed4245]/30 text-danger-ink'
@@ -91,22 +92,26 @@ export function SiteSettingsPanel({ initialSettings }: SiteSettingsPanelProps) {
         <CardContent className="p-0 pt-2">
           <div className="flex items-center justify-between p-3.5 rounded-xl bg-surface-indigo border border-border">
             <div className="space-y-0.5">
-              <div className="text-xs font-bold text-ink">Enable Maintenance Mode</div>
-              <div className="text-sm text-muted">
+              <div id="maintenance-label" className="text-sm font-bold text-ink">Enable Maintenance Mode</div>
+              <div id="maintenance-description" className="text-sm text-muted">
                 Only administrators will be permitted to access dashboard editors.
               </div>
             </div>
 
             <button
               type="button"
+              role="switch"
+              aria-checked={maintenanceMode}
+              aria-labelledby="maintenance-label"
+              aria-describedby="maintenance-description"
               onClick={() => setMaintenanceMode(!maintenanceMode)}
-              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+              className={`relative inline-flex min-h-11 w-14 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
                 maintenanceMode ? 'bg-[#f59e0b]' : 'bg-surface-indigo'
               }`}
             >
               <span
                 className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                  maintenanceMode ? 'translate-x-5' : 'translate-x-0'
+                  maintenanceMode ? 'translate-x-7' : 'translate-x-0'
                 }`}
               />
             </button>
@@ -127,7 +132,9 @@ export function SiteSettingsPanel({ initialSettings }: SiteSettingsPanelProps) {
         </CardHeader>
 
         <CardContent className="p-0 pt-2 space-y-3">
+          <label htmlFor="site-announcement" className="block text-sm font-semibold text-ink">Announcement message</label>
           <textarea
+            id="site-announcement"
             rows={3}
             value={announcement}
             onChange={(e) => setAnnouncement(e.target.value.slice(0, 255))}

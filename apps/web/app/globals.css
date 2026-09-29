@@ -113,6 +113,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--asc-primary);
+  outline-offset: 2px;
+}
+
 /* Calm deep-indigo foundation. Expression comes from member identity, not wallpaper. */
 .asc-mesh-bg {
   background-color: var(--color-canvas);
@@ -349,7 +354,7 @@ body {
   font: 800 11rem/1 var(--font-display);
   pointer-events: none;
 }
-.member-ticket--featured > * { position: relative; z-index: 1; }
+.member-ticket--featured > :not(.member-ticket__index) { position: relative; z-index: 1; }
 .member-wall__slot:nth-child(4n + 3) .member-ticket::before { background: var(--asc-arcade-accent); }
 @media (min-width: 640px) {
   .member-wall { grid-template-columns: repeat(2, minmax(0, 1fr)); }

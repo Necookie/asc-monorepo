@@ -7,7 +7,7 @@ export function Footer() {
   return (
     <footer className="w-full border-t border-border bg-surface-onyx pt-16 pb-12 text-ink-secondary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-border">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 pb-12 border-b border-border">
           {/* Brand */}
           <div className="space-y-4 md:col-span-1">
             <AscLogo size="md" href="/" />
@@ -60,24 +60,6 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Column: Information */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-semibold text-ink">
-              Information
-            </h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/privacy" className="hover:text-ink transition-colors">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="hover:text-ink transition-colors">
-                  Terms of Service
-                </Link>
-              </li>
-            </ul>
-          </div>
         </div>
 
         {/* Bottom copyright & decorative watermark */}

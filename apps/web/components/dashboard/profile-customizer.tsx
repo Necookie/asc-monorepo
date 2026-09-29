@@ -263,7 +263,7 @@ export function ProfileCustomizer({
             Profile Customization
           </h1>
           <p className="text-sm text-muted mt-1">
-            Customize how you appear across the ASC community surface.
+            Customize how you appear across ASC. Save each section separately.
           </p>
         </div>
 
@@ -272,12 +272,11 @@ export function ProfileCustomizer({
             <Link
               href={`/${member.primarySlug}`}
               target="_blank"
-              className="hidden sm:inline-flex"
+              rel="noopener noreferrer"
+              className="hidden sm:inline-flex min-h-11 items-center gap-1.5 rounded-xl border border-border-strong px-3.5 text-sm font-medium text-ink-secondary hover:bg-surface-indigo hover:text-ink"
             >
-              <Button variant="outline" size="sm" className="gap-1.5 text-xs text-muted">
-                <ExternalLink className="w-3.5 h-3.5" />
-                View Public Profile
-              </Button>
+              <ExternalLink className="w-4 h-4" />
+              View Public Profile
             </Link>
           )}
 
@@ -303,6 +302,7 @@ export function ProfileCustomizer({
       {/* Save Status Alert */}
       {saveMessage && (
         <div
+          role={saveMessage.type === 'error' ? 'alert' : 'status'}
           className={`p-4 rounded-xl text-sm flex items-center gap-3 animate-in fade-in duration-200 ${
             saveMessage.type === 'success'
               ? 'bg-[#35ed7e]/15 border border-[#35ed7e]/30 text-success-ink'
@@ -323,10 +323,12 @@ export function ProfileCustomizer({
         {/* Left Column: Navigation Tabs & Editor Form */}
         <div className="lg:col-span-7 space-y-6">
           {/* Section Tabs */}
-          <div className="flex items-center gap-1.5 p-1 bg-surface-indigo border border-border rounded-xl overflow-x-auto text-xs font-semibold">
+          <div role="group" aria-label="Profile editor sections" className="flex items-center gap-1.5 p-1 bg-surface-indigo border border-border rounded-xl overflow-x-auto text-sm font-semibold">
             <button
+              type="button"
+              aria-pressed={activeTab === 'profile'}
               onClick={() => setActiveTab('profile')}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
+              className={`flex min-h-11 items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
                 activeTab === 'profile'
                   ? 'bg-primary text-ink-dark shadow-md'
                   : 'text-muted hover:text-ink hover:bg-surface-indigo/60'
@@ -336,8 +338,10 @@ export function ProfileCustomizer({
               Bio & Title
             </button>
             <button
+              type="button"
+              aria-pressed={activeTab === 'appearance'}
               onClick={() => setActiveTab('appearance')}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
+              className={`flex min-h-11 items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
                 activeTab === 'appearance'
                   ? 'bg-primary text-ink-dark shadow-md'
                   : 'text-muted hover:text-ink hover:bg-surface-indigo/60'
@@ -347,8 +351,10 @@ export function ProfileCustomizer({
               Appearance
             </button>
             <button
+              type="button"
+              aria-pressed={activeTab === 'tags'}
               onClick={() => setActiveTab('tags')}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
+              className={`flex min-h-11 items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
                 activeTab === 'tags'
                   ? 'bg-primary text-ink-dark shadow-md'
                   : 'text-muted hover:text-ink hover:bg-surface-indigo/60'
@@ -358,8 +364,10 @@ export function ProfileCustomizer({
               Tags ({selectedTagIds.length}/{entitlements.maxTags})
             </button>
             <button
+              type="button"
+              aria-pressed={activeTab === 'links'}
               onClick={() => setActiveTab('links')}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
+              className={`flex min-h-11 items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
                 activeTab === 'links'
                   ? 'bg-primary text-ink-dark shadow-md'
                   : 'text-muted hover:text-ink hover:bg-surface-indigo/60'
@@ -369,8 +377,10 @@ export function ProfileCustomizer({
               Links ({links.length}/{entitlements.maxLinks})
             </button>
             <button
+              type="button"
+              aria-pressed={activeTab === 'privacy'}
               onClick={() => setActiveTab('privacy')}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
+              className={`flex min-h-11 items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
                 activeTab === 'privacy'
                   ? 'bg-primary text-ink-dark shadow-md'
                   : 'text-muted hover:text-ink hover:bg-surface-indigo/60'
@@ -395,7 +405,7 @@ export function ProfileCustomizer({
                 {/* Custom Title */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <label className="text-sm font-semibold text-ink flex items-center gap-1.5">
+                    <label htmlFor="profile-custom-title" className="text-sm font-semibold text-ink flex items-center gap-1.5">
                       Custom Title
                       {!entitlements.canCustomTitle && (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-[#f59e0b]/15 text-warning-ink border border-[#f59e0b]/30">
@@ -406,6 +416,7 @@ export function ProfileCustomizer({
                     <span className="text-xs text-muted">{customTitle.length}/64</span>
                   </div>
                   <input
+                    id="profile-custom-title"
                     type="text"
                     value={customTitle}
                     onChange={(e) => setCustomTitle(e.target.value.slice(0, 64))}
@@ -422,17 +433,18 @@ export function ProfileCustomizer({
                 {/* Biography */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <label className="text-sm font-semibold text-ink">About Me</label>
+                    <label htmlFor="profile-bio" className="text-sm font-semibold text-ink">About Me</label>
                     <span className="text-xs text-muted">{bio.length}/500</span>
                   </div>
                   <textarea
+                    id="profile-bio"
                     value={bio}
                     onChange={(e) => setBio(e.target.value.slice(0, 500))}
                     rows={5}
                     placeholder="Tell the community about yourself, your projects, or your interests..."
                     className="w-full px-4 py-3 rounded-xl bg-surface-onyx border border-border text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary text-sm resize-none"
                   />
-                  <p className="text-[11px] text-muted">
+                  <p className="text-sm text-muted">
                     Plain text only. Max 500 characters. Live preview updates on the right.
                   </p>
                 </div>
@@ -530,8 +542,9 @@ export function ProfileCustomizer({
                       <button
                         key={tag.id}
                         type="button"
+                        aria-pressed={isSelected}
                         onClick={() => handleToggleTag(tag.id)}
-                        className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all border ${
+                        className={`inline-flex min-h-11 items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-semibold transition-all border ${
                           isSelected
                             ? 'bg-primary text-ink-dark border-primary shadow-md ring-2 ring-primary/30'
                             : 'bg-surface-onyx text-muted border-border hover:border-primary/50 hover:text-ink'
@@ -575,16 +588,16 @@ export function ProfileCustomizer({
                       className="flex items-center justify-between p-3 rounded-xl bg-surface-onyx border border-border"
                     >
                       <div className="space-y-0.5 truncate pr-3">
-                        <div className="text-xs font-bold text-ink">{link.label}</div>
-                        <div className="text-[11px] text-muted truncate font-mono">
+                        <div className="text-sm font-bold text-ink">{link.label}</div>
+                        <div className="text-xs text-muted truncate font-mono">
                           {link.url}
                         </div>
                       </div>
                       <button
                         type="button"
                         onClick={() => handleRemoveLink(link.id)}
-                        className="p-1.5 rounded-lg text-muted hover:text-[#ed4245] hover:bg-[#ed4245]/10 transition-colors"
-                        title="Remove link"
+                        className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-muted hover:text-[#ed4245] hover:bg-[#ed4245]/10 transition-colors"
+                        aria-label={`Remove ${link.label} link`}
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -601,22 +614,30 @@ export function ProfileCustomizer({
                 {/* Add New Link Box */}
                 {links.length < entitlements.maxLinks && (
                   <div className="pt-3 border-t border-border space-y-3">
-                    <div className="text-xs font-semibold text-ink">Add New Link</div>
+                    <div className="text-sm font-semibold text-ink">Add New Link</div>
                     <div className="grid grid-cols-1 sm:grid-cols-12 gap-2.5">
-                      <input
-                        type="text"
-                        value={newLinkLabel}
-                        onChange={(e) => setNewLinkLabel(e.target.value.slice(0, 32))}
-                        placeholder="Label (e.g. GitHub)"
-                        className="sm:col-span-4 px-3 py-2 rounded-xl bg-surface-onyx border border-border text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-1 focus:ring-primary"
-                      />
-                      <input
-                        type="url"
-                        value={newLinkUrl}
-                        onChange={(e) => setNewLinkUrl(e.target.value)}
-                        placeholder="https://..."
-                        className="sm:col-span-6 px-3 py-2 rounded-xl bg-surface-onyx border border-border text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-1 focus:ring-primary font-mono"
-                      />
+                      <div className="space-y-1.5 sm:col-span-4">
+                        <label htmlFor="new-link-label" className="text-sm font-medium text-ink">Link label</label>
+                        <input
+                          id="new-link-label"
+                          type="text"
+                          value={newLinkLabel}
+                          onChange={(e) => setNewLinkLabel(e.target.value.slice(0, 32))}
+                          placeholder="e.g. GitHub"
+                          className="w-full px-3 py-2 rounded-xl bg-surface-onyx border border-border text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-1 focus:ring-primary"
+                        />
+                      </div>
+                      <div className="space-y-1.5 sm:col-span-6">
+                        <label htmlFor="new-link-url" className="text-sm font-medium text-ink">URL</label>
+                        <input
+                          id="new-link-url"
+                          type="url"
+                          value={newLinkUrl}
+                          onChange={(e) => setNewLinkUrl(e.target.value)}
+                          placeholder="https://..."
+                          className="w-full px-3 py-2 rounded-xl bg-surface-onyx border border-border text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-1 focus:ring-primary font-mono"
+                        />
+                      </div>
                       <Button
                         variant="primary"
                         size="sm"
@@ -678,24 +699,28 @@ export function ProfileCustomizer({
                       className="flex items-center justify-between p-3.5 rounded-xl bg-surface-onyx border border-border"
                     >
                       <div className="space-y-0.5 pr-4">
-                        <div className="text-xs font-bold text-ink">{item.title}</div>
-                        <div className="text-[11px] text-muted">{item.desc}</div>
+                        <div id={`privacy-${item.key}-title`} className="text-sm font-bold text-ink">{item.title}</div>
+                        <div id={`privacy-${item.key}-description`} className="text-sm text-muted">{item.desc}</div>
                       </div>
                       <button
                         type="button"
+                        role="switch"
+                        aria-checked={val}
+                        aria-labelledby={`privacy-${item.key}-title`}
+                        aria-describedby={`privacy-${item.key}-description`}
                         onClick={() =>
                           setPrivacy((prev) => ({
                             ...prev,
                             [item.key]: !prev[item.key as keyof typeof prev],
                           }))
                         }
-                        className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                        className={`relative inline-flex min-h-11 w-14 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
                           val ? 'bg-primary' : 'bg-surface-indigo'
                         }`}
                       >
                         <span
                           className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                            val ? 'translate-x-5' : 'translate-x-0'
+                            val ? 'translate-x-7' : 'translate-x-0'
                           }`}
                         />
                       </button>
@@ -705,6 +730,13 @@ export function ProfileCustomizer({
               </CardContent>
             </Card>
           )}
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-5">
+            <p className="text-sm text-muted">Save the changes in this section before leaving the page.</p>
+            <Button variant="primary" size="md" onClick={handleSave} disabled={isSaving} className="gap-2 font-bold">
+              <Save className="h-4 w-4" />
+              {isSaving ? 'Saving...' : 'Save Changes'}
+            </Button>
+          </div>
         </div>
 
         {/* Right Column: Sticky Live Interactive Preview */}

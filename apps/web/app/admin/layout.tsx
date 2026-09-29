@@ -1,16 +1,9 @@
 import * as React from 'react';
 import Link from 'next/link';
+import { AppNavLink } from '@/components/layout/app-nav-link';
 import { requireModeratorMember } from '@/lib/auth/session';
-import { Button } from '@/components/ui/button';
 import {
   ShieldAlert,
-  Users,
-  Tag as TagIcon,
-  Settings,
-  FileText,
-  LayoutDashboard,
-  Shield,
-  Activity,
   ArrowLeft,
 } from 'lucide-react';
 
@@ -27,8 +20,8 @@ export default async function AdminLayout({
     <div className="arcade-app-shell min-h-[calc(100vh-4rem)] bg-canvas text-ink">
       {/* Top Admin Header Bar */}
       <div className="border-b border-border bg-surface-onyx sticky top-16 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-center justify-between gap-2 py-2.5 md:h-14 md:py-0">
-          <div className="flex items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto flex flex-col gap-2 px-4 py-2.5 sm:px-6 lg:px-8">
+          <div className="flex min-h-11 items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <span className="p-1 rounded-lg bg-[#ec48bd]/15 text-[#ec48bd] border border-[#ec48bd]/30">
                 <ShieldAlert className="w-4 h-4" />
@@ -37,76 +30,69 @@ export default async function AdminLayout({
                 ASC Administration
               </span>
             </div>
-            <div className="md:hidden">
-              <Link href="/dashboard">
-                <Button variant="outline" size="sm" className="h-8 px-2 text-xs text-muted">
-                  <ArrowLeft className="w-3.5 h-3.5 mr-1" />
-                  Exit
-                </Button>
+            <div className="flex items-center gap-3">
+              <span className="hidden text-sm text-muted sm:inline">
+                Signed in as <strong className="text-ink">@{admin.user.username}</strong>
+              </span>
+              <Link
+                href="/dashboard"
+                className="inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-xl border border-border-strong px-3 text-sm font-semibold text-ink-secondary hover:bg-surface-indigo hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+              >
+                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                Dashboard
               </Link>
             </div>
           </div>
 
           {/* Nav Tabs */}
-          <nav className="flex items-center gap-1 text-xs font-semibold overflow-x-auto scrollbar-none py-1">
-            {admin.isAdmin && <><Link
+          <nav aria-label="Administration sections" className="flex min-w-0 items-center gap-1 overflow-x-auto pb-1 text-sm font-semibold">
+            {admin.isAdmin && <><AppNavLink
               href="/admin"
               className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
             >
               Overview
-            </Link>
-            <Link
+            </AppNavLink>
+            <AppNavLink
               href="/admin/members"
               className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
             >
               Members
-            </Link>
+            </AppNavLink>
             </>}
-            <Link
+            <AppNavLink
               href="/admin/profiles"
               className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
             >
               Moderation
-            </Link>
-            {admin.isAdmin && <><Link
+            </AppNavLink>
+            {admin.isAdmin && <><AppNavLink
               href="/admin/tags"
               className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
             >
               Tags
-            </Link>
-            <Link
+            </AppNavLink>
+            <AppNavLink
               href="/admin/settings"
               className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
             >
               Settings
-            </Link>
-            <Link
+            </AppNavLink>
+            <AppNavLink
               href="/admin/audit"
               className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
             >
               Audit Log
-            </Link>
-            <Link href="/admin/perks" className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0">Customization perks</Link>
+            </AppNavLink>
+            <AppNavLink href="/admin/perks" className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0">Customization perks</AppNavLink>
             </>}
-            {admin.isOwner && <Link href="/dashboard/permissions" className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0">Staff permissions</Link>}
+            {admin.isOwner && <AppNavLink href="/dashboard/permissions" className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0">Staff permissions</AppNavLink>}
           </nav>
 
-          <div className="hidden md:flex items-center gap-3">
-            <div className="text-xs text-muted">
-              Logged in as <span className="text-ink font-bold">@{admin.user.username}</span>
-            </div>
-            <Link href="/dashboard">
-              <Button variant="outline" size="sm" className="gap-1.5 text-xs text-muted">
-                <ArrowLeft className="w-3.5 h-3.5" />
-                Return to Dashboard
-              </Button>
-            </Link>
-          </div>
         </div>
       </div>
 
       {/* Main Admin Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">{children}</main>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">{children}</div>
     </div>
   );
 }
