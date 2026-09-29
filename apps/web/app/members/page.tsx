@@ -5,6 +5,7 @@ export const dynamic = 'force-dynamic';
 import { getMembersDirectory } from '@/lib/queries/members';
 import { MemberWall } from '@/components/identity/member-wall';
 import { EmptyState } from '@/components/ui/states';
+import { Button } from '@/components/ui/button';
 import { Users, Search, Sparkles } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -21,10 +22,11 @@ interface MembersPageProps {
 
 export default async function MembersPage({ searchParams }: MembersPageProps) {
   const { q = '', filter = 'all' } = await searchParams;
+  const search = q.trim().slice(0, 100);
   const isSupportersOnly = filter === 'supporters';
 
   const members = await getMembersDirectory({
-    search: q,
+    search,
     filter: isSupportersOnly ? 'supporters' : 'all',
   });
 
@@ -45,26 +47,33 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
       </div>
 
       {/* Search and Filters */}
-      <div className="flex w-full flex-col items-stretch justify-between gap-4 border-y border-border py-5 sm:flex-row sm:items-center">
+      <div className="flex w-full flex-col items-stretch justify-between gap-5 border-y border-border py-5 lg:flex-row lg:items-end">
         {/* Search Form */}
-        <form method="GET" action="/members" className="relative w-full sm:flex-1">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-          <label htmlFor="member-search" className="sr-only">Search members</label>
-          <input
-            id="member-search"
-            type="text"
-            name="q"
-            defaultValue={q}
-            placeholder="Search by username, display name, or tag..."
-            className="w-full pl-11 pr-4 py-3 text-base rounded-xl bg-surface-indigo border border-border text-ink placeholder:text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-          />
-          {filter && <input type="hidden" name="filter" value={filter} />}
+        <form method="GET" action="/members" role="search" className="w-full space-y-2 lg:max-w-2xl lg:flex-1">
+          <label htmlFor="member-search" className="block text-sm font-semibold text-ink">Find a member</label>
+          <div className="flex gap-2">
+            <div className="relative min-w-0 flex-1">
+              <Search aria-hidden="true" className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" />
+              <input
+                id="member-search"
+                type="search"
+                name="q"
+                maxLength={100}
+                defaultValue={search}
+                placeholder="Name, username, or interest"
+                className="min-h-11 w-full rounded-xl border border-border bg-surface-indigo py-2.5 pl-11 pr-4 text-base text-ink placeholder:text-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+            <Button type="submit">Search</Button>
+          </div>
+          {isSupportersOnly && <input type="hidden" name="filter" value="supporters" />}
         </form>
 
         {/* Filter Pills */}
-        <div className="flex items-center gap-2 shrink-0">
+        <nav aria-label="Member filters" className="flex shrink-0 items-center gap-2">
           <Link
-            href={`/members?filter=all${q ? `&q=${encodeURIComponent(q)}` : ''}`}
+            href={`/members?filter=all${search ? `&q=${encodeURIComponent(search)}` : ''}`}
+            aria-current={!isSupportersOnly ? 'page' : undefined}
             className={`inline-flex min-h-11 items-center rounded-xl px-4 py-2 text-sm font-bold transition-all ${
               !isSupportersOnly
                 ? 'bg-primary text-ink-dark shadow-sm'
@@ -74,17 +83,23 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
             All Members
           </Link>
           <Link
-            href={`/members?filter=supporters${q ? `&q=${encodeURIComponent(q)}` : ''}`}
+            href={`/members?filter=supporters${search ? `&q=${encodeURIComponent(search)}` : ''}`}
+            aria-current={isSupportersOnly ? 'page' : undefined}
             className={`inline-flex min-h-11 items-center gap-1.5 rounded-xl px-4 py-2 text-sm font-bold transition-all ${
               isSupportersOnly
-                ? 'bg-[#ec48bd] text-ink shadow-sm'
+                ? 'bg-[#ec48bd] text-[#111111] shadow-sm'
                 : 'bg-surface-indigo text-ink-secondary hover:text-ink border border-border'
             }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
             Supporters
           </Link>
-        </div>
+        </nav>
+      </div>
+
+      <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-ink-secondary" role="status">
+        <p>Showing {members.length} {isSupportersOnly ? 'supporter' : 'member'}{members.length === 1 ? '' : 's'}{search ? ` matching “${search}”` : ''}.</p>
+        {(search || isSupportersOnly) && <Link href="/members" className="font-semibold text-ink underline underline-offset-4 hover:no-underline">Reset results</Link>}
       </div>
 
       {/* Members Wall */}
@@ -94,8 +109,8 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
         <EmptyState
           title="No members found"
           description={
-            q
-              ? `No members found matching "${q}". Try another search term.`
+            search
+              ? `No members found matching "${search}". Try another search term.`
               : 'No community members match the selected filter.'
           }
         />
