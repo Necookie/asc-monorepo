@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Link from 'next/link';
+import { AppNavLink } from '@/components/layout/app-nav-link';
 import { SignOutButton } from '@clerk/nextjs';
 import { requireAuthenticatedMember } from '@/lib/auth/session';
 import { Avatar } from '@/components/ui/avatar';
@@ -65,42 +66,42 @@ export default async function DashboardLayout({
           </div>
 
           {/* Navigation Links */}
-          <nav className="space-y-1 text-sm font-semibold">
-            <Link
+          <nav aria-label="Profile settings" className="space-y-1 text-sm font-semibold">
+            <AppNavLink
               href="/dashboard"
               className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors"
             >
               <User className="w-4 h-4 text-primary" />
               Bio & Custom Title
-            </Link>
-            <Link
+            </AppNavLink>
+            <AppNavLink
               href="/dashboard/appearance"
               className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors"
             >
               <Palette className="w-4 h-4 text-[#ec48bd]" />
               Theme & Appearance
-            </Link>
-            <Link
+            </AppNavLink>
+            <AppNavLink
               href="/dashboard/tags"
               className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors"
             >
               <TagIcon className="w-4 h-4 text-[#35ed7e]" />
               Community Tags
-            </Link>
-            <Link
+            </AppNavLink>
+            <AppNavLink
               href="/dashboard/links"
               className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors"
             >
               <LinkIcon className="w-4 h-4 text-[#06b6d4]" />
               Outbound Links
-            </Link>
-            <Link
+            </AppNavLink>
+            <AppNavLink
               href="/dashboard/privacy"
               className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors"
             >
               <Shield className="w-4 h-4 text-[#f59e0b]" />
               Privacy Controls
-            </Link>
+            </AppNavLink>
           </nav>
         </div>
 
@@ -174,38 +175,38 @@ export default async function DashboardLayout({
           </div>
         </div>
 
-        <nav className="flex items-center gap-1.5 text-xs font-semibold overflow-x-auto scrollbar-none py-1">
-          <Link
+        <nav aria-label="Profile settings" className="flex items-center gap-1.5 overflow-x-auto py-1 text-xs font-semibold">
+          <AppNavLink
             href="/dashboard"
             className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
           >
             Bio
-          </Link>
-          <Link
+          </AppNavLink>
+          <AppNavLink
             href="/dashboard/appearance"
             className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
           >
             Appearance
-          </Link>
-          <Link
+          </AppNavLink>
+          <AppNavLink
             href="/dashboard/tags"
             className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
           >
             Tags
-          </Link>
-          <Link
+          </AppNavLink>
+          <AppNavLink
             href="/dashboard/links"
             className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
           >
             Links
-          </Link>
-          <Link
+          </AppNavLink>
+          <AppNavLink
             href="/dashboard/privacy"
             className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
           >
             Privacy
-          </Link>
-          {member.isOwner && <Link href="/dashboard/permissions" className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0">Staff permissions</Link>}
+          </AppNavLink>
+          {member.isOwner && <AppNavLink href="/dashboard/permissions" className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0">Staff permissions</AppNavLink>}
         </nav>
       </div>
 

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Link from 'next/link';
+import { AppNavLink } from '@/components/layout/app-nav-link';
 import { requireModeratorMember } from '@/lib/auth/session';
 import { Button } from '@/components/ui/button';
 import {
@@ -48,47 +49,47 @@ export default async function AdminLayout({
           </div>
 
           {/* Nav Tabs */}
-          <nav className="flex items-center gap-1 text-xs font-semibold overflow-x-auto scrollbar-none py-1">
-            {admin.isAdmin && <><Link
+          <nav aria-label="Administration sections" className="flex items-center gap-1 overflow-x-auto py-1 text-xs font-semibold">
+            {admin.isAdmin && <><AppNavLink
               href="/admin"
               className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
             >
               Overview
-            </Link>
-            <Link
+            </AppNavLink>
+            <AppNavLink
               href="/admin/members"
               className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
             >
               Members
-            </Link>
+            </AppNavLink>
             </>}
-            <Link
+            <AppNavLink
               href="/admin/profiles"
               className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
             >
               Moderation
-            </Link>
-            {admin.isAdmin && <><Link
+            </AppNavLink>
+            {admin.isAdmin && <><AppNavLink
               href="/admin/tags"
               className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
             >
               Tags
-            </Link>
-            <Link
+            </AppNavLink>
+            <AppNavLink
               href="/admin/settings"
               className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
             >
               Settings
-            </Link>
-            <Link
+            </AppNavLink>
+            <AppNavLink
               href="/admin/audit"
               className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0"
             >
               Audit Log
-            </Link>
-            <Link href="/admin/perks" className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0">Customization perks</Link>
+            </AppNavLink>
+            <AppNavLink href="/admin/perks" className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0">Customization perks</AppNavLink>
             </>}
-            {admin.isOwner && <Link href="/dashboard/permissions" className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0">Staff permissions</Link>}
+            {admin.isOwner && <AppNavLink href="/dashboard/permissions" className="px-3 py-1.5 rounded-lg text-ink-secondary hover:text-ink hover:bg-surface-indigo/80 transition-colors shrink-0">Staff permissions</AppNavLink>}
           </nav>
 
           <div className="hidden md:flex items-center gap-3">
