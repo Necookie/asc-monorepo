@@ -26,7 +26,7 @@ export default async function AdminAuditPage() {
         </p>
       </div>
 
-      <Card className="bg-surface-onyx/80 border-border overflow-hidden">
+      <Card className="bg-surface-onyx border-border overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="bg-surface-indigo text-muted uppercase tracking-wider text-sm border-b border-border">

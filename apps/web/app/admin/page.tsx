@@ -42,7 +42,7 @@ export default async function AdminOverviewPage() {
           </p>
         </div>
 
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#35ed7e]/15 border border-[#35ed7e]/30 text-[#84f7b2] text-xs font-semibold">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#35ed7e]/15 border border-[#35ed7e]/30 text-success-ink text-xs font-semibold">
           <span className="w-2 h-2 rounded-full bg-[#35ed7e] animate-pulse" />
           System Healthy & Synchronized
         </div>
@@ -50,7 +50,7 @@ export default async function AdminOverviewPage() {
 
       {/* Metrics Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="bg-surface-onyx/80 border-border p-5">
+        <Card className="bg-surface-onyx border-border p-5">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-muted">Total Members</span>
             <Users className="w-4 h-4 text-primary" />
@@ -63,7 +63,7 @@ export default async function AdminOverviewPage() {
           </div>
         </Card>
 
-        <Card className="bg-surface-onyx/80 border-border p-5">
+        <Card className="bg-surface-onyx border-border p-5">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-muted">Active Profiles</span>
             <UserCheck className="w-4 h-4 text-[#35ed7e]" />
@@ -76,7 +76,7 @@ export default async function AdminOverviewPage() {
           </div>
         </Card>
 
-        <Card className="bg-surface-onyx/80 border-border p-5">
+        <Card className="bg-surface-onyx border-border p-5">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-muted">Community Tags</span>
             <TagIcon className="w-4 h-4 text-[#ec48bd]" />
@@ -89,7 +89,7 @@ export default async function AdminOverviewPage() {
           </div>
         </Card>
 
-        <Card className="bg-surface-onyx/80 border-border p-5">
+        <Card className="bg-surface-onyx border-border p-5">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-muted">Audit Entries</span>
             <FileText className="w-4 h-4 text-[#f59e0b]" />
@@ -106,7 +106,7 @@ export default async function AdminOverviewPage() {
       {/* Quick Action Bands */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Link href="/admin/members" className="group">
-          <Card className="bg-surface-indigo/60 border-border hover:border-primary p-4 transition-all">
+          <Card className="bg-surface-indigo border-border hover:border-primary p-4 transition-all">
             <div className="flex items-center justify-between">
               <span className="text-sm font-bold text-ink group-hover:text-primary transition-colors">
                 Manage Members
@@ -120,7 +120,7 @@ export default async function AdminOverviewPage() {
         </Link>
 
         <Link href="/admin/profiles" className="group">
-          <Card className="bg-surface-indigo/60 border-border hover:border-[#ec48bd] p-4 transition-all">
+          <Card className="bg-surface-indigo border-border hover:border-[#ec48bd] p-4 transition-all">
             <div className="flex items-center justify-between">
               <span className="text-sm font-bold text-ink group-hover:text-[#ec48bd] transition-colors">
                 Profile Moderation
@@ -134,7 +134,7 @@ export default async function AdminOverviewPage() {
         </Link>
 
         <Link href="/admin/tags" className="group">
-          <Card className="bg-surface-indigo/60 border-border hover:border-[#35ed7e] p-4 transition-all">
+          <Card className="bg-surface-indigo border-border hover:border-[#35ed7e] p-4 transition-all">
             <div className="flex items-center justify-between">
               <span className="text-sm font-bold text-ink group-hover:text-[#35ed7e] transition-colors">
                 Tag Management
@@ -148,9 +148,9 @@ export default async function AdminOverviewPage() {
         </Link>
 
         <Link href="/admin/settings" className="group">
-          <Card className="bg-surface-indigo/60 border-border hover:border-[#f59e0b] p-4 transition-all">
+          <Card className="bg-surface-indigo border-border hover:border-[#f59e0b] p-4 transition-all">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-bold text-ink group-hover:text-[#f59e0b] transition-colors">
+              <span className="text-sm font-bold text-ink group-hover:text-warning-ink transition-colors">
                 Site Settings
               </span>
               <ArrowRight className="w-4 h-4 text-muted group-hover:translate-x-1 transition-transform" />
@@ -163,7 +163,7 @@ export default async function AdminOverviewPage() {
       </div>
 
       {/* Recent Audit Log Activity */}
-      <Card className="bg-surface-onyx/80 border-border p-6">
+      <Card className="bg-surface-onyx border-border p-6">
         <CardHeader className="p-0 pb-4 flex flex-row items-center justify-between">
           <div>
             <CardTitle className="text-base font-bold text-ink">Recent Audit Activity</CardTitle>

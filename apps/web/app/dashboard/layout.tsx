@@ -109,7 +109,7 @@ export default async function DashboardLayout({
           {member.isAdmin && (
             <Link
               href="/admin"
-              className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-[#ff8f91] hover:bg-[#ed4245]/15 transition-colors"
+              className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-danger-ink hover:bg-[#ed4245]/15 transition-colors"
             >
               <ShieldAlert className="w-4 h-4" />
               Administration Portal

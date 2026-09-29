@@ -90,8 +90,8 @@ export function TagManager({ initialTags }: TagManagerProps) {
         <div
           className={`p-4 rounded-xl text-xs flex items-center gap-3 animate-in fade-in duration-200 ${
             statusMsg.type === 'success'
-              ? 'bg-[#35ed7e]/15 border border-[#35ed7e]/30 text-[#84f7b2]'
-              : 'bg-[#ed4245]/15 border border-[#ed4245]/30 text-[#ff8f91]'
+              ? 'bg-[#35ed7e]/15 border border-[#35ed7e]/30 text-success-ink'
+              : 'bg-[#ed4245]/15 border border-[#ed4245]/30 text-danger-ink'
           }`}
         >
           {statusMsg.type === 'success' ? (
@@ -106,7 +106,7 @@ export function TagManager({ initialTags }: TagManagerProps) {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Form */}
         <div className="lg:col-span-5 space-y-4">
-          <Card className="bg-surface-onyx/80 border-border p-6 space-y-4">
+          <Card className="bg-surface-onyx border-border p-6 space-y-4">
             <CardHeader className="p-0">
               <CardTitle className="text-base font-bold text-ink flex items-center gap-2">
                 <TagIcon className="w-4 h-4 text-[#ec48bd]" />
@@ -222,7 +222,7 @@ export function TagManager({ initialTags }: TagManagerProps) {
 
         {/* Right Column: Tags List Table */}
         <div className="lg:col-span-7 space-y-4">
-          <Card className="bg-surface-onyx/80 border-border overflow-hidden">
+          <Card className="bg-surface-onyx border-border overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead className="bg-surface-indigo text-muted uppercase tracking-wider text-sm border-b border-border">
@@ -255,8 +255,8 @@ export function TagManager({ initialTags }: TagManagerProps) {
                         <span
                           className={`inline-flex px-2 py-0.5 rounded-full text-sm font-bold ${
                             tag.isActive
-                              ? 'bg-[#35ed7e]/15 text-[#84f7b2] border border-[#35ed7e]/30'
-                              : 'bg-[#ed4245]/15 text-[#ff8f91] border border-[#ed4245]/30'
+                              ? 'bg-[#35ed7e]/15 text-success-ink border border-[#35ed7e]/30'
+                              : 'bg-[#ed4245]/15 text-danger-ink border border-[#ed4245]/30'
                           }`}
                         >
                           {tag.isActive ? 'Active' : 'Disabled'}

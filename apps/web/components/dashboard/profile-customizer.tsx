@@ -305,8 +305,8 @@ export function ProfileCustomizer({
         <div
           className={`p-4 rounded-xl text-sm flex items-center gap-3 animate-in fade-in duration-200 ${
             saveMessage.type === 'success'
-              ? 'bg-[#35ed7e]/15 border border-[#35ed7e]/30 text-[#84f7b2]'
-              : 'bg-[#ed4245]/15 border border-[#ed4245]/30 text-[#ff8f91]'
+              ? 'bg-[#35ed7e]/15 border border-[#35ed7e]/30 text-success-ink'
+              : 'bg-[#ed4245]/15 border border-[#ed4245]/30 text-danger-ink'
           }`}
         >
           {saveMessage.type === 'success' ? (
@@ -383,7 +383,7 @@ export function ProfileCustomizer({
 
           {/* TAB 1: Profile Bio & Title */}
           {activeTab === 'profile' && (
-            <Card className="bg-surface-indigo/80 border-border p-6 space-y-6">
+            <Card className="bg-surface-indigo border-border p-6 space-y-6">
               <CardHeader className="p-0">
                 <CardTitle className="text-lg font-bold text-ink">Biography & Title</CardTitle>
                 <CardDescription className="text-xs text-muted">
@@ -398,7 +398,7 @@ export function ProfileCustomizer({
                     <label className="text-sm font-semibold text-ink flex items-center gap-1.5">
                       Custom Title
                       {!entitlements.canCustomTitle && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-[#f59e0b]/15 text-[#f59e0b] border border-[#f59e0b]/30">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-[#f59e0b]/15 text-warning-ink border border-[#f59e0b]/30">
                           <Lock className="w-3 h-3" /> Supporter Perk
                         </span>
                       )}
@@ -442,7 +442,7 @@ export function ProfileCustomizer({
 
           {/* TAB 2: Appearance */}
           {activeTab === 'appearance' && (
-            <Card className="space-y-7 border-border bg-surface-indigo/80 p-6">
+            <Card className="space-y-7 border-border bg-surface-indigo p-6">
               <CardHeader className="p-0">
                 <CardTitle className="text-xl font-bold text-ink">Profile studio</CardTitle>
                 <CardDescription className="text-sm leading-6 text-ink-secondary">Choose a clear base look, then use the live preview to shape your member page.</CardDescription>
@@ -509,7 +509,7 @@ export function ProfileCustomizer({
           )}
           {/* TAB 3: Community Tags */}
           {activeTab === 'tags' && (
-            <Card className="bg-surface-indigo/80 border-border p-6 space-y-6">
+            <Card className="bg-surface-indigo border-border p-6 space-y-6">
               <CardHeader className="p-0 flex flex-row items-center justify-between">
                 <div>
                   <CardTitle className="text-lg font-bold text-ink">Community Tags</CardTitle>
@@ -553,7 +553,7 @@ export function ProfileCustomizer({
 
           {/* TAB 4: External Links */}
           {activeTab === 'links' && (
-            <Card className="bg-surface-indigo/80 border-border p-6 space-y-6">
+            <Card className="bg-surface-indigo border-border p-6 space-y-6">
               <CardHeader className="p-0 flex flex-row items-center justify-between">
                 <div>
                   <CardTitle className="text-lg font-bold text-ink">Outbound Links</CardTitle>
@@ -635,7 +635,7 @@ export function ProfileCustomizer({
 
           {/* TAB 5: Privacy */}
           {activeTab === 'privacy' && (
-            <Card className="bg-surface-indigo/80 border-border p-6 space-y-6">
+            <Card className="bg-surface-indigo border-border p-6 space-y-6">
               <CardHeader className="p-0">
                 <CardTitle className="text-lg font-bold text-ink">Privacy Controls</CardTitle>
                 <CardDescription className="text-xs text-muted">

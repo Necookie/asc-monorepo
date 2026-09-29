@@ -51,7 +51,7 @@ export default async function AdminMembersPage({
       </div>
 
       {/* Members Table */}
-      <Card className="bg-surface-onyx/80 border-border overflow-hidden">
+      <Card className="bg-surface-onyx border-border overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="bg-surface-indigo text-muted uppercase tracking-wider text-sm border-b border-border">
@@ -91,10 +91,10 @@ export default async function AdminMembersPage({
                     <span
                       className={`inline-flex items-center px-2 py-0.5 rounded-full text-sm font-bold ${
                         member.membershipStatus === 'ACTIVE'
-                          ? 'bg-[#35ed7e]/15 text-[#84f7b2] border border-[#35ed7e]/30'
+                          ? 'bg-[#35ed7e]/15 text-success-ink border border-[#35ed7e]/30'
                           : member.membershipStatus === 'LEFT'
-                          ? 'bg-[#f59e0b]/15 text-[#f59e0b] border border-[#f59e0b]/30'
-                          : 'bg-[#ed4245]/15 text-[#ff8f91] border border-[#ed4245]/30'
+                          ? 'bg-[#f59e0b]/15 text-warning-ink border border-[#f59e0b]/30'
+                          : 'bg-[#ed4245]/15 text-danger-ink border border-[#ed4245]/30'
                       }`}
                     >
                       {member.membershipStatus}
