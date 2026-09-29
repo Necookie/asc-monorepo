@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, type ReactNode } from 'react';
+import * as React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
@@ -11,14 +11,14 @@ export function AppNavLink({
   className,
 }: {
   href: string;
-  children: ReactNode;
+  children: React.ReactNode;
   className?: string;
 }) {
   const pathname = usePathname();
   const current = pathname === href || (href === '/dashboard' && pathname === '/dashboard/profile');
-  const linkRef = useRef<HTMLAnchorElement>(null);
+  const linkRef = React.useRef<HTMLAnchorElement>(null);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!current) return;
     const link = linkRef.current;
     const scroller = link?.parentElement;
