@@ -263,7 +263,7 @@ export function ProfileCustomizer({
             Profile Customization
           </h1>
           <p className="text-sm text-muted mt-1">
-            Customize how you appear across the ASC community surface.
+            Customize how you appear across ASC. Save each section separately.
           </p>
         </div>
 
@@ -272,12 +272,11 @@ export function ProfileCustomizer({
             <Link
               href={`/${member.primarySlug}`}
               target="_blank"
-              className="hidden sm:inline-flex"
+              rel="noopener noreferrer"
+              className="hidden sm:inline-flex min-h-11 items-center gap-1.5 rounded-xl border border-border-strong px-3.5 text-sm font-medium text-ink-secondary hover:bg-surface-indigo hover:text-ink"
             >
-              <Button variant="outline" size="sm" className="gap-1.5 text-xs text-muted">
-                <ExternalLink className="w-3.5 h-3.5" />
-                View Public Profile
-              </Button>
+              <ExternalLink className="w-4 h-4" />
+              View Public Profile
             </Link>
           )}
 
@@ -303,6 +302,7 @@ export function ProfileCustomizer({
       {/* Save Status Alert */}
       {saveMessage && (
         <div
+          role={saveMessage.type === 'error' ? 'alert' : 'status'}
           className={`p-4 rounded-xl text-sm flex items-center gap-3 animate-in fade-in duration-200 ${
             saveMessage.type === 'success'
               ? 'bg-[#35ed7e]/15 border border-[#35ed7e]/30 text-success-ink'
@@ -323,10 +323,12 @@ export function ProfileCustomizer({
         {/* Left Column: Navigation Tabs & Editor Form */}
         <div className="lg:col-span-7 space-y-6">
           {/* Section Tabs */}
-          <div className="flex items-center gap-1.5 p-1 bg-surface-indigo border border-border rounded-xl overflow-x-auto text-xs font-semibold">
+          <div role="group" aria-label="Profile editor sections" className="flex items-center gap-1.5 p-1 bg-surface-indigo border border-border rounded-xl overflow-x-auto text-sm font-semibold">
             <button
+              type="button"
+              aria-pressed={activeTab === 'profile'}
               onClick={() => setActiveTab('profile')}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
+              className={`flex min-h-11 items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
                 activeTab === 'profile'
                   ? 'bg-primary text-ink-dark shadow-md'
                   : 'text-muted hover:text-ink hover:bg-surface-indigo/60'
@@ -336,8 +338,10 @@ export function ProfileCustomizer({
               Bio & Title
             </button>
             <button
+              type="button"
+              aria-pressed={activeTab === 'appearance'}
               onClick={() => setActiveTab('appearance')}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
+              className={`flex min-h-11 items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
                 activeTab === 'appearance'
                   ? 'bg-primary text-ink-dark shadow-md'
                   : 'text-muted hover:text-ink hover:bg-surface-indigo/60'
@@ -347,8 +351,10 @@ export function ProfileCustomizer({
               Appearance
             </button>
             <button
+              type="button"
+              aria-pressed={activeTab === 'tags'}
               onClick={() => setActiveTab('tags')}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
+              className={`flex min-h-11 items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
                 activeTab === 'tags'
                   ? 'bg-primary text-ink-dark shadow-md'
                   : 'text-muted hover:text-ink hover:bg-surface-indigo/60'
@@ -358,8 +364,10 @@ export function ProfileCustomizer({
               Tags ({selectedTagIds.length}/{entitlements.maxTags})
             </button>
             <button
+              type="button"
+              aria-pressed={activeTab === 'links'}
               onClick={() => setActiveTab('links')}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
+              className={`flex min-h-11 items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
                 activeTab === 'links'
                   ? 'bg-primary text-ink-dark shadow-md'
                   : 'text-muted hover:text-ink hover:bg-surface-indigo/60'
@@ -369,8 +377,10 @@ export function ProfileCustomizer({
               Links ({links.length}/{entitlements.maxLinks})
             </button>
             <button
+              type="button"
+              aria-pressed={activeTab === 'privacy'}
               onClick={() => setActiveTab('privacy')}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
+              className={`flex min-h-11 items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
                 activeTab === 'privacy'
                   ? 'bg-primary text-ink-dark shadow-md'
                   : 'text-muted hover:text-ink hover:bg-surface-indigo/60'
@@ -720,6 +730,13 @@ export function ProfileCustomizer({
               </CardContent>
             </Card>
           )}
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-5">
+            <p className="text-sm text-muted">Save the changes in this section before leaving the page.</p>
+            <Button variant="primary" size="md" onClick={handleSave} disabled={isSaving} className="gap-2 font-bold">
+              <Save className="h-4 w-4" />
+              {isSaving ? 'Saving...' : 'Save Changes'}
+            </Button>
+          </div>
         </div>
 
         {/* Right Column: Sticky Live Interactive Preview */}
