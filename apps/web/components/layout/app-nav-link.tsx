@@ -1,6 +1,6 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
@@ -16,9 +16,23 @@ export function AppNavLink({
 }) {
   const pathname = usePathname();
   const current = pathname === href || (href === '/dashboard' && pathname === '/dashboard/profile');
+  const linkRef = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    if (!current) return;
+    const link = linkRef.current;
+    const scroller = link?.parentElement;
+    if (!link || !scroller || scroller.scrollWidth <= scroller.clientWidth) return;
+    const linkBounds = link.getBoundingClientRect();
+    const scrollerBounds = scroller.getBoundingClientRect();
+    scroller.scrollTo({
+      left: scroller.scrollLeft + linkBounds.left - scrollerBounds.left - (scroller.clientWidth - linkBounds.width) / 2,
+    });
+  }, [current]);
 
   return (
     <Link
+      ref={linkRef}
       href={href}
       aria-current={current ? 'page' : undefined}
       className={cn(
