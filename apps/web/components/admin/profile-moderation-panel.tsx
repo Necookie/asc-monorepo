@@ -83,8 +83,8 @@ export function ProfileModerationPanel({ members, canResetContent = false }: Pro
         <div
           className={`p-4 rounded-xl text-xs flex items-center gap-3 animate-in fade-in duration-200 ${
             statusMsg.type === 'success'
-              ? 'bg-[#35ed7e]/15 border border-[#35ed7e]/30 text-[#84f7b2]'
-              : 'bg-[#ed4245]/15 border border-[#ed4245]/30 text-[#ff8f91]'
+              ? 'bg-[#35ed7e]/15 border border-[#35ed7e]/30 text-success-ink'
+              : 'bg-[#ed4245]/15 border border-[#ed4245]/30 text-danger-ink'
           }`}
         >
           {statusMsg.type === 'success' ? (
@@ -99,7 +99,7 @@ export function ProfileModerationPanel({ members, canResetContent = false }: Pro
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Select Member */}
         <div className="lg:col-span-5 space-y-4">
-          <Card className="bg-surface-onyx/80 border-border p-5 space-y-4">
+          <Card className="bg-surface-onyx border-border p-5 space-y-4">
             <CardHeader className="p-0">
               <CardTitle className="text-base font-bold text-ink">Select Target Member</CardTitle>
               <CardDescription className="text-xs text-muted">
@@ -115,7 +115,7 @@ export function ProfileModerationPanel({ members, canResetContent = false }: Pro
                   onClick={() => setSelectedUserId(m.id)}
                   className={`w-full flex items-center gap-3 p-3 rounded-xl border text-left transition-all ${
                     selectedUserId === m.id
-                      ? 'bg-primary/20 border-primary ring-1 ring-primary'
+                      ? 'bg-surface-active border-primary ring-1 ring-primary'
                       : 'bg-surface-indigo border-border hover:border-border'
                   }`}
                 >
@@ -140,7 +140,7 @@ export function ProfileModerationPanel({ members, canResetContent = false }: Pro
         {/* Right Column: Moderation Actions */}
         <div className="lg:col-span-7 space-y-4">
           {selectedMember ? (
-            <Card className="bg-surface-onyx/80 border-border p-6 space-y-6">
+            <Card className="bg-surface-onyx border-border p-6 space-y-6">
               <CardHeader className="p-0 pb-4 border-b border-border flex flex-row items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Avatar
@@ -162,8 +162,8 @@ export function ProfileModerationPanel({ members, canResetContent = false }: Pro
                 <span
                   className={`text-sm font-bold px-2 py-0.5 rounded-full ${
                     selectedMember.isModerated
-                      ? 'bg-[#ed4245]/15 text-[#ff8f91] border border-[#ed4245]/30'
-                      : 'bg-[#35ed7e]/15 text-[#84f7b2] border border-[#35ed7e]/30'
+                      ? 'bg-[#ed4245]/15 text-danger-ink border border-[#ed4245]/30'
+                      : 'bg-[#35ed7e]/15 text-success-ink border border-[#35ed7e]/30'
                   }`}
                 >
                   {selectedMember.isModerated ? 'Hidden by moderation' : selectedMember.isPrivate ? 'Member chose private' : 'Public Profile'}
@@ -198,7 +198,7 @@ export function ProfileModerationPanel({ members, canResetContent = false }: Pro
                       size="sm"
                       onClick={() => handleModerate('UNHIDE_PROFILE')}
                       disabled={isLoading}
-                      className="gap-2 text-xs border-[#35ed7e]/40 text-[#84f7b2] hover:bg-[#35ed7e]/10 justify-start"
+                      className="gap-2 text-xs border-[#35ed7e]/40 text-success-ink hover:bg-[#35ed7e]/10 justify-start"
                     >
                       <Eye className="w-4 h-4 text-[#35ed7e]" />
                       Unhide Profile
@@ -209,7 +209,7 @@ export function ProfileModerationPanel({ members, canResetContent = false }: Pro
                       size="sm"
                       onClick={() => handleModerate('HIDE_PROFILE')}
                       disabled={isLoading}
-                      className="gap-2 text-xs border-[#ed4245]/40 text-[#ff8f91] hover:bg-[#ed4245]/10 justify-start"
+                      className="gap-2 text-xs border-[#ed4245]/40 text-danger-ink hover:bg-[#ed4245]/10 justify-start"
                     >
                       <EyeOff className="w-4 h-4 text-[#ed4245]" />
                       Hide Profile

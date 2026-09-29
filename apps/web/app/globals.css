@@ -21,6 +21,9 @@
   --color-ink-dark: var(--asc-ink-dark);
   --color-ink-secondary: var(--asc-ink-secondary);
   --color-muted: var(--asc-muted);
+  --color-success-ink: var(--asc-success-ink);
+  --color-danger-ink: var(--asc-danger-ink);
+  --color-warning-ink: var(--asc-warning-ink);
 
   --color-success: #35ed7e;
   --color-warning: #f0b232;
@@ -56,6 +59,9 @@
   --asc-ink-dark: #111111;
   --asc-ink-secondary: #c8c8c8;
   --asc-muted: #929292;
+  --asc-success-ink: #84f7b2;
+  --asc-danger-ink: #ff8f91;
+  --asc-warning-ink: #f0b232;
   --asc-border: rgba(255, 255, 255, 0.12);
   --asc-border-strong: rgba(255, 255, 255, 0.22);
   --background: var(--asc-canvas);
@@ -86,6 +92,9 @@
   --asc-ink-dark: #f7f7f7;
   --asc-ink-secondary: #4f4f4f;
   --asc-muted: #707070;
+  --asc-success-ink: #176b3d;
+  --asc-danger-ink: #b4232a;
+  --asc-warning-ink: #855400;
   --asc-border: rgba(17, 17, 17, 0.12);
   --asc-border-strong: rgba(17, 17, 17, 0.22);
   --background: var(--asc-canvas);

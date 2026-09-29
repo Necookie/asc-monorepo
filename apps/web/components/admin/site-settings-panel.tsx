@@ -63,8 +63,8 @@ export function SiteSettingsPanel({ initialSettings }: SiteSettingsPanelProps) {
         <div
           className={`p-4 rounded-xl text-xs flex items-center gap-3 animate-in fade-in duration-200 ${
             statusMsg.type === 'success'
-              ? 'bg-[#35ed7e]/15 border border-[#35ed7e]/30 text-[#84f7b2]'
-              : 'bg-[#ed4245]/15 border border-[#ed4245]/30 text-[#ff8f91]'
+              ? 'bg-[#35ed7e]/15 border border-[#35ed7e]/30 text-success-ink'
+              : 'bg-[#ed4245]/15 border border-[#ed4245]/30 text-danger-ink'
           }`}
         >
           {statusMsg.type === 'success' ? (
@@ -77,7 +77,7 @@ export function SiteSettingsPanel({ initialSettings }: SiteSettingsPanelProps) {
       )}
 
       {/* Maintenance Mode Card */}
-      <Card className="bg-surface-onyx/80 border-border p-6 space-y-4">
+      <Card className="bg-surface-onyx border-border p-6 space-y-4">
         <CardHeader className="p-0">
           <CardTitle className="text-base font-bold text-ink flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 text-[#f59e0b]" />
@@ -115,7 +115,7 @@ export function SiteSettingsPanel({ initialSettings }: SiteSettingsPanelProps) {
       </Card>
 
       {/* System Announcement Banner Card */}
-      <Card className="bg-surface-onyx/80 border-border p-6 space-y-4">
+      <Card className="bg-surface-onyx border-border p-6 space-y-4">
         <CardHeader className="p-0">
           <CardTitle className="text-base font-bold text-ink flex items-center gap-2">
             <Megaphone className="w-4 h-4 text-primary" />
