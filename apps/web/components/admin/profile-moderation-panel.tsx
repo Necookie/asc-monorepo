@@ -81,7 +81,8 @@ export function ProfileModerationPanel({ members, canResetContent = false }: Pro
     <div className="space-y-6">
       {statusMsg && (
         <div
-          className={`p-4 rounded-xl text-xs flex items-center gap-3 animate-in fade-in duration-200 ${
+          role={statusMsg.type === 'error' ? 'alert' : 'status'}
+          className={`p-4 rounded-xl text-sm flex items-center gap-3 animate-in fade-in duration-200 ${
             statusMsg.type === 'success'
               ? 'bg-[#35ed7e]/15 border border-[#35ed7e]/30 text-success-ink'
               : 'bg-[#ed4245]/15 border border-[#ed4245]/30 text-danger-ink'
@@ -112,6 +113,7 @@ export function ProfileModerationPanel({ members, canResetContent = false }: Pro
                 <button
                   key={m.id}
                   type="button"
+                  aria-pressed={selectedUserId === m.id}
                   onClick={() => setSelectedUserId(m.id)}
                   className={`w-full flex items-center gap-3 p-3 rounded-xl border text-left transition-all ${
                     selectedUserId === m.id
@@ -126,7 +128,7 @@ export function ProfileModerationPanel({ members, canResetContent = false }: Pro
                     fallbackText={m.displayName.slice(0, 2).toUpperCase()}
                   />
                   <div className="truncate">
-                    <div className="text-xs font-bold text-ink truncate">
+                    <div className="text-sm font-bold text-ink truncate">
                       {m.displayName}
                     </div>
                     <div className="text-sm text-muted truncate">@{m.username}</div>
@@ -172,11 +174,12 @@ export function ProfileModerationPanel({ members, canResetContent = false }: Pro
 
               {/* Mandatory Reason Input */}
               <div className="space-y-2">
-                <label className="text-xs font-bold text-ink flex items-center gap-1.5">
+                <label htmlFor="moderation-reason" className="text-sm font-bold text-ink flex items-center gap-1.5">
                   <ShieldAlert className="w-3.5 h-3.5 text-[#ec48bd]" />
                   Moderation Reason (Required for Audit Logging)
                 </label>
                 <input
+                  id="moderation-reason"
                   type="text"
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
