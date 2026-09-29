@@ -73,4 +73,13 @@ describe('Directory and featured member privacy', () => {
     expect(featured).toHaveLength(1);
     expect(featured[0].username).not.toBe('private');
   });
+
+  it('pages through visible members without counting a private profile', async () => {
+    const now = Date.now();
+    await database.update(users).set({lastSyncedAt:new Date(now + 30000)}).where(eq(users.username,'private'));
+    await database.update(users).set({lastSyncedAt:new Date(now + 20000)}).where(eq(users.username,'visible'));
+    await database.update(users).set({lastSyncedAt:new Date(now + 10000)}).where(eq(users.username,'hidden_fields'));
+    expect((await getMembersDirectory({database,limit:1,offset:0})).map(member=>member.username)).toEqual(['visible']);
+    expect((await getMembersDirectory({database,limit:1,offset:1})).map(member=>member.username)).toEqual(['hidden_fields']);
+  });
 });

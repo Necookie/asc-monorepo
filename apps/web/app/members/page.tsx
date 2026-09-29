@@ -17,18 +17,39 @@ interface MembersPageProps {
   searchParams: Promise<{
     q?: string;
     filter?: string;
+    page?: string;
   }>;
 }
 
 export default async function MembersPage({ searchParams }: MembersPageProps) {
-  const { q = '', filter = 'all' } = await searchParams;
+  const { q = '', filter = 'all', page: pageParam = '1' } = await searchParams;
   const search = q.trim().slice(0, 100);
   const isSupportersOnly = filter === 'supporters';
+  const requestedPage = Number(pageParam);
+  const page = Number.isSafeInteger(requestedPage) && requestedPage > 0
+    ? Math.min(requestedPage, 1000)
+    : 1;
+  const pageSize = 20;
 
-  const members = await getMembersDirectory({
+  const pageRows = await getMembersDirectory({
     search,
     filter: isSupportersOnly ? 'supporters' : 'all',
+    limit: pageSize + 1,
+    offset: (page - 1) * pageSize,
   });
+  const members = pageRows.slice(0, pageSize);
+  const hasNextPage = pageRows.length > pageSize;
+  const memberNoun = isSupportersOnly
+    ? members.length === 1 ? 'supporter' : 'supporters'
+    : members.length === 1 ? 'member' : 'members';
+  const pageHref = (targetPage: number) => {
+    const params = new URLSearchParams();
+    if (search) params.set('q', search);
+    if (isSupportersOnly) params.set('filter', 'supporters');
+    if (targetPage > 1) params.set('page', String(targetPage));
+    const query = params.toString();
+    return query ? `/members?${query}` : '/members';
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-10">
@@ -98,7 +119,11 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-ink-secondary" role="status">
-        <p>Showing {members.length} {isSupportersOnly ? 'supporter' : 'member'}{members.length === 1 ? '' : 's'}{search ? ` matching “${search}”` : ''}.</p>
+        <p>
+          {members.length > 0
+            ? `Showing ${(page - 1) * pageSize + 1}–${(page - 1) * pageSize + members.length} ${memberNoun}${search ? ` matching “${search}”` : ''}.`
+            : `No members found on page ${page}${search ? ` matching “${search}”` : ''}.`}
+        </p>
         {(search || isSupportersOnly) && <Link href="/members" className="font-semibold text-ink underline underline-offset-4 hover:no-underline">Reset results</Link>}
       </div>
 
@@ -107,13 +132,26 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
         <MemberWall members={members} />
       ) : (
         <EmptyState
-          title="No members found"
+          title={page > 1 ? 'No more members on this page' : 'No members found'}
           description={
-            search
+            page > 1
+              ? 'Go back a page or change your search.'
+              : search
               ? `No members found matching "${search}". Try another search term.`
               : 'No community members match the selected filter.'
           }
         />
+      )}
+      {(page > 1 || hasNextPage) && (
+        <nav aria-label="Member pages" className="flex items-center justify-between gap-4 border-t border-border pt-6 text-sm">
+          {page > 1
+            ? <Link href={pageHref(page - 1)} className="inline-flex min-h-11 items-center rounded-xl border border-border px-4 font-semibold text-ink hover:bg-surface-indigo">Previous page</Link>
+            : <span />}
+          <span className="text-ink-secondary">Page {page}</span>
+          {hasNextPage
+            ? <Link href={pageHref(page + 1)} className="inline-flex min-h-11 items-center rounded-xl border border-border px-4 font-semibold text-ink hover:bg-surface-indigo">Next page</Link>
+            : <span />}
+        </nav>
       )}
     </div>
   );
