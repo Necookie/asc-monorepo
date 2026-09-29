@@ -210,9 +210,9 @@ export default async function DashboardLayout({
       </div>
 
       {/* Main Page Area */}
-      <main className="flex-1 p-4 sm:p-6 lg:p-10 max-w-7xl w-full mx-auto">
+      <div className="flex-1 p-4 sm:p-6 lg:p-10 max-w-7xl w-full mx-auto">
         {children}
-      </main>
+      </div>
     </div>
   );
 }

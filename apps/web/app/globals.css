@@ -113,6 +113,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--asc-primary);
+  outline-offset: 2px;
+}
+
 /* Calm deep-indigo foundation. Expression comes from member identity, not wallpaper. */
 .asc-mesh-bg {
   background-color: var(--color-canvas);
