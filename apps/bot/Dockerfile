@@ -36,6 +36,7 @@ ENV NODE_ENV=production
 
 # Install dumb-init for PID 1 signal handling
 RUN apk add --no-cache dumb-init
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # Copy complete built artifacts and workspace dependencies
 COPY --from=builder --chown=node:node /app ./
@@ -44,4 +45,4 @@ COPY --from=builder --chown=node:node /app ./
 USER node
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
-CMD ["node", "apps/bot/dist/index.js"]
+CMD ["pnpm", "--filter", "@asc/bot", "start"]
