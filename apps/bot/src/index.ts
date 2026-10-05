@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv';
 import { logger } from './lib/logger';
 import { AscSyncBot } from './bot';
+import { validateBotEnv } from '@asc/validation';
 
 dotenv.config();
 
@@ -14,23 +15,12 @@ export * from './services/member-sync';
 export * from './services/reconciliation';
 
 async function main(): Promise<void> {
-  const token = process.env.DISCORD_TOKEN;
-  const guildId = process.env.DISCORD_GUILD_ID;
-  const syncIntervalMs = process.env.SYNC_INTERVAL
-    ? parseInt(process.env.SYNC_INTERVAL, 10)
-    : undefined;
-
-  if (!token || !guildId) {
-    logger.warn(
-      'Missing DISCORD_TOKEN or DISCORD_GUILD_ID. Gateway bot will not start in standalone mode without credentials.'
-    );
-    return;
-  }
+  const env = validateBotEnv();
 
   const bot = new AscSyncBot({
-    token,
-    guildId,
-    syncIntervalMs,
+    token: env.DISCORD_TOKEN,
+    guildId: env.DISCORD_GUILD_ID,
+    syncIntervalMs: env.SYNC_INTERVAL,
   });
 
   const handleSignal = async (signal: string) => {

@@ -1,12 +1,30 @@
 node_modules
 .next
+.next-dev
 dist
 .git
 .gitignore
 *.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 .DS_Store
 *.tsbuildinfo
 .turbo
 coverage
-.env.local
-.env*.local
+.vscode
+.idea
+
+# Environment files and credentials (never copy secrets into Docker context)
+.env
+.env.*
+!.env.example
+
+# Local databases and journals
+*.sqlite
+*.sqlite-journal
+*.db
+*.db-journal
+*.pem
+*.key
