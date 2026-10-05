@@ -20,9 +20,15 @@ export const botEnvSchema = z.object({
   DISCORD_CLIENT_ID: z.string().min(1, 'DISCORD_CLIENT_ID is required'),
   DISCORD_GUILD_ID: z.string().min(1, 'DISCORD_GUILD_ID is required'),
   SYNC_INTERVAL: z
-    .string()
+    .union([z.string(), z.number()])
     .optional()
-    .transform((val) => (val ? parseInt(val, 10) : 43200000)),
+    .transform((val) => {
+      if (val === undefined || val === '') return 43200000;
+      return typeof val === 'number' ? val : parseInt(val, 10);
+    })
+    .refine((val) => Number.isFinite(val) && val > 0, {
+      message: 'SYNC_INTERVAL must be a positive finite number of milliseconds',
+    }),
   NODE_ENV: z
     .enum(['development', 'production', 'test'])
     .default('development'),
@@ -30,3 +36,29 @@ export const botEnvSchema = z.object({
 
 export type WebEnv = z.infer<typeof webEnvSchema>;
 export type BotEnv = z.infer<typeof botEnvSchema>;
+
+export function validateBotEnv(env: Record<string, unknown> = process.env): BotEnv {
+  const parsed = botEnvSchema.safeParse(env);
+  if (!parsed.success) {
+    const invalidFields = parsed.error.issues
+      .map((issue) => issue.path.join('.') || 'root')
+      .filter((v, idx, arr) => arr.indexOf(v) === idx);
+    throw new Error(
+      `Bot startup configuration error: invalid or missing environment variables [${invalidFields.join(', ')}]`
+    );
+  }
+  return parsed.data;
+}
+
+export function validateWebEnv(env: Record<string, unknown> = process.env): WebEnv {
+  const parsed = webEnvSchema.safeParse(env);
+  if (!parsed.success) {
+    const invalidFields = parsed.error.issues
+      .map((issue) => issue.path.join('.') || 'root')
+      .filter((v, idx, arr) => arr.indexOf(v) === idx);
+    throw new Error(
+      `Web startup configuration error: invalid or missing environment variables [${invalidFields.join(', ')}]`
+    );
+  }
+  return parsed.data;
+}

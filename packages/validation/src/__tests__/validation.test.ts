@@ -6,6 +6,10 @@ import {
   profileLinkSchema,
   adminTagSchema,
   updateAppearanceSchema,
+  validateBotEnv,
+  validateWebEnv,
+  botEnvSchema,
+  webEnvSchema,
 } from '../index';
 
 describe('Validation Schemas', () => {
@@ -116,6 +120,64 @@ describe('Validation Schemas', () => {
         isActive: true,
       });
       expect(res.success).toBe(false);
+    });
+  });
+
+  describe('startup environment validation', () => {
+    const validBotEnv = {
+      TURSO_DATABASE_URL: 'libsql://test.turso.io',
+      DISCORD_TOKEN: 'test_token',
+      DISCORD_CLIENT_ID: '1234567890',
+      DISCORD_GUILD_ID: '9876543210',
+      SYNC_INTERVAL: '30000',
+    };
+
+    const validWebEnv = {
+      TURSO_DATABASE_URL: 'libsql://test.turso.io',
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: 'pk_test_123',
+      CLERK_SECRET_KEY: 'sk_test_456',
+      NEXT_PUBLIC_APP_URL: 'https://asc.necookie.dev',
+    };
+
+    it('accepts valid bot configuration and transforms SYNC_INTERVAL', () => {
+      const parsed = validateBotEnv(validBotEnv);
+      expect(parsed.SYNC_INTERVAL).toBe(30000);
+      expect(parsed.NODE_ENV).toBe('development');
+    });
+
+    it('defaults SYNC_INTERVAL when omitted in bot configuration', () => {
+      const { SYNC_INTERVAL, ...envWithoutInterval } = validBotEnv;
+      const parsed = validateBotEnv(envWithoutInterval);
+      expect(parsed.SYNC_INTERVAL).toBe(43200000);
+    });
+
+    it('rejects invalid or non-positive SYNC_INTERVAL in bot configuration', () => {
+      expect(() => validateBotEnv({ ...validBotEnv, SYNC_INTERVAL: '-500' })).toThrow(
+        /SYNC_INTERVAL/
+      );
+      expect(() => validateBotEnv({ ...validBotEnv, SYNC_INTERVAL: '0' })).toThrow(
+        /SYNC_INTERVAL/
+      );
+      expect(() => validateBotEnv({ ...validBotEnv, SYNC_INTERVAL: 'not_a_number' })).toThrow(
+        /SYNC_INTERVAL/
+      );
+    });
+
+    it('fails fast on missing bot environment variables without leaking secrets', () => {
+      expect(() => validateBotEnv({})).toThrowError(
+        /invalid or missing environment variables \[TURSO_DATABASE_URL, DISCORD_TOKEN, DISCORD_CLIENT_ID, DISCORD_GUILD_ID\]/
+      );
+    });
+
+    it('accepts valid web configuration', () => {
+      const parsed = validateWebEnv(validWebEnv);
+      expect(parsed.NEXT_PUBLIC_APP_URL).toBe('https://asc.necookie.dev');
+    });
+
+    it('fails fast on missing web environment variables without leaking values', () => {
+      expect(() => validateWebEnv({})).toThrowError(
+        /invalid or missing environment variables \[TURSO_DATABASE_URL, NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY, CLERK_SECRET_KEY\]/
+      );
     });
   });
 });
