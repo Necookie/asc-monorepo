@@ -1,3 +1,4 @@
+import * as React from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Scale, ArrowLeft } from 'lucide-react';
