@@ -5,10 +5,12 @@ import { ClerkProvider } from '@clerk/nextjs';
 import './globals.css';
 import { NavBar } from '@/components/layout/nav-bar';
 import { Footer } from '@/components/layout/footer';
+import { SystemAnnouncementBanner } from '@/components/layout/system-announcement';
 import { AscMotionProvider } from '@/components/motion/motion-provider';
 import { MascotLoader } from '@/components/motion/mascot-loader';
 import { resolveCurrentSession } from '@/lib/auth/session';
 import { getNavigationAccount } from '@/lib/auth/navigation';
+import { getPublicAnnouncement } from '@/lib/queries/site-settings';
 
 const atkinson = Atkinson_Hyperlegible_Next({
   subsets: ['latin'],
@@ -54,6 +56,11 @@ export const viewport: Viewport = {
 
 async function MemberNavigation() {
   return <NavBar account={getNavigationAccount(await resolveCurrentSession())} />;
+}
+
+async function SystemAnnouncement() {
+  const announcement = await getPublicAnnouncement();
+  return <SystemAnnouncementBanner announcement={announcement} />;
 }
 
 export default function RootLayout({
@@ -109,6 +116,7 @@ export default function RootLayout({
             Skip to main content
           </a>
           <AscMotionProvider>
+            <Suspense fallback={null}><SystemAnnouncement /></Suspense>
             <Suspense fallback={<NavBar account={{ status: 'LOADING' }} />}><MemberNavigation /></Suspense>
             <main id="main-content" tabIndex={-1} className="flex-1 scroll-mt-20">{children}</main>
             <Footer />
