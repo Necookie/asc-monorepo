@@ -82,4 +82,22 @@ describe('Directory and featured member privacy', () => {
     expect((await getMembersDirectory({database,limit:1,offset:0})).map(member=>member.username)).toEqual(['visible']);
     expect((await getMembersDirectory({database,limit:1,offset:1})).map(member=>member.username)).toEqual(['hidden_fields']);
   });
+
+  it('filters staff members and respects role visibility privacy', async () => {
+    const [modRole] = await database.insert(communityRoles).values({
+      externalRoleId: 'mod-role',
+      name: 'Moderator',
+      isModerator: true,
+      color: '#2ecc71',
+    }).returning();
+
+    await database.insert(memberRoles).values([
+      { userId: publicId, roleId: modRole.id },
+      { userId: hiddenFieldsId, roleId: modRole.id },
+    ]);
+
+    const staffMembers = await getMembersDirectory({ database, filter: 'staff' });
+    expect(staffMembers.map(m => m.id)).toContain(publicId);
+    expect(staffMembers.map(m => m.id)).not.toContain(hiddenFieldsId);
+  });
 });
