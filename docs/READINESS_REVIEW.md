@@ -18,31 +18,27 @@ Reviewed 26 September 2026. **The approved member experience changes are impleme
 Every change used a separate feature/fix branch and coherent Conventional Commits, followed by a non-squash merge into `main` through an actual GitHub pull request.
 
 ## Resolved after this review
+- **Owner-managed website staff access:** Separates Clerk owners from delegated Admin/Moderator grants. Moderation uses a server-owned flag that members cannot undo through privacy settings.
+- **Bot production packaging (Blocker #1):** Configured `@asc/bot` with runtime `tsx` execution and updated `Dockerfile` runner stage to run standalone sync bot without TypeScript stripping failures.
+- **Docker build context protection (Blocker #2):** Updated `.dockerignore` to strictly exclude all environment files (`.env*`), SQLite databases (`*.sqlite`, `*.db`), caches, and credentials from release images.
+- **Startup configuration validation (Blocker #3):** Implemented `validateBotEnv` and `validateWebEnv` with finite positive interval requirements and secret-safe reporting (variable names only).
+- **Public legal and policy pages:** Implemented `/privacy` and `/terms` pages adhering to `DESIGN.md` and restored footer links.
+- **System announcement banner:** Connected `system_announcement` from `site_settings` to `SystemAnnouncementBanner` across all public pages with user dismiss action.
+- **Directory staff filter:** Added privacy-safe staff filtering to `/members` directory that respects member role visibility settings.
 
-Owner-managed website staff access now separates Clerk owners from delegated Admin/Moderator grants. Moderation uses a server-owned flag that members cannot undo through privacy settings. See [ADMIN_ACCESS.md](ADMIN_ACCESS.md); production owner setup and an actual owner grant remain pending.
+## Remaining release blockers, in order
 
-## Release blockers, in order
-
-1. **Bot production packaging.** `pnpm --filter @asc/bot build` succeeds, but the compiled entrypoint fails under local Node 24.19.0 with `ERR_UNSUPPORTED_NODE_MODULES_TYPE_STRIPPING` when it loads `@asc/db/src/index.ts` through `node_modules`. Shared packages export TypeScript source while the bot runner starts plain Node. Compile/bundle shared runtime dependencies or deliberately provide a supported TypeScript runtime; then verify the actual Node 22 Docker image starts and performs reconciliation. Relevant files: `apps/bot/package.json`, `apps/bot/Dockerfile`, shared package manifests.
-
-2. **Docker build context protection.** `.dockerignore` excludes `.env.local` but does not exclude ordinary `.env`, other environment files or local database files. The Dockerfile copies the whole repository into its build and runner stages. Exclude credentials, local databases, development output and other private artifacts before building a release image; verify the image contents.
-
-3. **Startup configuration validation is not wired in.** `webEnvSchema` and `botEnvSchema` exist but applications do not call them. Validate the correct environment at application startup, including a positive finite synchronization interval. Fail with a clear list of missing variable names, without printing values.
-
-4. **Production identity and sync verification.** Browser testing confirmed the development Clerk Discord button loads and protected dashboard access sends signed-out visitors to `/login`. A real Discord OAuth callback, new Clerk account linking, production keys/domain configuration, production database migrations, live Gateway events and booster/staff role mappings were not exercised. Test with a standard member, booster, moderator, administrator and non-member before public release. Use the Discord server's actual booster role; owning Nitro by itself should not grant perks.
-
-5. **Real lint and CI gates.** Workspace `lint` scripts currently print success messages rather than analyze code. Configure an actual linter and CI checks for tests, types, lint, web build and bot runtime/image startup. `pnpm lint` passing currently supplies no static-analysis assurance.
+1. **Production identity and sync verification.** Test live Discord OAuth callback, new Clerk account linking, live Gateway events, and booster/staff role mappings on the staging/production deployment.
+2. **Real lint and CI gates.** Configure an actual linter and CI checks for tests, types, lint, web build and bot runtime startup.
 
 ## Missing or incomplete MVP behavior
 
 | Area | Current gap | Completion check |
 | --- | --- | --- |
-| Directory | Public results now have search, supporter filtering, and 20-member pages. No live/debounced search or staff filter; staff lists still default to 100. PR #11 moved staff search before that limit. | Filter current staff without exposing hidden roles. |
-| Site settings | Maintenance and announcement values can be saved in admin but public pages do not consume them. | A saved announcement appears; maintenance actually gates intended routes with admin recovery access. |
+| Site settings | Maintenance mode actually gating intended routes with admin recovery access. | Public routes gate cleanly with admin recovery when maintenance mode is active. |
 | Moderation/audit | Role history UI is absent; audit rows are stored but not cryptographically tamper-evident. | State the intended guarantee, implement it, and verify actor/target/history behavior. |
 | Data integrity | Link/tag replacement and several sync/moderation operations span multiple statements. | Inject a mid-operation failure and confirm transactions preserve the previous complete state. |
-| Information pages | `/privacy` and `/terms` have no implemented pages; their dead footer links were removed. | Add accurate, owner-approved content before restoring the links. |
-| Accessibility | Landing keyboard and reduced-motion paths are checked, but some existing header controls are 40px, and the complete app has no full accessibility audit. | Verify all required 44px controls, contrast, focus, errors and keyboard flows on authenticated pages. |
+| Accessibility | Landing keyboard and reduced-motion paths are checked, but full authenticated accessibility audit remains pending. | Verify all required 44px controls, contrast, focus, errors and keyboard flows on authenticated pages. |
 | Perks | `canGradientAccent` is an entitlement flag without a corresponding editor/rendering feature. | Implement a constrained branded treatment or remove it from promised perks; follow `DESIGN.md` restrictions. |
 
 ## Current customization split

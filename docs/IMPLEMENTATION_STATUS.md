@@ -15,7 +15,7 @@
 | Directory privacy | Merged through PR #8 | Hidden profiles/roles/tags excluded from discovery, search and supporter filters |
 | Website optimization and expressive mascot | Merged through PRs #10–#14 | Smaller assets, parallel/private-safe queries, streaming account navigation, mobile 3D activation, GPU batching, companion controls; [optimization evidence](OPTIMIZATION_REVIEW.md) |
 | Owner-managed administration | Clerk private owner flag; delegated website Admin/Moderator; independent moderation and website perk grants | Permission, privacy, stale edit, and audit rollback tests; isolated desktop/mobile form review; database migration applied; owner setup deferred |
-| Current local gates | 193 tests in 23 files; types and web build pass | Lint scripts remain placeholders; compiled bot startup fails on shared TypeScript package entrypoints |
+| Current local gates | 208 tests in 24 files; types, bot standalone runtime, and web build pass | Lint scripts remain placeholders; production Gateway live token and deployment testing pending |
 | Remaining production evidence | Pending | Real OAuth linking/saves, live Gateway lifecycle, Docker image boot, production role mappings and migrations |
 
 ## Historical implementation phases
