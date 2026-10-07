@@ -6,7 +6,7 @@ import { getMembersDirectory } from '@/lib/queries/members';
 import { MemberWall } from '@/components/identity/member-wall';
 import { EmptyState } from '@/components/ui/states';
 import { Button } from '@/components/ui/button';
-import { Users, Search, Sparkles } from 'lucide-react';
+import { Users, Search, Sparkles, Shield } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Community Members',
@@ -25,6 +25,7 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
   const { q = '', filter = 'all', page: pageParam = '1' } = await searchParams;
   const search = q.trim().slice(0, 100);
   const isSupportersOnly = filter === 'supporters';
+  const isStaffOnly = filter === 'staff';
   const requestedPage = Number(pageParam);
   const page = Number.isSafeInteger(requestedPage) && requestedPage > 0
     ? Math.min(requestedPage, 1000)
@@ -33,7 +34,7 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
 
   const pageRows = await getMembersDirectory({
     search,
-    filter: isSupportersOnly ? 'supporters' : 'all',
+    filter: isSupportersOnly ? 'supporters' : isStaffOnly ? 'staff' : 'all',
     limit: pageSize + 1,
     offset: (page - 1) * pageSize,
   });
@@ -41,11 +42,14 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
   const hasNextPage = pageRows.length > pageSize;
   const memberNoun = isSupportersOnly
     ? members.length === 1 ? 'supporter' : 'supporters'
+    : isStaffOnly
+    ? members.length === 1 ? 'staff member' : 'staff members'
     : members.length === 1 ? 'member' : 'members';
   const pageHref = (targetPage: number) => {
     const params = new URLSearchParams();
     if (search) params.set('q', search);
     if (isSupportersOnly) params.set('filter', 'supporters');
+    if (isStaffOnly) params.set('filter', 'staff');
     if (targetPage > 1) params.set('page', String(targetPage));
     const query = params.toString();
     return query ? `/members?${query}` : '/members';
@@ -88,15 +92,16 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
             <Button type="submit">Search</Button>
           </div>
           {isSupportersOnly && <input type="hidden" name="filter" value="supporters" />}
+          {isStaffOnly && <input type="hidden" name="filter" value="staff" />}
         </form>
 
         {/* Filter Pills */}
         <nav aria-label="Member filters" className="flex shrink-0 items-center gap-2">
           <Link
             href={`/members?filter=all${search ? `&q=${encodeURIComponent(search)}` : ''}`}
-            aria-current={!isSupportersOnly ? 'page' : undefined}
+            aria-current={!isSupportersOnly && !isStaffOnly ? 'page' : undefined}
             className={`inline-flex min-h-11 items-center rounded-xl px-4 py-2 text-sm font-bold transition-all ${
-              !isSupportersOnly
+              !isSupportersOnly && !isStaffOnly
                 ? 'bg-primary text-ink-dark shadow-sm'
                 : 'bg-surface-indigo text-ink-secondary hover:text-ink border border-border'
             }`}
@@ -115,6 +120,18 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
             <Sparkles className="w-3.5 h-3.5" />
             Supporters
           </Link>
+          <Link
+            href={`/members?filter=staff${search ? `&q=${encodeURIComponent(search)}` : ''}`}
+            aria-current={isStaffOnly ? 'page' : undefined}
+            className={`inline-flex min-h-11 items-center gap-1.5 rounded-xl px-4 py-2 text-sm font-bold transition-all ${
+              isStaffOnly
+                ? 'bg-[#5865f2] text-white shadow-sm'
+                : 'bg-surface-indigo text-ink-secondary hover:text-ink border border-border'
+            }`}
+          >
+            <Shield className="w-3.5 h-3.5" />
+            Staff
+          </Link>
         </nav>
       </div>
 
@@ -124,7 +141,7 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
             ? `Showing ${(page - 1) * pageSize + 1}–${(page - 1) * pageSize + members.length} ${memberNoun}${search ? ` matching “${search}”` : ''}.`
             : `No members found on page ${page}${search ? ` matching “${search}”` : ''}.`}
         </p>
-        {(search || isSupportersOnly) && <Link href="/members" className="font-semibold text-ink underline underline-offset-4 hover:no-underline">Reset results</Link>}
+        {(search || isSupportersOnly || isStaffOnly) && <Link href="/members" className="font-semibold text-ink underline underline-offset-4 hover:no-underline">Reset results</Link>}
       </div>
 
       {/* Members Wall */}

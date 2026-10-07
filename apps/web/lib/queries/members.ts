@@ -22,7 +22,7 @@ export interface MemberDirectoryItem {
 
 export interface GetMembersOptions {
   search?: string;
-  filter?: 'all' | 'supporters';
+  filter?: 'all' | 'supporters' | 'staff';
   database?: ASCDatabase;
   limit?: number;
   offset?: number;
@@ -60,6 +60,16 @@ export async function getMembersDirectory({
       .where(and(eq(communityRoles.isSupporter, true), or(isNull(profiles.userId), eq(profiles.showRoles, true))));
     whereConditions.push(inArray(users.id, visibleSupporters));
   }
+  if (filter === 'staff') {
+    const visibleStaff = database.select({ userId: memberRoles.userId }).from(memberRoles)
+      .innerJoin(communityRoles, eq(memberRoles.roleId, communityRoles.id))
+      .leftJoin(profiles, eq(memberRoles.userId, profiles.userId))
+      .where(and(
+        or(eq(communityRoles.isAdmin, true), eq(communityRoles.isModerator, true)),
+        or(isNull(profiles.userId), eq(profiles.showRoles, true))
+      ));
+    whereConditions.push(inArray(users.id, visibleStaff));
+  }
   if (searchTerm) {
     whereConditions.push(or(like(users.username, `%${searchTerm}%`), like(users.displayName, `%${searchTerm}%`), inArray(users.id, tagMatches))!);
   }
@@ -75,7 +85,7 @@ export async function getMembersDirectory({
       },
       memberRoles: {
         with: {
-          role: { columns: { id: true, name: true, color: true, position: true, isSupporter: true } },
+          role: { columns: { id: true, name: true, color: true, position: true, isSupporter: true, isAdmin: true, isModerator: true } },
         },
       },
       memberTags: {
@@ -98,8 +108,12 @@ export async function getMembersDirectory({
       .sort((a, b) => (b.position ?? 0) - (a.position ?? 0));
 
     const isSupporter = user.profile?.showRoles !== false && roles.some((r) => r.isSupporter === true);
+    const isStaff = user.profile?.showRoles !== false && roles.some((r) => r.isAdmin === true || r.isModerator === true);
 
     if (filter === 'supporters' && !isSupporter) {
+      continue;
+    }
+    if (filter === 'staff' && !isStaff) {
       continue;
     }
 
